@@ -10,13 +10,14 @@ spl_autoload_register(function($className) {
 
 // Inisialisasi Router
 use app\config\Router;
-$router = new Router;
+$app = new Router;
 
 // Menambahkan rute ke router
-$router->get('/', 'HomeController@index');
-$router->post('/create-user', 'HomeController@create_user');
-$router->get('/login', 'LoginController@index');
-$router->post('/auth-login', 'LoginController@authenticate');
+$app->get('/', 'HomeController@index');
+$app->post('/create-user', 'HomeController@create_user');
+$app->get('/login', 'LoginController@index');
+$app->post('/auth-login', 'LoginController@authenticate');
+$app->post('/logout', 'LoginController@logout');
 
 // Jalankan router
-$router->run();
+$app->run();

@@ -22,6 +22,7 @@ class WebApp {
 	{
 		switch($page) {
 			case "home":
+			$navbar = 'app/views/layout/partials/navbar.php';
 			$partials = [
 				'loading' => 'app/views/layout/partials/loading.php',
 				'home_content' => 'app/views/home/home_content.php' 
@@ -30,6 +31,7 @@ class WebApp {
 			break;
 
 			case "create-user":
+			$navbar = 'app/views/layout/partials/navbar.php';
 			$partials = [
 				'loading' => 'app/views/layout/partials/loading.php',
 				'home_content' => 'app/views/home/create_user.php' 
@@ -39,6 +41,7 @@ class WebApp {
 
 
 			case "login":
+			$navbar = 'app/views/layout/partials/auth/navbar.php';
 			$partials = [
 				'loading' => 'app/views/layout/partials/loading.php',
 				'login_form' => 'app/views/auth/login_form.php'
@@ -47,6 +50,7 @@ class WebApp {
 			break;
 
 			case "404":
+			$navbar = 'app/views/layout/partials/errors/navbar.php';
 			$partials = [
 				'error_404_content' => 'app/views/errors/content_404.php'
 			];
@@ -60,7 +64,7 @@ class WebApp {
 	
 
 		return [
-			'navbar' => 'app/views/layout/partials/navbar.php',
+			'navbar' => $navbar,
 			'footer_content' => 'app/views/layouts/partials/footer_content.php',
 			'views' => $partials,
 			'scripts' => $scripts
