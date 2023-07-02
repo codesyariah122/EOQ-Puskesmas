@@ -8,4 +8,4 @@ ini_set('display_errors', '1');
 // header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
 // header("Referrer-Policy: no-referrer");
 
-require_once(dirname(__FILE__)) .'/public/index.php';
+require_once(dirname(__FILE__)) .'/public/app.php';

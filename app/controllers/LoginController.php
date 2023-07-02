@@ -30,6 +30,10 @@ class LoginController {
 	public function index() 
 	{
 		session_start();
+
+		if(isset($_SESSION['token'])) {
+			header("Location: /dashboard/{$_SESSION['username']}", 1);
+		}
 		
 		$prepare_views = [
 			'header' => 'app/views/layout/app/header.php',
