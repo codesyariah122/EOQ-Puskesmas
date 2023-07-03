@@ -18,7 +18,8 @@ $(document).ready(function() {
 	})
 
 
-	$('#data-user').on('click', '#edit', function() {
-		console.log("Hallo Edit User")
+	$('#data-user').on('click', '.edit', function() {
+		const kd_admin = $(this).attr('data-id')
+		location.href=`/dashboard/data-user/${kd_admin}`
 	})
 })

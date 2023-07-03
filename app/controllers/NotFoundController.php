@@ -39,4 +39,3 @@ class NotFoundController {
         $this->views($prepare_views, $data);
     }
 }
-?>

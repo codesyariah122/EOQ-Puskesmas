@@ -1,4 +1,4 @@
-const loading = document.querySelector('#loading');
+let loading = document.querySelector('#loading');
 let loadingBtn = $('#loading-button')
 let textBtn = $('#text-button')
 

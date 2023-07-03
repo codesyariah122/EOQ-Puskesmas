@@ -56,17 +56,39 @@ class User {
 
 	public function getUserByUsername($username)
 	{
-		$query = "SELECT * FROM `admin` WHERE username = :username";
-		$stmt = $this->conn->prepare($query);
-		$stmt->bindValue(':username', $username);
-		$stmt->execute();
-		return $stmt->fetch();
+		try {
+			$query = "SELECT * FROM `admin` WHERE username = :username";
+			$stmt = $this->conn->prepare($query);
+			$stmt->bindValue(':username', $username);
+			$stmt->execute();
+			return $stmt->fetch();
+		} catch (\PDOException $e) {
+			echo "Ooops error : ".$e->getMessage();
+		}
 	}
 
 	public function all($query)
 	{
 		try{
 			$dbh = $this->conn;
+			$dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+			$sql = $dbh->query($query);
+			$rows=[];
+
+			while($row = $sql->fetch(\PDO::FETCH_ASSOC)):
+				$rows[] = $row;
+			endwhile;
+
+			return $rows;
+		}catch(\PDOException $e){
+			echo $e->getMessage();
+		}
+	}
+
+	public function userById($query)
+	{
+		$dbh = $this->conn;
+		try{
 			$dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 			$sql = $dbh->query($query);
 			$rows=[];

@@ -1,4 +1,4 @@
-const saveLogin = (data, key) => {
+let saveLogin = (data, key) => {
 	localStorage.setItem(key, JSON.stringify(data))
 }
 

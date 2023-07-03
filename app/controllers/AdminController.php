@@ -20,7 +20,7 @@ class AdminController {
 	{
 		$helpers = $this->helpers;
 		$model = new WebApp;
-		$user_model = new User;
+		$data_model = new User;
 		$data = $model->getData();
 		$meta = $model->getMetaTag($param['title']);
 		$welcome_text = "Welcome , {$param['data']['username']}";
@@ -28,7 +28,7 @@ class AdminController {
 		
 		$page = $param['page'];
 
-		$rows = $user_model->all("SELECT * FROM `admin` ORDER BY `id` DESC");
+		$rows = $data_model->all("SELECT * FROM `admin` ORDER BY `id` DESC");
 
 		$is_mobile = $helpers->isMobileDevice();
 
@@ -42,20 +42,10 @@ class AdminController {
 
 	public function index($param) 
 	{
+		// var_dump($param); die;
 
 		if(isset($_SESSION['token'])) {
-			switch($param) {
-				case 'admin':
-				$contents = 'app/views/admin/index.php';
-				break;
-
-				case 'data-user':
-				$contents = 'app/views/admin/data-user.php';
-				break;
-
-				default:
-				$contents = '';
-			}
+			$contents = 'app/views/admin/index.php';
 
 			$prepare_views = [
 				'header' => 'app/views/layout/dashboard/header.php',
