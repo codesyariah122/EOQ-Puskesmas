@@ -20,6 +20,7 @@
 > Silahkan buka web browser : Firefox, google chrome atau yang lainnya. akses url sesuai dengan informasi running server yang terdapat di layar terminal / cmd(di windows), yaitu ```http://localhost:4041```. Jika terdapat error seperti ini :
 
 ***
+![db_error](https://github.com/codesyariah122/skripsi/assets/13291805/0cd005de-2db2-4eab-aacf-99225d1725a7)
 
 ***  
 
@@ -33,6 +34,6 @@
 
 > Setelah file .env terbuat , buka file .env dan sesuaikan konfigurasi database dengan database yang telah di siapkan sebelumnya.
 
-> Selanjutnya buka kembali web browser, masih mengarah ke url yang sama sebelumnya yaitu ```http://localhost:4041``` setelah web terbuka lihat di bagian hero web atau jumbotron atau bagian awal muka, ada tombol berwarna orange yang bertext ```Create User ->``` , maka akan dibuatkan struktur data baru untuk data user di table admin. Boleh cek ke phpmyadmin di table admin.
+> Selanjutnya buka kembali web browser, masih mengarah ke url yang sama sebelumnya yaitu ```http://localhost:4041``` setelah web terbuka lihat di bagian hero web atau jumbotron atau bagian awal muka, ada tombol berwarna orange yang bertext ```Create User ->```  click tombol tersebut , maka akan dibuatkan struktur data baru untuk data user di table admin. Boleh cek ke phpmyadmin di table admin.
 
 > Selanjutnya silahkan login untuk mengakses halaman dashboard.
