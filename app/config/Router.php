@@ -12,13 +12,12 @@ class Router {
     }
 
     public function get($route, $handler) {
-       $route = str_replace('{slug}', '([^/]+)', $route);
-
+       $route = str_replace('{param}', '([^/]+)', $route);
        $this->routes[$route] = $handler;
     }
 
     public function post($route, $handler) {
-        $route = str_replace('{slug}', '([^/]+)', $route);
+        $route = str_replace('{param}', '([^/]+)', $route);
         $this->routes[$route] = $handler;
     }
 
@@ -26,6 +25,7 @@ class Router {
         $uri = $_SERVER['REQUEST_URI'];
 
         $uri = strtok($uri, '?');
+
 
         foreach ($this->routes as $route => $handler) {
             if (preg_match('#^' . $route . '$#', $uri, $matches)) {

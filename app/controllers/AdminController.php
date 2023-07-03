@@ -1,0 +1,81 @@
+<?php
+
+namespace app\controllers;
+
+use app\models\{WebApp, User};
+use app\datasources\UserPrepare;
+use app\helpers\{Helpers};
+
+class AdminController {
+
+	public $helpers;
+
+	public function __construct()
+	{
+		session_start();
+		$this->helpers = new Helpers;
+	}
+
+	public function views($views, $param)
+	{
+		$helpers = $this->helpers;
+		$model = new WebApp;
+		$user_model = new User;
+		$data = $model->getData();
+		$meta = $model->getMetaTag($param['title']);
+		$welcome_text = "Welcome , {$param['data']['username']}";
+		$description = "Sistem Informasi Pengelolaan Pengadaan Obat Balai Kesehatan";
+		
+		$page = $param['page'];
+
+		$rows = $user_model->all("SELECT * FROM `admin` ORDER BY `id` DESC");
+
+		$is_mobile = $helpers->isMobileDevice();
+
+		$partials = $model->getPartials($param['page']);
+
+
+		foreach($views as $view):
+			require_once $view;
+		endforeach;
+	}
+
+	public function index($param) 
+	{
+
+		if(isset($_SESSION['token'])) {
+			switch($param) {
+				case 'admin':
+				$contents = 'app/views/admin/index.php';
+				break;
+
+				case 'data-user':
+				$contents = 'app/views/admin/data-user.php';
+				break;
+
+				default:
+				$contents = '';
+			}
+
+			$prepare_views = [
+				'header' => 'app/views/layout/dashboard/header.php',
+				'contents' => $contents,
+				'footer' => 'app/views/layout/dashboard/footer.php',
+			];
+
+
+			$data = [
+				'title' => "Aplikasi EOQ - {$param}",
+				'page' => $param,
+				'data' => [
+					'username' => ucfirst($_SESSION['username'])
+				],
+			];
+
+			$this->views($prepare_views, $data);
+		} else {
+			header("Location: /?error=forbaiden", 1);
+		}
+	}
+
+}

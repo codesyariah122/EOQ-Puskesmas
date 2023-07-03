@@ -56,26 +56,43 @@ class LoginController {
 		$username = $_POST['username'];
 		$password = $_POST['password'];
 
+
         // Validasi input
 		$userModel = new User;
 		$user = $userModel->getUserByUsername($username);
 
 		if (!$user) {
-            // Kombinasi username dan password tidak valid
-            // Tampilkan pesan kesalahan atau redirect ke halaman login
-			header('Location: /login?error=user_not_found');
+			// header('Location: /login?error=user_not_found');
+			$error_data = [
+				'error' => true,
+				'message' => 'User, tidak ditemukan / belum terdaftar!'
+			];
+			return json_encode($error_data);
 		} else {
-            // Login berhasil
-            // Set session atau token untuk pengguna yang diotentikasi
-            // Redirect ke halaman dashboard atau halaman lainnya
+          
 			if(!password_verify($password, $user['password'])) {
-				header('Location: /login?error=password_wrong');
+				// header('Location: /login?error=password_wrong');
+				$error_data = [
+					'error' => true,
+					'message' => 'Username / password, salah!'
+				];
+				return json_encode($error_data);
 			} else {
 				$generate_token = $this->helpers->generate_token();
 				$_SESSION['user_id'] = $user['kd_admin'];
 				$_SESSION['username'] = $user['username'];
 				$_SESSION['token'] = $generate_token;
-				header("Location: /dashboard/{$username}");
+				// header("Location: /dashboard/{$username}");
+				$save_data = [
+					'success' => true,
+					'message' => "Welcome, {$user['username']}",
+					'data' => [
+						'username' => $_SESSION['username'],
+						'token' => $_SESSION['token']
+					]
+				];
+
+				echo json_encode($save_data);
 				exit();
 			}
 		}
@@ -85,11 +102,11 @@ class LoginController {
 	{
 		session_start();
         // Hapus semua data session
-        session_unset();
+		session_unset();
         // Hancurkan session
-        session_destroy();
+		session_destroy();
         // Redirect ke halaman login atau halaman lainnya
-        header('Location: /?logut=user_logout');
-        exit();
+		header('Location: /?logut=user_logout');
+		exit();
 	}
 }
