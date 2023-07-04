@@ -2,6 +2,13 @@
 
 > Dibuat dengan bahasa pemrogramman PHP versi 8.2, dengan mengusung konsep MVC sebagai alur utama programm ini.
 
+### Tech Stack  
+1. PHP Native with mvc concept (PHP 8.2)
+2. PHP::PDO Reusable object oriented for database communication
+3. MariaDB database server
+4. Javascript, JQuery, JQuery.Ajax, Sweetalert
+5. Tailwindcss with plugins flowbite
+
 
 ##### Run in dev
 > Clone repository ini terlebih dahulu, selanjutnya akses melalui terminal / cmd(di windows), buka terminal dan akses direktori hasil clone repository ini kemudian jalankan baris perintah dibawah ini.  
