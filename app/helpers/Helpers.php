@@ -40,10 +40,34 @@ class Helpers {
 		return str_replace(' ', '+', urlencode($text));
 	}
 
-	function generate_token() {
+	public function generate_token() 
+	{
 	    $length = 32; // Panjang token dalam byte
 	    $token = bin2hex(random_bytes($length)); // Menggunakan random_bytes() untuk menghasilkan token acak
 	    return $token;
+	}
+
+	public function generate_username($name) 
+	{
+		$namaLengkap = $name; // Nama lengkap pengguna
+
+		// Pisahkan nama lengkap menjadi kata-kata individu
+		$kataKata = explode(" ", $namaLengkap);
+
+		// Buat username dari inisial kata-kata
+		$username = "";
+		foreach ($kataKata as $kata) {
+			$inisial = substr($kata, 0, 1);
+			$username .= strtolower($inisial);
+		}
+
+		// Generate angka acak 2 digit
+		$angkaAcak = str_pad(mt_rand(0, 99), 2, "0", STR_PAD_LEFT);
+
+		// Gabungkan username dengan angka acak
+		$username .= $angkaAcak;
+
+		return $username;
 	}
 
 }

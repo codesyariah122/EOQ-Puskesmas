@@ -1,6 +1,12 @@
-let loading = document.querySelector('#loading');
+let loading = document.querySelector('#loading')
+let alertSuccess = $('#alert-success')
+let messageSuccess = $('#message-success')
+let alertError = $('#alert-error')
+let messageError = $('#message-error')
 let loadingBtn = $('#loading-button')
 let textBtn = $('#text-button')
+let userDataLists = $('#user-data')
+let addUserModal = $('#addUserModal')
 
 setTimeout(() => {
 	loading.classList.remove('block')

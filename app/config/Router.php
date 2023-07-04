@@ -44,6 +44,16 @@ class Router {
         $this->routes[$route] = $handler;
     }
 
+    public function put($route, $handler): void {
+        $route = str_replace('{dataParam}', '([^/]+)', $route);
+        $this->routes[$route] = $handler;
+    }
+
+    public function delete($route, $handler): void {
+        $route = str_replace('{dataParam}', '([^/]+)', $route);
+        $this->routes[$route] = $handler;
+    }
+
     /**
      * Menjalankan router
      * 
@@ -65,6 +75,8 @@ class Router {
 
                 array_shift($matches); // Hapus elemen pertama (seluruh kecocokan URI)
                 $dataParam = end($matches); // Ambil data user dari route parameter
+
+                // var_dump($controllerName); die;
 
                 // Panggil method pada controller dengan parameter data user
                 call_user_func([$controller, $methodName], $dataParam);

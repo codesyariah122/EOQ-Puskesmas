@@ -17,13 +17,13 @@ class HomeController {
 
 	public function views($views, $param)
 	{
-		$model = new WebApp;
-		$data = $model->getData();
+		$webApp = new WebApp;
+		$data = $webApp->getData();
 		$users = new User;
-		$rows_count = $users->get_user_data("SELECT COUNT(*) AS total FROM admin")->fetch(\PDO::FETCH_ASSOC);
+		$rows_count = $users->get_user_first("SELECT COUNT(*) AS total FROM admin")->fetch(\PDO::FETCH_ASSOC);
 
-		$meta = $model->getMetaTag($param['title']);
-		$partials = $model->getPartials($param['page']);
+		$meta = $webApp->getMetaTag($param['title']);
+		$partials = $webApp->getPartials($param['page']);
 		$helpers = $this->helpers;
 
 		foreach($views as $view):
@@ -31,7 +31,7 @@ class HomeController {
 		endforeach;
 	}
 
-	public function index() 
+	public function index($param) 
 	{
 		session_start();
 
@@ -55,10 +55,10 @@ class HomeController {
 		try {
 			$users = new User;
 			$query = "SELECT * FROM `admin`";
-			$row_counts = $users->get_user_data($query)->rowCount();
+			$row_counts = $users->get_user_first($query)->rowCount();
 
 			if($row_counts > 0) {
-				$results = $users->get_user_data($query)->fetchAll(\PDO::FETCH_ASSOC);
+				$results = $users->get_user_first($query)->fetchAll(\PDO::FETCH_ASSOC);
 				header('Location: /', true);
 				exit();
 			} else {

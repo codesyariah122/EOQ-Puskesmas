@@ -14,7 +14,7 @@ class User {
 		$this->conn = $this->db->connection();
 	}
 
-	public function get_user_data($query)
+	public function get_user_first($query)
 	{
 		try {
 			$dbh = $this->conn;
@@ -30,7 +30,7 @@ class User {
 		try {
 			$dbh = $this->conn;
 			
-			$query = "INSERT INTO `admin` (id, kd_admin, nm_lengkap, alamat, notlp, username, password) VALUES (:id, :kd_admin, :nm_lengkap, :alamat, :notlp, :username, :password)";
+			$query = "INSERT INTO `admin` (id, kd_admin, nm_lengkap, alamat, notlp, username, role, password) VALUES (:id, :kd_admin, :nm_lengkap, :alamat, :notlp, :username, :role, :password)";
 			$stmt = $dbh->prepare($query);
 
 			foreach($params as $idx => $data):
@@ -41,6 +41,7 @@ class User {
 				$stmt->bindParam(':alamat', $data['alamat']);
 				$stmt->bindParam(':notlp', $data['notlp']);
 				$stmt->bindParam(':username', $data['username']);
+				$stmt->bindParam(':role', $data['role']);
 				$stmt->bindParam(':password', $data['password']);
 				$stmt->execute();
 			endforeach;
@@ -87,8 +88,8 @@ class User {
 
 	public function userById($kd_admin)
 	{
-		$dbh = $this->conn;
 		try{
+			$dbh = $this->conn;
 			$sql = "SELECT * FROM admin WHERE kd_admin = :kd_admin";
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(':kd_admin', $kd_admin);
@@ -101,10 +102,34 @@ class User {
 		}
 	}
 
+	public function store($data, $id)
+	{
+		try{
+			$dbh = $this->conn;
+
+			$addNewUser = $dbh->prepare("INSERT INTO admin (id, kd_admin, nm_lengkap, alamat, notlp, username, role) VALUES (:id, :kd_admin, :nm_lengkap, :alamat, :notlp, :username, :role)");
+			$addNewUser->bindParam(':id', $id);
+			$addNewUser->bindParam(':kd_admin', $data['kd_admin']);
+			$addNewUser->bindParam(':nm_lengkap', $data['nm_lengkap']);
+			$addNewUser->bindParam(':alamat', $data['alamat']);
+			$addNewUser->bindParam(':notlp', $data['notlp']);
+			$addNewUser->bindParam(':username', $data['username']);
+			$addNewUser->bindParam(':role', $data['role']);
+
+			$addNewUser->execute();
+
+			return $addNewUser->rowCount();
+		} catch (\PDOException $e){
+			echo "Error PDO: " . $e->getMessage();
+		} catch (\Exception $e) {
+			echo "Error: " . $e->getMessage();
+		}
+	}
+
 	public function update($data, $kd_admin)
 	{
-		$dbh = $this->conn;
 		try{
+			$dbh = $this->conn;
 			$sql = "UPDATE admin SET kd_admin=?, nm_lengkap=?, alamat=?, notlp=?, username=?  WHERE `kd_admin` = ?";
 			
 			$update = $dbh->prepare($sql);
@@ -112,6 +137,24 @@ class User {
 			$update->execute([$data['kd_admin'], $data['nm_lengkap'], $data['alamat'], $data['notlp'], $data['username'], $kd_admin]);
 
 			return $update->rowCount();
+
+		}catch(\PDOException $e){
+			echo $e->getMessage();
+		}
+	}
+
+	public function delete($kd_admin)
+	{
+		try {
+			$dbh = $this->conn;
+			$delete = $dbh->prepare("DELETE FROM `admin` WHERE `kd_admin` = :kd_admin");
+			$delete->bindParam(":kd_admin", $kd_admin);
+			$delete->execute();
+			
+			$dbh->exec("ALTER TABLE admin AUTO_INCREMENT = 1");
+
+			return $delete->rowCount();
+
 
 		}catch(\PDOException $e){
 			echo $e->getMessage();

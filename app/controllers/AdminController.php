@@ -8,35 +8,34 @@ use app\helpers\{Helpers};
 
 class AdminController {
 
-	public $helpers;
+	public $helpers, $data_model;
 
 	public function __construct()
 	{
 		session_start();
-		$this->helpers = new Helpers;
 		
 		if(!isset($_SESSION['token'])) {
 			header("Location: /?error=forbaiden", 1);
 		}
+
+		$this->helpers = new Helpers;
+		$this->data_model = new User;
 	}
 
 	public function views($views, $param)
 	{
 		$helpers = $this->helpers;
-		$model = new WebApp;
-		$data_model = new User;
-		$data = $model->getData();
-		$meta = $model->getMetaTag($param['title']);
-		$welcome_text = "Welcome , {$param['data']['username']}";
+		$webApp = new WebApp;
+		$data = $webApp->getData();
+		$meta = $webApp->getMetaTag($param['title']);
+		$welcome_text = "Welcome , {$param['data']['name']}";
 		$description = "Sistem Informasi Pengelolaan Pengadaan Obat Balai Kesehatan";
 		
 		$page = $param['page'];
 
-		$rows = $data_model->all("SELECT * FROM `admin` ORDER BY `id` DESC");
-
 		$is_mobile = $helpers->isMobileDevice();
 
-		$partials = $model->getPartials($param['page']);
+		$partials = $webApp->getPartials($param['page']);
 
 
 		foreach($views as $view):
@@ -54,12 +53,13 @@ class AdminController {
 			'footer' => 'app/views/layout/dashboard/footer.php',
 		];
 
+		$user_login = $this->data_model->getUserByUsername($_SESSION['username']);
 
 		$data = [
-			'title' => "Aplikasi EOQ - {$param}",
-			'page' => $param,
+			'title' => "Aplikasi EOQ - Dashboard Admin",
+			'page' => 'admin',
 			'data' => [
-				'username' => ucfirst($_SESSION['username'])
+				'name' => ucfirst($user_login['nm_lengkap'])
 			],
 		];
 

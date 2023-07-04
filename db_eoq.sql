@@ -28,12 +28,13 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` int(11) NOT NULL,
   `kd_admin` char(255) NOT NULL,
   `nm_lengkap` varchar(25) NOT NULL,
   `alamat` varchar(255) NOT NULL,
   `notlp` varchar(15) NOT NULL,
-  `username` varchar(15) NOT NULL,
+  `username` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `role` varchar(191) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 

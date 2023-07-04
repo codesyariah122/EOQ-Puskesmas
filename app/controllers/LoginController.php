@@ -79,6 +79,7 @@ class LoginController {
 				$generate_token = $this->helpers->generate_token();
 				$_SESSION['user_id'] = $user['kd_admin'];
 				$_SESSION['username'] = $user['username'];
+				$_SESSION['role'] = $user['role'];
 				$_SESSION['token'] = $generate_token;
 
 				$data = [
@@ -86,6 +87,7 @@ class LoginController {
 					'message' => "Welcome, {$user['username']}",
 					'data' => [
 						'username' => $_SESSION['username'],
+						'role' => $_SESSION['role'],
 						'token' => $_SESSION['token']
 					]
 				];
