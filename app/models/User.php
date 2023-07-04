@@ -19,10 +19,9 @@ class User {
 		try {
 			$dbh = $this->conn;
 			$users = $dbh->query($query);
-			// var_dump(!$users); die;
 			return $users;
 		} catch (\PDOException $e) {
-			echo "Terjadi kesalahan: " . $e->getMessage();
+			return ;
 		}
 	}
 
@@ -45,6 +44,7 @@ class User {
 				$stmt->bindParam(':password', $data['password']);
 				$stmt->execute();
 			endforeach;
+
 			header('Location: /', 1);
 			
 		} catch (\PDOException $e) {

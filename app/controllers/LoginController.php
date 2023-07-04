@@ -102,11 +102,25 @@ class LoginController {
 	{
 		session_start();
         // Hapus semua data session
+		$user_data = [
+			'success' => true,
+			'message' => "Anda akan keluar dari dashboard, {$_SESSION['username']}",
+			'data' => [
+				'username' => $_SESSION['username'],
+				'token' => $_SESSION['token']
+			]
+		];
+
+		echo json_encode($user_data);
+
 		session_unset();
         // Hancurkan session
 		session_destroy();
         // Redirect ke halaman login atau halaman lainnya
-		header('Location: /?logut=user_logout');
+		// header('Location: /?logut=user_logout');
+		unset($_SESSION['username']);
+		unset($_SESSION['user_id']);
+		unset($_SESSION['token']);
 		exit();
 	}
 }

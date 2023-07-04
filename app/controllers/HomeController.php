@@ -20,8 +20,8 @@ class HomeController {
 		$model = new WebApp;
 		$data = $model->getData();
 		$users = new User;
-		$query = "SELECT * FROM `admin`";
-		$row_counts = $users->get_user_data($query)->rowCount();
+		$rows_count = $users->get_user_data("SELECT COUNT(*) AS total FROM admin")->fetch(\PDO::FETCH_ASSOC);
+
 		$meta = $model->getMetaTag($param['title']);
 		$partials = $model->getPartials($param['page']);
 		$helpers = $this->helpers;
