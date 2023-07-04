@@ -14,6 +14,10 @@ class AdminController {
 	{
 		session_start();
 		$this->helpers = new Helpers;
+		
+		if(!isset($_SESSION['token'])) {
+			header("Location: /?error=forbaiden", 1);
+		}
 	}
 
 	public function views($views, $param)
@@ -42,30 +46,24 @@ class AdminController {
 
 	public function index($param) 
 	{
-		// var_dump($param); die;
+		$contents = 'app/views/admin/index.php';
 
-		if(isset($_SESSION['token'])) {
-			$contents = 'app/views/admin/index.php';
-
-			$prepare_views = [
-				'header' => 'app/views/layout/dashboard/header.php',
-				'contents' => $contents,
-				'footer' => 'app/views/layout/dashboard/footer.php',
-			];
+		$prepare_views = [
+			'header' => 'app/views/layout/dashboard/header.php',
+			'contents' => $contents,
+			'footer' => 'app/views/layout/dashboard/footer.php',
+		];
 
 
-			$data = [
-				'title' => "Aplikasi EOQ - {$param}",
-				'page' => $param,
-				'data' => [
-					'username' => ucfirst($_SESSION['username'])
-				],
-			];
+		$data = [
+			'title' => "Aplikasi EOQ - {$param}",
+			'page' => $param,
+			'data' => [
+				'username' => ucfirst($_SESSION['username'])
+			],
+		];
 
-			$this->views($prepare_views, $data);
-		} else {
-			header("Location: /?error=forbaiden", 1);
-		}
+		$this->views($prepare_views, $data);
 	}
 
 }

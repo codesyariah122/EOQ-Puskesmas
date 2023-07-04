@@ -78,6 +78,16 @@ class WebApp {
 			$scripts = ['/public/assets/js/script.js', '/public/assets/js/function.js', '/public/assets/js/app.js'];
 			break;
 
+			case "data-user-edit":
+			$navbar = "app/views/layout/partials/dashboard/navbar.php";
+			$partials = [
+				'loading' => 'app/views/layout/partials/loading.php',
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+				"edit_user" => "app/views/contents/dashboard/edit/data-user.php"
+			];
+			$scripts = ['/public/assets/js/script.js', '/public/assets/js/function.js', '/public/assets/js/app.js'];
+			break;
+
 			default:
 			$partials = [];
 			$scripts = [];

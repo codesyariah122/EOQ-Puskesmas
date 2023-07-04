@@ -19,7 +19,7 @@ $app->get('/dashboard/{param}', 'AdminController@index');
 // Data user
 $app->get('/dashboard/data-user', 'UserDataController@index');
 $app->get('/dashboard/data-user/{param}', 'UserDataController@edit');
-
+$app->post('/update/data-user/{param}', 'UserDataController@update');
 
 // Jalankan router
 $app->run();

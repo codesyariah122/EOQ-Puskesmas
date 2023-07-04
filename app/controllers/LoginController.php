@@ -62,28 +62,26 @@ class LoginController {
 		$user = $userModel->getUserByUsername($username);
 
 		if (!$user) {
-			// header('Location: /login?error=user_not_found');
-			$error_data = [
+			$data = [
 				'error' => true,
 				'message' => 'User, tidak ditemukan / belum terdaftar!'
 			];
-			return json_encode($error_data);
+			echo json_encode($data);
 		} else {
           
 			if(!password_verify($password, $user['password'])) {
-				// header('Location: /login?error=password_wrong');
-				$error_data = [
+				$data = [
 					'error' => true,
 					'message' => 'Username / password, salah!'
 				];
-				return json_encode($error_data);
+				echo json_encode($data);
 			} else {
 				$generate_token = $this->helpers->generate_token();
 				$_SESSION['user_id'] = $user['kd_admin'];
 				$_SESSION['username'] = $user['username'];
 				$_SESSION['token'] = $generate_token;
-				// header("Location: /dashboard/{$username}");
-				$save_data = [
+
+				$data = [
 					'success' => true,
 					'message' => "Welcome, {$user['username']}",
 					'data' => [
@@ -92,7 +90,7 @@ class LoginController {
 					]
 				];
 
-				echo json_encode($save_data);
+				echo json_encode($data);
 				exit();
 			}
 		}
@@ -101,7 +99,6 @@ class LoginController {
 	public function logout()
 	{
 		session_start();
-        // Hapus semua data session
 		$user_data = [
 			'success' => true,
 			'message' => "Anda akan keluar dari dashboard, {$_SESSION['username']}",
@@ -113,6 +110,7 @@ class LoginController {
 
 		echo json_encode($user_data);
 
+        // Hapus semua data session
 		session_unset();
         // Hancurkan session
 		session_destroy();

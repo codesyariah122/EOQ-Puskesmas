@@ -85,19 +85,34 @@ class User {
 		}
 	}
 
-	public function userById($query)
+	public function userById($kd_admin)
 	{
 		$dbh = $this->conn;
 		try{
-			$dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-			$sql = $dbh->query($query);
-			$rows=[];
+			$sql = "SELECT * FROM admin WHERE kd_admin = :kd_admin";
+			$stmt = $dbh->prepare($sql);
+			$stmt->bindParam(':kd_admin', $kd_admin);
+			$stmt->execute();
 
-			while($row = $sql->fetch(\PDO::FETCH_ASSOC)):
-				$rows[] = $row;
-			endwhile;
+			$user = $stmt->fetch(\PDO::FETCH_ASSOC);
+			return $user;
+		}catch(\PDOException $e){
+			echo $e->getMessage();
+		}
+	}
 
-			return $rows;
+	public function update($data, $kd_admin)
+	{
+		$dbh = $this->conn;
+		try{
+			$sql = "UPDATE admin SET kd_admin=?, nm_lengkap=?, alamat=?, notlp=?, username=?  WHERE `kd_admin` = ?";
+			
+			$update = $dbh->prepare($sql);
+			
+			$update->execute([$data['kd_admin'], $data['nm_lengkap'], $data['alamat'], $data['notlp'], $data['username'], $kd_admin]);
+
+			return $update->rowCount();
+
 		}catch(\PDOException $e){
 			echo $e->getMessage();
 		}

@@ -1,5 +1,6 @@
 
 
+
 <section class="bg-center bg-no-repeat bg-[url('<?=$data['bg']?>')] bg-gray-700 bg-blend-multiply">
 	<div class="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
 
@@ -24,3 +25,31 @@
 	</div>
 </section>
 
+<?php if(isset($_GET['error'])): ?>
+
+<?php if($_GET['error'] === 'forbaiden'):?>
+	<section class="flex justify-center w-full py-24 mb-12">
+		<div>
+			<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+				<span class="font-medium">Ooops!</span> you has access dashboard page without login.
+			</div>
+		</div>
+		<script type="text/javascript">
+			Swal.fire({
+				title: 'Ooops!! please login first, before access dashboard page.',
+				width: 600,
+				padding: '3em',
+				color: '#716add',
+				background: '#fff url(https://sweetalert2.github.io/images/trees.png)',
+				backdrop: `
+				rgba(0,0,123,0.4)
+				url("https://sweetalert2.github.io/images/nyan-cat.gif")
+				left top
+				no-repeat
+				`
+			})
+		</script>
+	</section>
+<?php endif; ?>
+
+<?php endif; ?>

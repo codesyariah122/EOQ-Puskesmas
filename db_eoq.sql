@@ -29,9 +29,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `admin` (
   `id` bigint UNSIGNED NOT NULL,
-  `kd_admin` char(10) NOT NULL,
+  `kd_admin` char(255) NOT NULL,
   `nm_lengkap` varchar(25) NOT NULL,
-  `alamat` varchar(35) NOT NULL,
+  `alamat` varchar(255) NOT NULL,
   `notlp` varchar(15) NOT NULL,
   `username` varchar(15) NOT NULL,
   `password` varchar(255) NOT NULL

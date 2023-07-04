@@ -22,6 +22,7 @@ $(document).ready(function() {
 	// Logout dashboard
 	$('#navbar').on('click', '.logout', function(e){
 		e.preventDefault()
+
 		Swal.fire({
 			title: 'Are you sure?',
 			text: "You won't be able to revert this!",
@@ -41,5 +42,28 @@ $(document).ready(function() {
 	$('#data-user').on('click', '.edit', function() {
 		const kd_admin = $(this).attr('data-id')
 		location.href=`/dashboard/data-user/${kd_admin}`
+	})
+
+	// Update data user
+	$('#data-user').on('click', '.update', function(e) {
+		e.preventDefault()
+
+		loadingBtn.removeClass('hidden')
+		textBtn.addClass('hidden')
+		
+		const userData = {
+			kd_admin: $('input[name="kd_admin"]').val(),
+			nm_lengkap: $('input[name="nm_lengkap"]').val(),
+			alamat: $('textarea[name="alamat"]').val(),
+			notlp: $('input[name="notlp"]').val(),
+			username: $('input[name="username"]').val()
+		}
+
+		const param = {
+			id: userData.kd_admin,
+			data: userData
+		}
+
+		updateData(param, 'data-user')
 	})
 })
