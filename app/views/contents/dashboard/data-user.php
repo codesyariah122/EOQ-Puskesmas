@@ -27,9 +27,15 @@
 
       <div class="grid grid-cols-1 justify-items-center mb-4">
          
-         <?php require_once 'molecules/add-user.php'?>
+         <!-- Add new user -->
+         <?php require_once 'molecules/add-data.php'?>
 
          <div class="col-span-full">
+            <!-- Search data -->
+            <div class="relative py-4 mb-4">
+               <?php require_once 'molecules/search-data.php'?>
+            </div>
+
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 
@@ -62,6 +68,7 @@
                </table>
             </div>
 
+            <!-- Data pagination -->
             <div class="relative py-12">
                <?php require_once 'molecules/paging.php' ?>
             </div>

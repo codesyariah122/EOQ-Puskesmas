@@ -99,20 +99,33 @@ class UserDataController {
         try {
 
             $limit = 3;
-            $countPage = count($this->data_model->all("SELECT * FROM `admin`"));
-            $totalPage = ceil($countPage / $limit);
-            $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
-            $limitStart = ($aktifPage - 1)*$limit;
 
-            switch(@$_GET['page']):
-                case @$_POST['keyword']:
-                $keyword = @$_POST['keyword'];
-                $users = $this->data_model->search($keyword, $limitStart, $limit);
-                break;
+            if(@$_GET['page']) {
+                $countPage = count($this->data_model->all("SELECT * FROM `admin`"));
+                $totalPage = ceil($countPage / $limit);
+                $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
+                $limitStart = ($aktifPage - 1)*$limit;
 
-                default:
-                    $users = $this->data_model->all("SELECT * FROM `admin` ORDER BY `id` DESC LIMIT $limitStart, $limit");
-            endswitch;
+                $users = $this->data_model->all("SELECT * FROM `admin` ORDER BY `id` DESC LIMIT $limitStart, $limit");
+            } elseif (@$_GET['keyword']) {
+                $keyword = @$_GET['keyword'];
+
+                $countPage = count($this->data_model->all("SELECT * FROM `admin` WHERE 
+                    `kd_admin` LIKE '%$keyword%' OR `nm_lengkap` LIKE '%$keyword' 
+                    ORDER BY `id` DESC"));
+                $totalPage = ceil($countPage / $limit);
+                $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
+                $limitStart = ($aktifPage - 1)*$limit;
+                $users = $this->data_model->searchData($keyword, $limitStart, $limit);
+            } else {
+                $countPage = count($this->data_model->all("SELECT * FROM `admin`"));
+                $totalPage = ceil($countPage / $limit);
+                $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
+                $limitStart = ($aktifPage - 1)*$limit;
+                $users = $this->data_model->all("SELECT * FROM `admin` ORDER BY `id` DESC LIMIT $limitStart, $limit");
+
+            }
+
 
             if(count($users) > 0) {
                 $data = [

@@ -91,8 +91,7 @@ class User {
 
 		try {
 			$query = "SELECT * FROM `admin` WHERE 
-			`kd_admin` LIKE '%$keyword%' OR 
-			`nm_lengkap` LIKE '%$keyword' OR 
+			`kd_admin` LIKE '%$keyword%' OR `nm_lengkap` LIKE '%$keyword' 
 			ORDER BY `id` DESC
 			LIMIT $limitStart, $limit";
 

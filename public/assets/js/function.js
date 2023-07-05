@@ -189,24 +189,114 @@ const getAllData = (type, page=1) => {
 	})
 }
 
+const searchData = (param, type) => {
+	let endPoint = ''
+	let prepareData = {}
+
+	switch(type) {
+		case 'data-user':
+			endPoint = `/lists/${type}?keyword=${param.data}`
+			prepareData = {
+				keyword: param.data
+			}
+		break;
+			// type lainnya ...
+
+		default:
+	}
+
+	$.ajax({
+		url: endPoint,
+		type: 'GET',
+		dataType: 'json',
+		startTime: new Date().getTime(),
+		success: function(response) {
+			let lists = response
+
+			if(lists.success) {
+				let domDataHTML = '';
+				
+				switch(type) {
+				case 'data-user':
+					const users = lists?.data
+					const sessionUser = lists?.session_user
+
+					users?.map(user => {
+						domDataHTML += `
+						<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+						<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+						${user.kd_admin}
+						</th>
+						<td class="px-6 py-4">
+						${user.nm_lengkap}
+						</td>
+						<td class="px-6 py-4">
+						${user.alamat}
+						</td>
+						<td class="px-6 py-4">
+						${user.notlp}
+						</td>
+						<td class="px-6 py-4">
+						${user.username}
+						</td>
+
+						${user.username !== sessionUser ? 
+						`<td>
+						<div class="flex justify-center space-x-4">
+						<div>
+						<button type="button" class="edit px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
+						<i class="fa-solid fa-pen-to-square"></i>
+						</button>                                 
+						</div>
+						<div>
+						<button type="button" class="delete px-3 py-2 text-xs font-medium text-center text-white text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
+						<i class="fa-solid fa-trash"></i>
+						</button>
+						</div>
+						</div>
+						</td>` : 
+
+						''
+					}
+					</tr>
+					`;
+				})
+					break;
+					// type lainnya ....
+
+				default:
+
+				}
+				
+				userDataLists.html(domDataHTML)
+
+				setUpPagination(lists)
+			} else {
+				console.log("No response here !")
+			}
+		}
+	})
+
+}
+
 
 const addData = (param, type) => {
 	let endPoint = ''
 	let prepareData = {}
 
 	switch(type) {
-	case 'data-user':
-		endPoint = `/add/${type}`
-		prepareData = {
-			nm_lengkap: param.data.nm_lengkap,
-			alamat: param.data.alamat,
-			notlp: param.data.notlp,
-			role: param.data.role
-		}
+		case 'data-user':
+			endPoint = `/add/${type}`
+			prepareData = {
+				nm_lengkap: param.data.nm_lengkap,
+				alamat: param.data.alamat,
+				notlp: param.data.notlp,
+				role: param.data.role
+			}
 		break;
-		// type lainnya ...
+			// type lainnya ...
 
-	default:
+		default:
 	}
 
 	$.ajax({

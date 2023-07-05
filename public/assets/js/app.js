@@ -2,14 +2,6 @@ $(document).ready(function() {
 
 	getAllData('data-user', 1)
 
-
-	$('#data-user').on('click', '.page-link', function(e) {
-		e.preventDefault()
-		const pageNum = $(this).data('num')
-
-		getAllData('data-user', pageNum)
-	})
-
 	// Login dashboard
 	$('#login-page').on('click', '#login', function(e) {
 		
@@ -46,6 +38,26 @@ $(document).ready(function() {
 				Logout()
 			}
 		})
+	})
+
+
+	// Pagination data user
+	$('#data-user').on('click', '.page-link', function(e) {
+		e.preventDefault()
+		const pageNum = $(this).data('num')
+
+		getAllData('data-user', pageNum)
+	})
+
+	// Search data user
+	$('#data-user').on('keyup', '#search-data', function(e) {
+		e.preventDefault()
+		const keyword = e.target.value
+		const param = {
+			data: keyword
+		}
+
+		searchData(param, 'data-user')
 	})
 
 	// add data-user
