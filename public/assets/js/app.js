@@ -35,6 +35,8 @@ $(document).ready(function() {
 			confirmButtonText: 'Yes, logout!'
 		}).then((result) => {
 			if (result.isConfirmed) {
+				loading.classList.remove('hidden')
+				loading.classList.add('block')
 				Logout()
 			}
 		})

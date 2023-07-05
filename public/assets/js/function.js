@@ -66,6 +66,7 @@ const Logout = () => {
 			if(userData.success) {
 				setTimeout(() => {
 					loading.classList.remove('block')
+					loading.classList.add('hidden')
 					
 					removeLogin('token')
 
