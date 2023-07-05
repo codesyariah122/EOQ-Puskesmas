@@ -1,6 +1,14 @@
 $(document).ready(function() {
 
-	getAllData('data-user')
+	getAllData('data-user', 1)
+
+
+	$('#data-user').on('click', '.page-link', function(e) {
+		e.preventDefault()
+		const pageNum = $(this).data('num')
+
+		getAllData('data-user', pageNum)
+	})
 
 	// Login dashboard
 	$('#login-page').on('click', '#login', function(e) {

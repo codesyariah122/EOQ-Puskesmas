@@ -97,14 +97,33 @@ class UserDataController {
     public function all()
     {
         try {
-            $users = $this->data_model->all("SELECT * FROM `admin` ORDER BY `id` DESC");
+
+            $limit = 3;
+            $countPage = count($this->data_model->all("SELECT * FROM `admin`"));
+            $totalPage = ceil($countPage / $limit);
+            $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
+            $limitStart = ($aktifPage - 1)*$limit;
+
+            switch(@$_GET['page']):
+                case @$_POST['keyword']:
+                $keyword = @$_POST['keyword'];
+                $users = $this->data_model->search($keyword, $limitStart, $limit);
+                break;
+
+                default:
+                    $users = $this->data_model->all("SELECT * FROM `admin` ORDER BY `id` DESC LIMIT $limitStart, $limit");
+            endswitch;
 
             if(count($users) > 0) {
                 $data = [
                     'success' => true,
                     'message' => "Lists of users!",
                     'session_user' => $_SESSION['username'],
-                    'data' => $users
+                    'data' => $users,
+                    'totalData' => count($users),
+                    'countPage' => $countPage,
+                    'totalPage' => $totalPage,
+                    'aktifPage' => $aktifPage
                 ];
 
                 echo json_encode($data);

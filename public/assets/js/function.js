@@ -83,8 +83,38 @@ const Logout = () => {
 	})
 }
 
-const getAllData = (type) => {
-	const endPoint = `/lists/${type}`
+const setUpPagination = (data) => {
+	pagination.empty();
+	paging.totalData=data.totalData
+	paging.countPage=data.countPage
+	paging.totalPage=data.totalPage
+	paging.aktifPage=data.aktifPage
+
+	const prevEl = document.createElement('li')
+	const nextEl = document.createElement('li')
+	prevEl.innerHTML = `
+		<li><a href="#" class="page-link flex items-center justify-center px-3 h-8 ml-0 leading-tight border  rounded-l-lg  dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${paging.aktifPage > 1 ? 'bg-blue-50 border-blue-300 text-blue-600 cursor-pointer' : 'bg-white border-gray-300 text-gray-500 cursor-not-allowed' }" data-num="${paging.aktifPage > 1 ? paging.aktifPage - 1 : paging.aktifPage - 1}"><i class="fa-solid fa-angle-left"></i>&nbsp;Previous</a></li>
+	`
+	nextEl.innerHTML = `
+		<li><a href="#" class="page-link flex items-center justify-center px-3 h-8 ml-0 leading-tight border  rounded-r-lg  dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${paging.aktifPage < paging.totalPage ? 'bg-blue-50 border-blue-300 text-blue-600 cursor-pointer' : 'bg-white border-gray-300 text-gray-500 cursor-not-allowed' }" data-num="${paging.aktifPage < paging.totalPage ? paging.aktifPage + 1 : paging.aktifPage + 1}">Next&nbsp;<i class="fa-solid fa-angle-right"></i></a></li>
+	`
+
+	pagination.append(prevEl)
+
+	for (let i = 1; i <= paging.totalPage; i++) {
+		let pageLink = $(`<li><a href="#" class="page-link flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${i == paging.aktifPage ? 'cursor-not-allowed' : 'cursor-pointer'}" data-num="${i}">${i}</a></li>`);
+		if (i === paging.aktifPage) {
+			pageLink.find('a').addClass('text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white');
+		}
+		pagination.append(pageLink);
+	}
+
+	pagination.append(nextEl)
+
+}
+
+const getAllData = (type, page=1) => {
+	const endPoint = `/lists/${type}?page=${page}`
 	$.ajax({
 		url: endPoint,
 		type: 'GET',
@@ -92,6 +122,7 @@ const getAllData = (type) => {
 		data: {},
 		success: function (response) {
 			let lists = response
+
 			if(lists.success) {
 				let domDataHTML = '';
 				
@@ -148,6 +179,9 @@ const getAllData = (type) => {
 				}
 				
 				userDataLists.html(domDataHTML)
+
+				// pagination
+				setUpPagination(lists)
 			} else {
 				console.log("No response here !")
 			}
@@ -187,6 +221,8 @@ const addData = (param, type) => {
 			let time = (new Date().getTime() - this.startTime);
 			
 			if(successData.error) {
+				alertSuccess.hide()
+				messageSuccess.html('')
 				loadingBtn.addClass('hidden')
 				textBtn.removeClass('hidden')
 				alertError.show();
@@ -201,6 +237,8 @@ const addData = (param, type) => {
 			}
 
 			if(successData.success) {
+				alertError.hide()
+				messageError.html('')
 				console.log("This request took "+time+" ms");
 				$('input[name="nm_lengkap"]').val('')
 				$('textarea[name="alamat"]').val('')
@@ -221,6 +259,8 @@ const addData = (param, type) => {
 						showConfirmButton: false,
 						timer: 1500
 					})
+
+					getAllData(type, 1)
 
 					// addUserModal.addClass('hidden');
 
@@ -317,7 +357,6 @@ const deleteData = (param, type) => {
 					messageSuccess.html(`
 						<span class="font-medium"> Deleted successfully!</span> ${successData.message}
 						`)
-
 					loadingBtn.addClass('hidden')
 					textBtn.removeClass('hidden')
 					Swal.fire({

@@ -7,6 +7,8 @@ let loadingBtn = $('#loading-button')
 let textBtn = $('#text-button')
 let userDataLists = $('#user-data')
 let addUserModal = $('#addUserModal')
+let pagination = $('#pagination')
+let paging = {}
 
 setTimeout(() => {
 	loading.classList.remove('block')

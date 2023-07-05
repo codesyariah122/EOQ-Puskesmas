@@ -86,6 +86,23 @@ class User {
 		}
 	}
 
+
+	function searchData($keyword, $limitStart, $limit){
+
+		try {
+			$query = "SELECT * FROM `admin` WHERE 
+			`kd_admin` LIKE '%$keyword%' OR 
+			`nm_lengkap` LIKE '%$keyword' OR 
+			ORDER BY `id` DESC
+			LIMIT $limitStart, $limit";
+
+			return $this->all($query);
+
+		} catch (\PDOException $e) {
+			echo "Ooops error : ".$e->getMessage();
+		}
+	}
+
 	public function userById($kd_admin)
 	{
 		try{
