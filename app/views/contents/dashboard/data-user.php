@@ -8,21 +8,21 @@
               <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Table Data User</p>
            </div>
 
-              <div id="alert-error" class="w-full mb-2 py-2 hidden">
-               <div class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                  <i class="fa-solid fa-circle-exclamation"></i>
-                  <span class="sr-only">Info</span>
-                  <div id="message-error"></div>
+               <div id="alert-error" class="w-full mb-2 py-2 hidden">
+                  <div class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                     <i class="fa-solid fa-circle-exclamation"></i>
+                     <span class="sr-only">Info</span>
+                     <div id="message-error"></div>
                   </div>
                </div>
 
                <div id="alert-success" class="w-full mb-2 py-2 hidden">
                   <div class="flex justify-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-                  <i class="fa-solid fa-check-double"></i>
-                  <span class="sr-only">Info</span>
-                  <div id="message-success"></div>
+                     <i class="fa-solid fa-check-double"></i>
+                     <span class="sr-only">Info</span>
+                     <div id="message-success"></div>
+                  </div>
                </div>
-            </div>
          </div>
 
       <div class="grid grid-cols-1 justify-items-center mb-4">

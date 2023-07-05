@@ -12,6 +12,7 @@ class UserDataController {
     public function __construct()
     {
         session_start();
+
         if(!isset($_SESSION['token'])) {
             header("Location: /?error=forbaiden", 1);
         }
@@ -97,6 +98,7 @@ class UserDataController {
     public function all()
     {
         try {
+            header("Content-Type: application/json");
 
             $limit = 3;
 
@@ -155,6 +157,8 @@ class UserDataController {
     public function store()
     {
         try {
+            header("Content-Type: application/json");
+
             $last_user = $this->data_model->all("SELECT * FROM admin ORDER BY id DESC LIMIT 1")[0];
             $last_kdAdmin = $last_user['kd_admin'];
             $pattern = "/\d+/";
@@ -162,12 +166,25 @@ class UserDataController {
             $match_kdAdmin = intval($matches[0]) + 1;
             $kd_admin = "KU0{$match_kdAdmin}";
             $username = $this->helpers->generate_username(@$_POST['nm_lengkap']);
+            $check_notlp = $this->helpers->validatePhoneNumber(@$_POST['notlp']);
+
+            if(!$check_notlp) {
+                $data = [
+                    'error' => true,
+                    'message' => "Nomor telphone tidak valid!!"
+                ];
+
+                echo json_encode($data);
+                exit();
+            } else {
+                $notlp = $this->helpers->formatPhoneNumber(@$_POST['notlp']);
+            }
 
             $prepareData = [
                 'kd_admin' => $kd_admin,
-                'nm_lengkap' => @$_POST['nm_lengkap'],
-                'alamat' => @$_POST['alamat'],
-                'notlp' => @$_POST['notlp'],
+                'nm_lengkap' => ucfirst(@$_POST['nm_lengkap']),
+                'alamat' => trim(htmlspecialchars((@$_POST['alamat']))),
+                'notlp' => $notlp,
                 'username' => $username,
                 'role' => @$_POST['role']
             ];
@@ -179,16 +196,17 @@ class UserDataController {
                 ];
 
                 echo json_encode($data);
-            } else {
-                if($this->data_model->store($prepareData, $match_kdAdmin) > 0) {
-                    $newUser = $this->data_model->userById($kd_admin);
-                    $data = [
-                        'success' => true,
-                        'message' => "Berhasil menambahkan user baru , {$newUser['nm_lengkap']}!",
-                        'data' => $newUser
-                    ];
-                    echo json_encode($data);
-                }
+                exit();
+            }
+
+            if($this->data_model->store($prepareData, $match_kdAdmin) > 0) {
+                $newUser = $this->data_model->userById($kd_admin);
+                $data = [
+                    'success' => true,
+                    'message' => "{$newUser['nm_lengkap']}, berhasil ditambahkan!",
+                    'data' => $newUser
+                ];
+                echo json_encode($data);
             }
         } catch (\PDOException $e){
             $data = [
@@ -203,19 +221,41 @@ class UserDataController {
     public function update($dataParam)
     {
         try {
+            header("Content-Type: application/json");
+            $check_notlp = $this->helpers->validatePhoneNumber(@$_POST['notlp']);
+
+            if(!$check_notlp) {
+                $data = [
+                    'error' => true,
+                    'message' => "Nomor telphone tidak valid!!"
+                ];
+
+                echo json_encode($data);
+                exit();
+            } else {
+                $notlp = $this->helpers->formatPhoneNumber(@$_POST['notlp']);
+            }
+
             $prepareData = [
                 'kd_admin' => @$_POST['kd_admin'],
                 'nm_lengkap' => @$_POST['nm_lengkap'],
-                'alamat' => @$_POST['alamat'],
-                'notlp' => @$_POST['notlp'],
+                'alamat' => trim(htmlspecialchars(@$_POST['alamat'])),
+                'notlp' => $notlp,
                 'username' => @$_POST['username']
             ];
 
+            $userHasUpdate = $this->data_model->userById($dataParam);
             if($this->data_model->update($prepareData, $dataParam) === 1) {
-                $userHasUpdate = $this->data_model->userById($dataParam);
                 $data = [
                     'success' => true,
                     'message' => "User with kode : {$dataParam}, berhasil di update!",
+                    'data' => $userHasUpdate
+                ];
+                echo json_encode($data);
+            } else {
+                $data = [
+                    'success' => true,
+                    'message' => "User with kode : {$dataParam}, tidak ada perubahan data!",
                     'data' => $userHasUpdate
                 ];
                 echo json_encode($data);
@@ -234,6 +274,8 @@ class UserDataController {
     public function delete($dataParam)
     {
         try {
+            header("Content-Type: application/json");
+
             if($this->data_model->delete($dataParam) === 1) {
                 $userHasUpdate = $this->data_model->userById($dataParam);
                 $data = [

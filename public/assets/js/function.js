@@ -224,43 +224,43 @@ const searchData = (param, type) => {
 					users?.map(user => {
 						domDataHTML += `
 						<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-						<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-						${user.kd_admin}
-						</th>
-						<td class="px-6 py-4">
-						${user.nm_lengkap}
-						</td>
-						<td class="px-6 py-4">
-						${user.alamat}
-						</td>
-						<td class="px-6 py-4">
-						${user.notlp}
-						</td>
-						<td class="px-6 py-4">
-						${user.username}
-						</td>
+								<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+								${user.kd_admin}
+								</th>
+								<td class="px-6 py-4">
+								${user.nm_lengkap}
+								</td>
+								<td class="px-6 py-4">
+								${user.alamat}
+								</td>
+								<td class="px-6 py-4">
+								${user.notlp}
+								</td>
+								<td class="px-6 py-4">
+								${user.username}
+								</td>
 
-						${user.username !== sessionUser ? 
-						`<td>
-						<div class="flex justify-center space-x-4">
-						<div>
-						<button type="button" class="edit px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
-						<i class="fa-solid fa-pen-to-square"></i>
-						</button>                                 
-						</div>
-						<div>
-						<button type="button" class="delete px-3 py-2 text-xs font-medium text-center text-white text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
-						<i class="fa-solid fa-trash"></i>
-						</button>
-						</div>
-						</div>
-						</td>` : 
+								${user.username !== sessionUser ? 
+								`<td>
+								<div class="flex justify-center space-x-4">
+								<div>
+								<button type="button" class="edit px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
+								<i class="fa-solid fa-pen-to-square"></i>
+								</button>                                 
+								</div>
+								<div>
+								<button type="button" class="delete px-3 py-2 text-xs font-medium text-center text-white text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
+								<i class="fa-solid fa-trash"></i>
+								</button>
+								</div>
+								</div>
+								</td>` : 
 
-						''
-					}
-					</tr>
-					`;
-				})
+								''
+							}
+							</tr>
+							`;
+						})
 					break;
 					// type lainnya ....
 
@@ -306,27 +306,27 @@ const addData = (param, type) => {
 		data: prepareData,
 		startTime: new Date().getTime(),
 		success: function(response) {
-			const successData = response
+			const responseData = response
 
 			let time = (new Date().getTime() - this.startTime);
 			
-			if(successData.error) {
+			if(responseData.error) {
 				alertSuccess.hide()
 				messageSuccess.html('')
 				loadingBtn.addClass('hidden')
 				textBtn.removeClass('hidden')
 				alertError.show();
 				messageError.html(`
-					<span class="font-medium"> Ooops!</span>${successData.message}!
+					<span class="font-medium"> Ooops!</span>${responseData.message}!
 					`)
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
-					text: successData.message
+					text: responseData.message
 				})
 			}
 
-			if(successData.success) {
+			if(responseData.success) {
 				alertError.hide()
 				messageError.html('')
 				console.log("This request took "+time+" ms");
@@ -337,7 +337,7 @@ const addData = (param, type) => {
 				setTimeout(() => {
 					alertSuccess.show();
 					messageSuccess.html(`
-						<span class="font-medium"> Berhasil menambah pengguna baru!</span> ${successData.message}
+						<span class="font-medium"> Berhasil menambah pengguna baru!</span> ${responseData.message}
 						`)
 
 					loadingBtn.addClass('hidden')
@@ -345,7 +345,7 @@ const addData = (param, type) => {
 					Swal.fire({
 						position: 'top-end',
 						icon: 'success',
-						title: successData.message,
+						title: responseData.message,
 						showConfirmButton: false,
 						timer: 1500
 					})
@@ -387,17 +387,36 @@ const updateData = (param, type) => {
 		data: prepareData,
 		startTime: new Date().getTime(),
 		success: function(response) {
-			const successData = response
+
+			const responseData = response
+
+			console.log(responseData)
 
 			let time = (new Date().getTime() - this.startTime);
 
-			if(successData.success) {
+			if(responseData.error) {
+				alertSuccess.hide()
+				messageSuccess.html('')
+				loadingBtn.addClass('hidden')
+				textBtn.removeClass('hidden')
+				alertError.show();
+				messageError.html(`
+					<span class="font-medium"> Ooops!</span>${responseData.message}!
+					`)
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: responseData.message
+				})
+			}
+
+			if(responseData.success) {
 				console.log("This request took "+time+" ms");
 
 				setTimeout(() => {
 					alertSuccess.show();
 					messageSuccess.html(`
-						<span class="font-medium"> Update successfully!</span> ${successData.message}
+						<span class="font-medium"> Update successfully!</span> ${responseData.message}
 						`)
 
 					loadingBtn.addClass('hidden')
@@ -405,7 +424,7 @@ const updateData = (param, type) => {
 					Swal.fire({
 						position: 'top-end',
 						icon: 'success',
-						title: successData.message,
+						title: responseData.message,
 						showConfirmButton: false,
 						timer: 1500
 					})
@@ -433,11 +452,11 @@ const deleteData = (param, type) => {
 		startTime: new Date().getTime(),
 		success: function(response) {
 
-			const successData = response
+			const responseData = response
 			
 			let time = (new Date().getTime() - this.startTime);
 			
-			if(successData.success) {
+			if(responseData.success) {
 
 				console.log("This request took "+time+" ms");
 
@@ -445,14 +464,14 @@ const deleteData = (param, type) => {
 					getAllData(type)
 					alertSuccess.show();
 					messageSuccess.html(`
-						<span class="font-medium"> Deleted successfully!</span> ${successData.message}
+						<span class="font-medium"> Deleted successfully!</span> ${responseData.message}
 						`)
 					loadingBtn.addClass('hidden')
 					textBtn.removeClass('hidden')
 					Swal.fire({
 						position: 'top-end',
 						icon: 'success',
-						title: successData.message,
+						title: responseData.message,
 						showConfirmButton: false,
 						timer: 1500
 					})

@@ -1,20 +1,36 @@
 
+
+<style type="text/css" scoped>
+   textarea {
+    margin: 0;
+    padding: 0;
+ }
+</style>
 <div id="data-user" class="py-20 p-4 sm:ml-64">
    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
       <div class="grid grid-cols-1 mb-6">
          <div class="col-span-full">
             <div class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-             <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Edit Data User</h5>
-             <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Data User <?=ucfirst($userData['nm_lengkap'])?></p>
-          </div>
+            <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Edit Data User</h5>
+            <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Data User <?=ucfirst($userData['nm_lengkap'])?></p>
+         </div>
 
-          <div id="alert" class="w-full hidden">
+         <div id="alert-error" class="w-full mb-2 py-2 hidden">
+            <div class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+               <i class="fa-solid fa-circle-exclamation"></i>
+               <span class="sr-only">Info</span>
+               <div id="message-error"></div>
+            </div>
+         </div>
+
+         <div id="alert-success" class="w-full mb-2 py-2 hidden">
             <div class="flex justify-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
                <i class="fa-solid fa-check-double"></i>
                <span class="sr-only">Info</span>
                <div id="message-success"></div>
-           </div>
-        </div>
+            </div>
+         </div>
+          
        </div>
     </div>
 
@@ -38,7 +54,7 @@
                </div>
 
                <div class="relative z-0 w-full mb-6 group">
-                 <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="notlp" id="notlp" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$userData['notlp']?>"/>
+                 <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="notlp" id="notlp" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$helpers->formatPhoneEdit($userData['notlp'])?>"/>
                  <label for="notlp" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nomor Telphone</label>
                </div>
 
