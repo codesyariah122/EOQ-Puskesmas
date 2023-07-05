@@ -6,7 +6,7 @@ use app\models\{WebApp, User};
 use app\datasources\UserPrepare;
 use app\helpers\{Helpers};
 
-class AdminController {
+class UserController {
 
 	public $helpers, $data_model;
 
@@ -45,7 +45,7 @@ class AdminController {
 
 	public function index($param) 
 	{
-		$contents = 'app/views/admin/index.php';
+		$contents = 'app/views/user/index.php';
 
 		$prepare_views = [
 			'header' => 'app/views/layout/dashboard/header.php',
@@ -55,7 +55,6 @@ class AdminController {
 
 		$user_login = $this->data_model->getUserByUsername($_SESSION['username']);
 		$role = ucfirst($user_login['role']);
-		
 		$data = [
 			'title' => "Aplikasi EOQ - Dashboard {$role}",
 			'page' => $user_login['role'],

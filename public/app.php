@@ -17,7 +17,10 @@ $app->post('/auth-login', 'LoginController@authenticate');
 $app->post('/logout', 'LoginController@logout');
 
 // Dashboard rute
+// Admin
 $app->get('/dashboard/admin', 'AdminController@index');
+// User
+$app->get('/dashboard/user', 'UserController@index');
 
 // Data user
 $app->get('/dashboard/data-user', 'UserDataController@index');

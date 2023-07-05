@@ -62,8 +62,18 @@ class WebApp {
 			$navbar = "app/views/layout/partials/dashboard/navbar.php";
 			$partials = [
 				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar-admin.php",
 				"admin" => "app/views/contents/dashboard/admin.php"
+			];
+			$scripts = ['/public/assets/js/script.js', '/public/assets/js/function.js', '/public/assets/js/app.js'];
+			break;
+
+			case "user":
+			$navbar = "app/views/layout/partials/dashboard/navbar.php";
+			$partials = [
+				'loading' => 'app/views/layout/partials/loading.php',
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar-user.php",
+				"admin" => "app/views/contents/dashboard/user.php"
 			];
 			$scripts = ['/public/assets/js/script.js', '/public/assets/js/function.js', '/public/assets/js/app.js'];
 			break;
@@ -72,7 +82,7 @@ class WebApp {
 			$navbar = "app/views/layout/partials/dashboard/navbar.php";
 			$partials = [
 				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar-admin.php",
 				"admin" => "app/views/contents/dashboard/data-user.php"
 			];
 			$scripts = ['/public/assets/js/script.js', '/public/assets/js/function.js', '/public/assets/js/app.js'];
@@ -82,7 +92,7 @@ class WebApp {
 			$navbar = "app/views/layout/partials/dashboard/navbar.php";
 			$partials = [
 				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar-admin.php",
 				"edit_user" => "app/views/contents/dashboard/edit/data-user.php"
 			];
 			$scripts = ['/public/assets/js/script.js', '/public/assets/js/function.js', '/public/assets/js/app.js'];
