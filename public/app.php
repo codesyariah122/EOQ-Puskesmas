@@ -31,7 +31,7 @@ $app->post('/add/data-user', 'UserDataController@store');
 $app->get('/dashboard/data-user/{param}', 'UserDataController@edit');
 $app->put('/update/data-user/{dataParam}', 'UserDataController@update');
 // delete user
-$app->put('/delete/data-user/{dataParam}', 'UserDataController@delete');
+$app->delete('/delete/data-user/{dataParam}', 'UserDataController@delete');
 
 // Jalankan router
 $app->run();

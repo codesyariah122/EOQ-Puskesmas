@@ -128,6 +128,8 @@ $(document).ready(function() {
 					id: kd_admin,
 					field: kd_admin
 				}
+				loading.classList.remove('hidden')
+				loading.classList.add('block')
 				deleteData(prepareData, 'data-user')
 			}
 		})

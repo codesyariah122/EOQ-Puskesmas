@@ -457,10 +457,11 @@ const deleteData = (param, type) => {
 			let time = (new Date().getTime() - this.startTime);
 			
 			if(responseData.success) {
-
 				console.log("This request took "+time+" ms");
 
 				setTimeout(() => {
+					loading.classList.remove('block')
+					loading.classList.add('hidden')
 					getAllData(type)
 					alertSuccess.show();
 					messageSuccess.html(`
