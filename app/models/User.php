@@ -92,8 +92,7 @@ class User {
 		try {
 			$dbh = $this->conn;
 			$query = "SELECT * FROM `admin` WHERE 
-			`kd_admin` LIKE :keyword OR `nm_lengkap` LIKE :keyword
-			ORDER BY `id` DESC";
+			`kd_admin` LIKE :keyword OR `nm_lengkap` LIKE :keyword OR `role` LIKE :keyword ORDER BY `id` DESC";
 			if ($limitStart !== null && $limit !== null) {
 				$query .= " LIMIT $limitStart, $limit";
 			}

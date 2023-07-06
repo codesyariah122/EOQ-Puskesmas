@@ -165,6 +165,22 @@ class WebApp {
 			];
 			break;
 
+			case "data-obat-edit":
+			$navbar = "app/views/layout/partials/dashboard/navbar.php";
+			$partials = [
+				'loading' => 'app/views/layout/partials/loading.php',
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+				"edit_user" => "app/views/contents/dashboard/edit/data-obat.php"
+			];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js',
+				'/public/assets/js/data-consume/function.js', 
+				'/public/assets/js/data-consume/app.js'
+			];
+			break;
+
 			default:
 			$partials = [];
 			$scripts = [];

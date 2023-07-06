@@ -20,6 +20,7 @@ let domDataLists = $(`#${pagePath}`)
 let addUserModal = $('#addUserModal')
 let pagination = $('#pagination')
 let paging = {}
+let loginTime = null
 
 setTimeout(() => {
 	loading.classList.remove('block')

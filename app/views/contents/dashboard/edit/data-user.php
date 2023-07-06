@@ -6,7 +6,7 @@
     padding: 0;
  }
 </style>
-<div id="data-user" class="py-20 p-4 sm:ml-64">
+<div id="displaying" class="py-20 p-4 sm:ml-64">
    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
       <div class="grid grid-cols-1 mb-6">
          <div class="col-span-full">
@@ -73,7 +73,7 @@
                      </svg>
                      Loading...
                   </div>
-                  <span id="text-button">Submit</span>
+                  <span id="text-button"><i class="fa-solid fa-pen-to-square"></i> Update</span>
                </button>
             </form>
 

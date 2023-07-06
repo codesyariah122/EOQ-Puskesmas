@@ -38,6 +38,10 @@ class DataObatController {
 
         $partials = $webApp->getPartials($param['page']);
 
+         // Query data from database
+        $jenis_obat = ['TABLET', 'CAPSULE', 'SYRUP'];
+        $dataObat = $this->data_model->obatById($dataParam);
+
         foreach($views as $view):
             require_once $view;
         endforeach;
@@ -70,7 +74,25 @@ class DataObatController {
 
     public function edit($dataParam)
     {
-        
+        $contents = 'app/views/dashboard/edit/data-user.php';
+
+        $prepare_views = [
+            'header' => 'app/views/layout/dashboard/header.php',
+            'contents' => $contents,
+            'footer' => 'app/views/layout/dashboard/footer.php',
+        ];
+
+
+        $data = [
+            'title' => "Aplikasi EOQ - {$dataParam}",
+            'page' => 'data-obat-edit',
+            'data' => [
+                'username' => ucfirst($_SESSION['username']),
+                'dataParam' => $dataParam
+            ],
+        ];
+
+        $this->views($prepare_views, $data);
     }
 
     public function all()
@@ -190,11 +212,65 @@ class DataObatController {
 
     public function update($dataParam)
     {
-        
+        try {
+            header("Content-Type: application/json");
+
+            $prepareData = [
+                'kd_obat' => @$_POST['kd_obat'],
+                'nm_obat' => @$_POST['nm_obat'],
+                'jenis_obat' => @$_POST['jenis_obat'],
+                'harga' => @$_POST['harga'],
+                'stok' => @$_POST['stok']
+            ];
+
+            $obatHasUpdate = $this->data_model->obatById($dataParam);
+            if($this->data_model->update($prepareData, $dataParam) === 1) {
+                $data = [
+                    'success' => true,
+                    'message' => "Obat with kode : {$dataParam}, berhasil di update!",
+                    'data' => $obatHasUpdate
+                ];
+                echo json_encode($data);
+            } else {
+                $data = [
+                    'success' => true,
+                    'message' => "Obat with kode : {$dataParam}, tidak ada perubahan data!",
+                    'data' => $obatHasUpdate
+                ];
+                echo json_encode($data);
+            }
+
+        } catch (\PDOException $e){
+            $data = [
+                'error' => true,
+                'message' => "Terjadi kesalahan : ".$e->getMessage()
+            ];
+
+            echo json_encode($data);
+        }
     }
 
     public function delete($dataParam)
     {
-        
+        try {
+            header("Content-Type: application/json");
+
+            if($this->data_model->delete($dataParam) === 1) {
+                $obatHasUpdate = $this->data_model->obatById($dataParam);
+                $data = [
+                    'success' => true,
+                    'message' => "Obat with kode : {$dataParam}, berhasil di delete!",
+                    'data' => $obatHasUpdate
+                ];
+                echo json_encode($data);
+            }
+        } catch (\PDOException $e){
+            $data = [
+                'error' => true,
+                'message' => "Terjadi kesalahan : ".$e->getMessage()
+            ];
+
+            echo json_encode($data);
+        }
     }
 }

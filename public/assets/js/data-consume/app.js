@@ -49,6 +49,9 @@ $(document).ready(function() {
 					stok: $('input[name="stok"]').val()
 				}
 			break;
+
+			default: 
+				console.log("No type")
 		}
 
 		const param = {
@@ -67,29 +70,52 @@ $(document).ready(function() {
 	// Update displaying data consume
 	$('#displaying').on('click', '.update', function(e) {
 		e.preventDefault()
-
+		loading.classList.remove('hidden')
+		loading.classList.add('block')
 		loadingBtn.removeClass('hidden')
 		textBtn.addClass('hidden')
+		let prepareData={}
+		let id = null
 
-		const prepareData = {
-			kd_admin: $('input[name="kd_admin"]').val(),
-			nm_lengkap: $('input[name="nm_lengkap"]').val(),
-			alamat: $('textarea[name="alamat"]').val(),
-			notlp: $('input[name="notlp"]').val(),
-			username: $('input[name="username"]').val()
+		switch(pagePath) {
+			case 'data-user':
+				prepareData = {
+					kd_admin: $('input[name="kd_admin"]').val(),
+					nm_lengkap: $('input[name="nm_lengkap"]').val(),
+					alamat: $('textarea[name="alamat"]').val(),
+					notlp: $('input[name="notlp"]').val(),
+					username: $('input[name="username"]').val()
+				}
+				id = prepareData.kd_admin
+			break;
+
+			case 'data-obat':
+				prepareData = {
+					kd_obat: $('input[name="kd_obat"]').val(),
+					nm_obat: $('input[name="nm_obat"]').val(),
+					jenis_obat: $('#jenis_obat').val(),
+					harga: $('input[name="harga"]').val(),
+					stok: $('input[name="stok"]').val()
+				}
+				id = prepareData.kd_obat
+			break;
+
+			default:
+				console.log("No type")
 		}
 
 		const param = {
-			id: prepareData.kd_admin,
+			id: id,
 			data: prepareData
 		}
 
-		updateData(param, 'data-user')
+		updateData(param, pagePath)
 	})
 
 	// Delete user
 	$('#displaying').on('click', '.delete', function() {
-		
+		let prepareData = {}
+
 		Swal.fire({
 			title: 'Are you sure?',
 			text: "You won't be able to revert this!",
@@ -100,14 +126,28 @@ $(document).ready(function() {
 			confirmButtonText: 'Yes, delete it!'
 		}).then((result) => {
 			if (result.isConfirmed) {
-				const kd_admin = $(this).attr('data-id')
-				const prepareData = {
-					id: kd_admin,
-					field: kd_admin
+				switch(pagePath) {
+					case 'data-user':
+						let kd_admin = $(this).attr('data-id')
+						prepareData = {
+							id: kd_admin,
+							field: kd_admin
+						}
+					break;
+
+					case 'data-obat':
+						let kd_obat = $(this).attr('data-id')
+						prepareData = {
+							id: kd_obat,
+							field: kd_obat
+						}
+					break;
 				}
+
 				loading.classList.remove('hidden')
 				loading.classList.add('block')
-				deleteData(prepareData, 'data-user')
+
+				deleteData(prepareData, pagePath)
 			}
 		})
 	})

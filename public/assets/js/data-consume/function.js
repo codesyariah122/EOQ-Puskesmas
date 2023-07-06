@@ -425,16 +425,26 @@ const updateData = (param, type) => {
 	let endPoint = ''
 	let prepareData = {}
 	switch(type) {
-	case 'data-user':
-		endPoint = `/update/${type}/${param.id}`
-		prepareData = {
-			kd_admin: param.data.kd_admin,
-			nm_lengkap: param.data.nm_lengkap,
-			alamat: param.data.alamat,
-			notlp: param.data.notlp,
-			username: param.data.username
-		}
+		case 'data-user':
+			endPoint = `/update/${type}/${param.id}`
+			prepareData = {
+				kd_admin: param.data.kd_admin,
+				nm_lengkap: param.data.nm_lengkap,
+				alamat: param.data.alamat,
+				notlp: param.data.notlp,
+				username: param.data.username
+			}
+		break;
 
+		case 'data-obat':
+			endPoint = `/update/${type}/${param.id}`
+			prepareData = {
+				kd_obat: param.data.kd_obat,
+				nm_obat: param.data.nm_obat,
+				jenis_obat: param.data.jenis_obat,
+				harga: param.data.harga,
+				stok: param.data.stok
+			}
 		break;
 		// type lainnya ....
 
@@ -450,8 +460,6 @@ const updateData = (param, type) => {
 		success: function(response) {
 
 			const responseData = response
-
-			console.log(responseData)
 
 			let time = (new Date().getTime() - this.startTime);
 
@@ -482,6 +490,8 @@ const updateData = (param, type) => {
 
 					loadingBtn.addClass('hidden')
 					textBtn.removeClass('hidden')
+					loading.classList.remove('block')
+					loading.classList.add('hidden')
 					Swal.fire({
 						position: 'top-end',
 						icon: 'success',
@@ -496,14 +506,8 @@ const updateData = (param, type) => {
 }
 
 const deleteData = (param, type) => {
-	let endPoint = ''
-	switch(type) {
-	case 'data-user':
-		endPoint = `/delete/${type}/${param.id}`
-		break;
-
-	default:
-	}
+	
+	let endPoint = `/delete/${type}/${param.id}`
 
 	$.ajax({
 		url: endPoint,

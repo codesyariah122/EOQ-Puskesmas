@@ -81,6 +81,7 @@ class LoginController {
 				$_SESSION['username'] = $user['username'];
 				$_SESSION['role'] = $user['role'];
 				$_SESSION['token'] = $generate_token;
+				$_SESSION['login_time'] = time();
 
 				$data = [
 					'success' => true,
@@ -88,7 +89,8 @@ class LoginController {
 					'data' => [
 						'username' => $_SESSION['username'],
 						'role' => $_SESSION['role'],
-						'token' => $_SESSION['token']
+						'token' => $_SESSION['token'],
+						'login_time' => $_SESSION['login_time']
 					]
 				];
 

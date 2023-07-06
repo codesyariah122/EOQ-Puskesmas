@@ -137,4 +137,12 @@ class Helpers {
     	echo $formattedNumber;
     }
 
+    public function formatRupiah($num)
+    {
+    	$rupiah = number_format($num, 0, ',', '.');
+
+		return $rupiah; // Output: Rp 1.500.000
+
+    }
+
 }

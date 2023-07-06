@@ -115,8 +115,7 @@ class UserDataController {
                 $keyword = @$_GET['keyword'];
 
                 $countPage = count($this->data_model->all("SELECT * FROM `admin` WHERE 
-                    `kd_admin` LIKE '%$keyword%' OR `nm_lengkap` LIKE '%$keyword' 
-                    ORDER BY `id` DESC"));
+                    `kd_admin` LIKE '%$keyword%' OR `nm_lengkap` LIKE '%$keyword' OR `role` LIKE '%$keyword%' ORDER BY `id` DESC"));
                 $totalPage = ceil($countPage / $limit);
                 $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
                 $limitStart = ($aktifPage - 1)*$limit;

@@ -39,8 +39,11 @@ $app->get('/dashboard/data-obat', 'DataObatController@index');
 $app->get('/lists/data-obat', 'DataObatController@all');
 // add new obat
 $app->post('/add/data-obat', 'DataObatController@store');
-
-
+// edit data obat
+$app->get('/dashboard/data-obat/{param}', 'DataObatController@edit');
+$app->put('/update/data-obat/{dataParam}', 'DataObatController@update');
+// delete data obat
+$app->delete('/delete/data-obat/{dataParam}', 'DataObatController@delete');
 
 // Jalankan router
 $app->run();
