@@ -6,8 +6,8 @@
 	<main class="bg-white dark:bg-gray-800 dark:text-white">
 		
 		<?php
-		foreach($partials['views'] as $error_404):
-			require_once $error_404;
+		foreach($partials['views'] as $views):
+			require_once $views;
 		endforeach;
 		?>
 

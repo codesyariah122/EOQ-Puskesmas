@@ -25,7 +25,21 @@ class WebApp {
 			$navbar = 'app/views/layout/partials/navbar.php';
 			$partials = [
 				'loading' => 'app/views/layout/partials/loading.php',
-				'home_content' => 'app/views/contents/home/home_content.php' 
+				'home_content' => 'app/views/contents/home/home_content.php',
+				'timeline' => 'app/views/contents/home/timeline.php'
+			];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js'
+			];
+			break;
+
+			case "about":
+			$navbar = 'app/views/layout/partials/navbar.php';
+			$partials = [
+				'loading' => 'app/views/layout/partials/loading.php',
+				'home_content' => 'app/views/contents/about/about_content.php' 
 			];
 			$scripts = [
 				'/public/assets/js/script.js', 
@@ -67,16 +81,6 @@ class WebApp {
 				'loading' => 'app/views/layout/partials/loading.php',
 				'error_404_content' => 'app/views/contents/errors/content_404.php'
 			];
-			$scripts = [];
-			break;
-
-			case "admin":
-			$navbar = "app/views/layout/partials/dashboard/navbar.php";
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar-admin.php",
-				"admin" => "app/views/contents/dashboard/admin.php"
-			];
 			$scripts = [
 				'/public/assets/js/script.js', 
 				'/public/assets/js/auth/function.js', 
@@ -84,12 +88,12 @@ class WebApp {
 			];
 			break;
 
-			case "user":
+			case "admin":
 			$navbar = "app/views/layout/partials/dashboard/navbar.php";
 			$partials = [
 				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar-user.php",
-				"admin" => "app/views/contents/dashboard/user.php"
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+				"admin" => "app/views/contents/dashboard/admin.php"
 			];
 			$scripts = [
 				'/public/assets/js/script.js', 
@@ -102,15 +106,15 @@ class WebApp {
 			$navbar = "app/views/layout/partials/dashboard/navbar.php";
 			$partials = [
 				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar-admin.php",
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
 				"admin" => "app/views/contents/dashboard/data-user.php"
 			];
 			$scripts = [
 				'/public/assets/js/script.js', 
 				'/public/assets/js/auth/function.js', 
 				'/public/assets/js/auth/app.js',
-				'/public/assets/js/data-user/function.js', 
-				'/public/assets/js/data-user/app.js'
+				'/public/assets/js/data-consume/function.js', 
+				'/public/assets/js/data-consume/app.js'
 			];
 			break;
 
@@ -118,15 +122,46 @@ class WebApp {
 			$navbar = "app/views/layout/partials/dashboard/navbar.php";
 			$partials = [
 				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar-admin.php",
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
 				"edit_user" => "app/views/contents/dashboard/edit/data-user.php"
 			];
 			$scripts = [
 				'/public/assets/js/script.js', 
 				'/public/assets/js/auth/function.js', 
 				'/public/assets/js/auth/app.js',
-				'/public/assets/js/data-user/function.js', 
-				'/public/assets/js/data-user/app.js'
+				'/public/assets/js/data-consume/function.js', 
+				'/public/assets/js/data-consume/app.js'
+			];
+			break;
+
+
+			case "user":
+			$navbar = "app/views/layout/partials/dashboard/navbar.php";
+			$partials = [
+				'loading' => 'app/views/layout/partials/loading.php',
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+				"admin" => "app/views/contents/dashboard/user.php"
+			];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js'
+			];
+			break;
+
+			case "data-obat":
+			$navbar = "app/views/layout/partials/dashboard/navbar.php";
+			$partials = [
+				'loading' => 'app/views/layout/partials/loading.php',
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+				"admin" => "app/views/contents/dashboard/data-obat.php"
+			];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js',
+				'/public/assets/js/data-consume/function.js', 
+				'/public/assets/js/data-consume/app.js'
 			];
 			break;
 

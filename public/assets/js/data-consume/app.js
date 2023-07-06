@@ -1,29 +1,27 @@
 $(document).ready(function() {
 
-	getAllData('data-user', 1)
-
-
-	// Pagination data user
-	$('#data-user').on('click', '.page-link', function(e) {
+	// Pagination displaying data consume
+	$('#displaying').on('click', '.page-link', function(e) {
 		e.preventDefault()
 		const pageNum = $(this).data('num')
 
-		getAllData('data-user', pageNum)
+		getAllData(pagePath, pageNum)
 	})
 
-	// Search data user
-	$('#data-user').on('keyup', '#search-data', function(e) {
+	// Search displaying data consume
+	$('#displaying').on('keyup', '#search-data', function(e) {
 		e.preventDefault()
 		const keyword = e.target.value
 		const param = {
 			data: keyword
 		}
 
-		searchData(param, 'data-user')
+		searchData(param, pagePath)
+
 	})
 
-	// add data-user
-	$('#data-user').on('click', '.add', function(e) {
+	// add displaying data consume
+	$('#displaying').on('click', '.add', function(e) {
 		e.preventDefault()
 
 		loadingBtn.removeClass('hidden')
@@ -44,13 +42,13 @@ $(document).ready(function() {
 	})
 
 	// edit data-user
-	$('#data-user').on('click', '.edit', function() {
-		const kd_admin = $(this).attr('data-id')
-		location.href=`/dashboard/data-user/${kd_admin}`
+	$('#displaying').on('click', '.edit', function() {
+		const kd_data = $(this).attr('data-id')
+		location.href=`/dashboard/${pagePath}/${kd_data}`
 	})
 
-	// Update data user
-	$('#data-user').on('click', '.update', function(e) {
+	// Update displaying data consume
+	$('#displaying').on('click', '.update', function(e) {
 		e.preventDefault()
 
 		loadingBtn.removeClass('hidden')
@@ -73,7 +71,7 @@ $(document).ready(function() {
 	})
 
 	// Delete user
-	$('#data-user').on('click', '.delete', function() {
+	$('#displaying').on('click', '.delete', function() {
 		
 		Swal.fire({
 			title: 'Are you sure?',
@@ -96,4 +94,19 @@ $(document).ready(function() {
 			}
 		})
 	})
+
+	// Close modal & clear data input value
+	$('#addModal').on('click', '.close-modal', function(e) {
+		e.preventDefault()
+		$('input[name="kd_admin"]').val('')
+		$('input[name="nm_lengkap"]').val('')
+		$('textarea[name="alamat"]').val('')
+		$('input[name="notlp"]').val('')
+		$('input[name="username"]').val('')
+		alertError.hide()
+		messageError.html('')
+	})
 })
+
+
+getAllData(pagePath, 1)

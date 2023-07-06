@@ -72,4 +72,23 @@ class HomeController {
 
 	}
 
+	public function about()
+	{
+		session_start();
+
+		$prepare_views = [
+			'header' => 'app/views/layout/app/header.php',
+			'home' => 'app/views/about.php',
+			'footer' => 'app/views/layout/app/footer.php',
+		];
+
+		$data = [
+			'title' => 'Aplikasi EOQ - About Page',
+			'page' => 'about',
+		];
+
+
+		$this->views($prepare_views, $data);
+	}
+
 }

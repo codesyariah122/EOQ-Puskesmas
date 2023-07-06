@@ -34,13 +34,15 @@ class UserDataController {
 
         $dataParam = $param['data']['dataParam'];
 
-        $userData = $this->data_model->userById($dataParam);
-
-        $rows = $this->data_model->all("SELECT * FROM `admin` ORDER BY `id` DESC");
 
         $is_mobile = $helpers->isMobileDevice();
 
         $partials = $webApp->getPartials($param['page']);
+        
+        // Query data from database
+        $userData = $this->data_model->userById($dataParam);
+
+        $rows = $this->data_model->all("SELECT * FROM `admin` ORDER BY `id` DESC");
 
         foreach($views as $view):
             require_once $view;
@@ -49,7 +51,7 @@ class UserDataController {
 
     public function index($param) 
     {
-        $contents = 'app/views/admin/data-user.php';
+        $contents = 'app/views/dashboard/data-user.php';
 
         $prepare_views = [
             'header' => 'app/views/layout/dashboard/header.php',
@@ -74,7 +76,7 @@ class UserDataController {
 
     public function edit($dataParam)
     {
-        $contents = 'app/views/admin/edit/data-user.php';
+        $contents = 'app/views/dashboard/edit/data-user.php';
 
         $prepare_views = [
             'header' => 'app/views/layout/dashboard/header.php',
@@ -100,7 +102,7 @@ class UserDataController {
         try {
             header("Content-Type: application/json");
 
-            $limit = 3;
+            $limit = 5;
 
             if(@$_GET['page']) {
                 $countPage = count($this->data_model->all("SELECT * FROM `admin`"));
@@ -118,7 +120,7 @@ class UserDataController {
                 $totalPage = ceil($countPage / $limit);
                 $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
                 $limitStart = ($aktifPage - 1)*$limit;
-                
+
                 $users = $this->data_model->searchData($keyword, $limitStart, $limit);
             } else {
                 $countPage = count($this->data_model->all("SELECT * FROM `admin`"));
@@ -126,7 +128,6 @@ class UserDataController {
                 $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
                 $limitStart = ($aktifPage - 1)*$limit;
                 $users = $this->data_model->all("SELECT * FROM `admin` ORDER BY `id` DESC LIMIT $limitStart, $limit");
-
             }
 
 
@@ -140,6 +141,13 @@ class UserDataController {
                     'countPage' => $countPage,
                     'totalPage' => $totalPage,
                     'aktifPage' => $aktifPage
+                ];
+
+                echo json_encode($data);
+            } else {
+                $data = [
+                    'empty' => true,
+                    'message' => "Data not found !!",
                 ];
 
                 echo json_encode($data);
@@ -169,26 +177,7 @@ class UserDataController {
             $username = $this->helpers->generate_username(@$_POST['nm_lengkap']);
             $check_notlp = $this->helpers->validatePhoneNumber(@$_POST['notlp']);
 
-            if(!$check_notlp) {
-                $data = [
-                    'error' => true,
-                    'message' => "Nomor telphone tidak valid!!"
-                ];
-
-                echo json_encode($data);
-                exit();
-            } else {
-                $notlp = $this->helpers->formatPhoneNumber(@$_POST['notlp']);
-            }
-
-            $prepareData = [
-                'kd_admin' => $kd_admin,
-                'nm_lengkap' => ucfirst(@$_POST['nm_lengkap']),
-                'alamat' => trim(htmlspecialchars((@$_POST['alamat']))),
-                'notlp' => $notlp,
-                'username' => $username,
-                'role' => @$_POST['role']
-            ];
+            
 
             if (empty(@$_POST['nm_lengkap']) || empty( @$_POST['alamat']) || empty(@$_POST['notlp']) || empty(@$_POST['role'])) {
                 $data = [
@@ -198,17 +187,40 @@ class UserDataController {
 
                 echo json_encode($data);
                 exit();
+            } else {
+                if(!$check_notlp) {
+                    $data = [
+                        'error' => true,
+                        'message' => "Nomor telphone tidak valid!!"
+                    ];
+
+                    echo json_encode($data);
+                    exit();
+                } else {
+                    $notlp = $this->helpers->formatPhoneNumber(@$_POST['notlp']);
+                }
+
+                $prepareData = [
+                    'kd_admin' => $kd_admin,
+                    'nm_lengkap' => ucfirst(@$_POST['nm_lengkap']),
+                    'alamat' => trim(htmlspecialchars((@$_POST['alamat']))),
+                    'notlp' => $notlp,
+                    'username' => $username,
+                    'role' => @$_POST['role']
+                ];
+
+                if($this->data_model->store($prepareData, $match_kdAdmin) > 0) {
+                    $newUser = $this->data_model->userById($kd_admin);
+                    $data = [
+                        'success' => true,
+                        'message' => "{$newUser['nm_lengkap']}, berhasil ditambahkan!",
+                        'data' => $newUser
+                    ];
+                    echo json_encode($data);
+                }
             }
 
-            if($this->data_model->store($prepareData, $match_kdAdmin) > 0) {
-                $newUser = $this->data_model->userById($kd_admin);
-                $data = [
-                    'success' => true,
-                    'message' => "{$newUser['nm_lengkap']}, berhasil ditambahkan!",
-                    'data' => $newUser
-                ];
-                echo json_encode($data);
-            }
+            
         } catch (\PDOException $e){
             $data = [
                 'error' => true,

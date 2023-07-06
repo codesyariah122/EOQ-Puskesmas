@@ -18,8 +18,8 @@
       </div>
 
       <?php
-         foreach($partials['views'] as $admin):
-            require_once $admin;
+         foreach($partials['views'] as $views):
+            require_once $views;
          endforeach;
       ?>
    </main>

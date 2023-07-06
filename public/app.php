@@ -9,6 +9,7 @@ $app = new Router;
 // Menambahkan rute ke router
 // Homepage rute
 $app->get('/', 'HomeController@index');
+$app->get('/about', 'HomeController@about');
 $app->post('/create-user', 'HomeController@create_user');
 
 // Autentikasi rute
@@ -33,5 +34,8 @@ $app->put('/update/data-user/{dataParam}', 'UserDataController@update');
 // delete user
 $app->delete('/delete/data-user/{dataParam}', 'UserDataController@delete');
 
+// Data obat
+$app->get('/dashboard/data-obat', 'DataObatController@index');
+$app->get('/lists/data-obat', 'DataObatController@all');
 // Jalankan router
 $app->run();
