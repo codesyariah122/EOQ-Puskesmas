@@ -90,12 +90,20 @@ class User {
 	function searchData($keyword, $limitStart, $limit){
 
 		try {
+			$dbh = $this->conn;
 			$query = "SELECT * FROM `admin` WHERE 
-			`kd_admin` LIKE '%$keyword%' OR `nm_lengkap` LIKE '%$keyword' 
-			ORDER BY `id` DESC
-			LIMIT $limitStart, $limit";
+			`kd_admin` LIKE :keyword OR `nm_lengkap` LIKE :keyword
+			ORDER BY `id` DESC";
+			if ($limitStart !== null && $limit !== null) {
+				$query .= " LIMIT $limitStart, $limit";
+			}
+			$stmt = $dbh->prepare($query);
+	        $keyword = "%$keyword%";
+	        $stmt->bindParam(':keyword', $keyword);
+	        $stmt->execute();
+	        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-			return $this->all($query);
+	        return $results;
 
 		} catch (\PDOException $e) {
 			echo "Ooops error : ".$e->getMessage();

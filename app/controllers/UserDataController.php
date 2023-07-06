@@ -118,6 +118,7 @@ class UserDataController {
                 $totalPage = ceil($countPage / $limit);
                 $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
                 $limitStart = ($aktifPage - 1)*$limit;
+                
                 $users = $this->data_model->searchData($keyword, $limitStart, $limit);
             } else {
                 $countPage = count($this->data_model->all("SELECT * FROM `admin`"));
@@ -129,7 +130,7 @@ class UserDataController {
             }
 
 
-            if(count($users) > 0) {
+            if (!empty($users)) { 
                 $data = [
                     'success' => true,
                     'message' => "Lists of users!",

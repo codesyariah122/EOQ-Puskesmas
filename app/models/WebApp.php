@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Puji Ermanto <pujiermanto@gmail.com>
- * @return __constructor
+ * @return WebApp Model
 **/
 
 namespace app\models;
@@ -27,7 +27,11 @@ class WebApp {
 				'loading' => 'app/views/layout/partials/loading.php',
 				'home_content' => 'app/views/contents/home/home_content.php' 
 			];
-			$scripts = ['/public/assets/js/script.js', '/public/assets/js/function.js', '/public/assets/js/app.js'];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js'
+			];
 			break;
 
 			case "create-user":
@@ -36,7 +40,11 @@ class WebApp {
 				'loading' => 'app/views/layout/partials/loading.php',
 				'home_content' => 'app/views/contents/home/create_user.php' 
 			];
-			$scripts = ['/public/assets/js/script.js', '/public/assets/js/function.js', '/public/assets/js/app.js'];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js'
+			];
 			break;
 
 
@@ -46,7 +54,11 @@ class WebApp {
 				'loading' => 'app/views/layout/partials/loading.php',
 				'login_form' => 'app/views/contents/auth/login_form.php'
 			];
-			$scripts = ['/public/assets/js/script.js', '/public/assets/js/function.js', '/public/assets/js/app.js'];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js'
+			];
 			break;
 
 			case "404":
@@ -65,7 +77,11 @@ class WebApp {
 				"sidebar" => "app/views/layout/partials/dashboard/sidebar-admin.php",
 				"admin" => "app/views/contents/dashboard/admin.php"
 			];
-			$scripts = ['/public/assets/js/script.js', '/public/assets/js/function.js', '/public/assets/js/app.js'];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js'
+			];
 			break;
 
 			case "user":
@@ -75,7 +91,11 @@ class WebApp {
 				"sidebar" => "app/views/layout/partials/dashboard/sidebar-user.php",
 				"admin" => "app/views/contents/dashboard/user.php"
 			];
-			$scripts = ['/public/assets/js/script.js', '/public/assets/js/function.js', '/public/assets/js/app.js'];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js'
+			];
 			break;
 
 			case "data-user":
@@ -85,7 +105,13 @@ class WebApp {
 				"sidebar" => "app/views/layout/partials/dashboard/sidebar-admin.php",
 				"admin" => "app/views/contents/dashboard/data-user.php"
 			];
-			$scripts = ['/public/assets/js/script.js', '/public/assets/js/function.js', '/public/assets/js/app.js'];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js',
+				'/public/assets/js/data-user/function.js', 
+				'/public/assets/js/data-user/app.js'
+			];
 			break;
 
 			case "data-user-edit":
@@ -95,7 +121,13 @@ class WebApp {
 				"sidebar" => "app/views/layout/partials/dashboard/sidebar-admin.php",
 				"edit_user" => "app/views/contents/dashboard/edit/data-user.php"
 			];
-			$scripts = ['/public/assets/js/script.js', '/public/assets/js/function.js', '/public/assets/js/app.js'];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js',
+				'/public/assets/js/data-user/function.js', 
+				'/public/assets/js/data-user/app.js'
+			];
 			break;
 
 			default:
