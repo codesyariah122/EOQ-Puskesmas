@@ -3,6 +3,13 @@
  * Desc: File ini merupakan serangkaian instruksi untuk melakukan manipulasi data dan element pada struktur html. Melakukan ajax request secara asynchronous, sehingga memungkinkan untuk menambahkan nilai visual pada user experience.
  * */
 
+const formatIdr = (angka) => {
+	const formatRupiah = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(angka);
+
+	return formatRupiah
+
+}
+
 const setUpPagination = (data) => {
 	pagination.empty();
 	paging.totalData=data.totalData
@@ -106,10 +113,13 @@ const getAllData = (type, page=1) => {
 								${obat.nm_obat}
 								</td>
 								<td class="px-6 py-4">
-								${obat.jenis_obat}
+								<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">${obat.jenis_obat}</span>
 								</td>
 								<td class="px-6 py-4">
-								${obat.harga}
+								${formatIdr(obat.harga)}
+								</td>
+								<td class="px-6 py-4">
+								${obat.stok}
 								</td>
 								<td>
 									<div class="flex justify-center space-x-4">
@@ -240,10 +250,13 @@ const searchData = (param, type) => {
 								${obat.nm_obat}
 								</td>
 								<td class="px-6 py-4">
-								${obat.jenis_obat}
+								<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">${obat.jenis_obat}</span>
 								</td>
 								<td class="px-6 py-4">
-								${obat.harga}
+								${formatIdr(obat.harga)}
+								</td>
+								<td class="px-6 py-4">
+								${obat.stok}
 								</td>
 								<td>
 									<div class="flex justify-center space-x-4">
@@ -292,17 +305,25 @@ const searchData = (param, type) => {
 
 
 const addData = (param, type) => {
-	let endPoint = ''
+	let endPoint = `/add/${type}`
 	let prepareData = {}
 
 	switch(type) {
 		case 'data-user':
-			endPoint = `/add/${type}`
 			prepareData = {
 				nm_lengkap: param.data.nm_lengkap,
 				alamat: param.data.alamat,
 				notlp: param.data.notlp,
 				role: param.data.role
+			}
+		break;
+
+		case 'data-obat':
+			prepareData = {
+				nm_obat: param.data.nm_obat,
+				jenis_obat: param.data.jenis_obat,
+				harga: param.data.harga,
+				stok: param.data.stok
 			}
 		break;
 			// type lainnya ...
@@ -341,31 +362,60 @@ const addData = (param, type) => {
 				alertError.hide()
 				messageError.html('')
 				console.log("This request took "+time+" ms");
-				$('input[name="nm_lengkap"]').val('')
-				$('textarea[name="alamat"]').val('')
-				$('input[name="notlp"]').val('')
-				$('#role').val('Pilih Role')
-				setTimeout(() => {
-					alertSuccess.show();
-					messageSuccess.html(`
-						<span class="font-medium"> Berhasil menambah pengguna baru!</span> ${responseData.message}
-						`)
 
-					loadingBtn.addClass('hidden')
-					textBtn.removeClass('hidden')
-					Swal.fire({
-						position: 'top-end',
-						icon: 'success',
-						title: responseData.message,
-						showConfirmButton: false,
-						timer: 1500
-					})
+				switch(type) {
+					case 'data-user':
+						$('input[name="nm_lengkap"]').val('')
+						$('textarea[name="alamat"]').val('')
+						$('input[name="notlp"]').val('')
+						$('#role').val('Pilih Role')
+						setTimeout(() => {
+							alertSuccess.show();
+							messageSuccess.html(`
+								<span class="font-medium"> Berhasil menambah pengguna baru!</span> ${responseData.message}
+								`)
 
-					getAllData(type, 1)
+							loadingBtn.addClass('hidden')
+							textBtn.removeClass('hidden')
+							Swal.fire({
+								position: 'top-end',
+								icon: 'success',
+								title: responseData.message,
+								showConfirmButton: false,
+								timer: 1500
+							})
 
-					// addUserModal.addClass('hidden');
+						}, 1000)
+					break;
 
-				}, 1000)
+					case "data-obat":
+						$('input[name="nm_obat"]').val('')
+						$('#jenis_obat').val('Pilih Jenis Obat')
+						$('input[name="harga"]').val('')
+						$('input[name="stok"]').val('')
+						setTimeout(() => {
+							alertSuccess.show();
+							messageSuccess.html(`
+								<span class="font-medium"> Berhasil menambah data obat baru!</span> ${responseData.message}
+								`)
+
+							loadingBtn.addClass('hidden')
+							textBtn.removeClass('hidden')
+							Swal.fire({
+								position: 'top-end',
+								icon: 'success',
+								title: responseData.message,
+								showConfirmButton: false,
+								timer: 1500
+							})
+
+						}, 1000)
+					break;
+
+					// type lainnya
+				}
+
+				getAllData(type, 1)
 			}
 		}
 	})

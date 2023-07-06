@@ -78,7 +78,7 @@ class DataObatController {
         try {
             header("Content-Type: application/json");
 
-            $limit = 15;
+            $limit = 10;
 
             if(@$_GET['page']) {
                 $countPage = count($this->data_model->all("SELECT * FROM `obat`"));
@@ -86,13 +86,13 @@ class DataObatController {
                 $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
                 $limitStart = ($aktifPage - 1)*$limit;
 
-                $obats = $this->data_model->all("SELECT * FROM `obat` ORDER BY `kd_obat` DESC LIMIT $limitStart, $limit");
+                $obats = $this->data_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $limitStart, $limit");
             } elseif (@$_GET['keyword']) {
                 $keyword = @$_GET['keyword'];
 
                 $countPage = count($this->data_model->all("SELECT * FROM `obat` WHERE 
-                    `kd_obat` LIKE '%$keyword%' OR `nm_obat` LIKE '%$keyword' 
-                    ORDER BY `kd_obat` DESC"));
+                    `kd_obat` LIKE '%$keyword%' OR `nm_obat` LIKE '%$keyword' OR `jenis_obat` LIKE '%$keyword%' 
+                    ORDER BY `id` DESC"));
                 $totalPage = ceil($countPage / $limit);
                 $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
                 $limitStart = ($aktifPage - 1)*$limit;
@@ -103,7 +103,7 @@ class DataObatController {
                 $totalPage = ceil($countPage / $limit);
                 $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
                 $limitStart = ($aktifPage - 1)*$limit;
-                $obats = $this->data_model->all("SELECT * FROM `obat` ORDER BY `kd_obat` DESC LIMIT $limitStart, $limit");
+                $obats = $this->data_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $limitStart, $limit");
             }
 
 
@@ -141,7 +141,51 @@ class DataObatController {
 
     public function store()
     {
-        
+        try {
+            header("Content-Type: application/json");
+
+            $get_obat_max = $this->data_model->maxKdObat();
+            $last_id = $get_obat_max ? $get_obat_max+=1 : 1;
+            $last_kdObat = "KO".$last_id;
+            if (empty(@$_POST['nm_obat']) || empty( @$_POST['jenis_obat']) || empty(@$_POST['harga']) || empty(@$_POST['stok'])) {
+                $data = [
+                    'error' => true,
+                    'message' => "Data tidak boleh kosong"
+                ];
+
+                echo json_encode($data);
+                exit();
+            } else {
+                $prepareData = [
+                    'kd_obat' => $last_kdObat,
+                    'nm_obat' => ucfirst(@$_POST['nm_obat']),
+                    'jenis_obat' => trim(htmlspecialchars((@$_POST['jenis_obat']))),
+                    'harga' => @$_POST['harga'],
+                    'stok' => @$_POST['stok']
+                ];
+
+
+                if($this->data_model->store($prepareData, $get_obat_max) > 0) {
+                    $newObat = $this->data_model->obatById($last_kdObat);
+                    // var_dump($newObat); die;
+                    $data = [
+                        'success' => true,
+                        'message' => "{$newObat['nm_obat']}, berhasil ditambahkan!",
+                        'data' => $newObat
+                    ];
+                    echo json_encode($data);
+                }
+            }
+
+
+        } catch (\PDOException $e){
+            $data = [
+                'error' => true,
+                'message' => "Terjadi kesalahan : ".$e->getMessage()
+            ];
+
+            echo json_encode($data);
+        }
     }
 
     public function update($dataParam)

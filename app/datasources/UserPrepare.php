@@ -17,7 +17,7 @@ class UserPrepare {
 				'nm_lengkap' => 'Kepala Balai Kesehatan',
 				'alamat' => trim('Sekolah TI Al-Musthafawiyah Kec. Me'),
 				'notlp' => $helpers->formatPhoneNumber('085921264904'),
-				'username' => $helpers->generate_username('Kepala Balai Kesehatan'),
+				'username' => 'admin01',
 				'role' => 'admin',
 				'password' => password_hash("admin", PASSWORD_DEFAULT)
 			],
@@ -27,7 +27,7 @@ class UserPrepare {
 				'nm_lengkap' => 'Staf Balai Kesehatan',
 				'alamat' => trim('Sekolah TI Al-Musthafawiyah Kec. Me'),
 				'notlp' => $helpers->formatPhoneNumber('085693171777'),
-				'username' => $helpers->generate_username('Staf Balai Kesehatan'),
+				'username' => 'staf01',
 				'role' => 'user',
 				'password' => password_hash("user", PASSWORD_DEFAULT)
 			],

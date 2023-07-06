@@ -37,5 +37,10 @@ $app->delete('/delete/data-user/{dataParam}', 'UserDataController@delete');
 // Data obat
 $app->get('/dashboard/data-obat', 'DataObatController@index');
 $app->get('/lists/data-obat', 'DataObatController@all');
+// add new obat
+$app->post('/add/data-obat', 'DataObatController@store');
+
+
+
 // Jalankan router
 $app->run();

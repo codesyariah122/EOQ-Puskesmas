@@ -27,18 +27,35 @@ $(document).ready(function() {
 		loadingBtn.removeClass('hidden')
 		textBtn.addClass('hidden')
 
-		const prepareData = {
-			nm_lengkap: $('input[name="nm_lengkap"]').val(),
-			alamat: $('textarea[name="alamat"]').val(),
-			notlp: $('input[name="notlp"]').val(),
-			role: $('#role').val()
+		console.log(pagePath)
+
+		let prepareData = {}
+
+		switch(pagePath) {
+			case 'data-user':
+				prepareData = {
+					nm_lengkap: $('input[name="nm_lengkap"]').val(),
+					alamat: $('textarea[name="alamat"]').val(),
+					notlp: $('input[name="notlp"]').val(),
+					role: $('#role').val()
+				}
+			break;
+
+			case 'data-obat':
+				prepareData = {
+					nm_obat: $('input[name="nm_obat"]').val(),
+					jenis_obat: $('#jenis_obat').val(),
+					harga: $('input[name="harga"]').val(),
+					stok: $('input[name="stok"]').val()
+				}
+			break;
 		}
 
 		const param = {
 			data: prepareData
 		}
 
-		addData(param, 'data-user')
+		addData(param, pagePath)
 	})
 
 	// edit data-user
@@ -105,6 +122,8 @@ $(document).ready(function() {
 		$('input[name="username"]').val('')
 		alertError.hide()
 		messageError.html('')
+		loadingBtn.addClass('hidden')
+		textBtn.removeClass('hidden')
 	})
 })
 

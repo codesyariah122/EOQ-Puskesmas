@@ -13,6 +13,26 @@ class DataObat {
 		$this->conn = $this->db->connection();
 	}
 
+	public function maxKdObat()
+	{
+		try {
+			$dbh = $this->conn;
+			$query = "SELECT id FROM obat ORDER BY id DESC LIMIT 1";
+			$stmt = $dbh->query($query);
+
+			$result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+			// var_dump($result); die;
+			if($result) {
+				return $result['id'];
+			} else {
+				return ;
+			}
+		} catch(\PDOException $e){
+			echo $e->getMessage();
+		}
+	}
+
 	public function all($query)
 	{
 		try{
@@ -37,18 +57,19 @@ class DataObat {
 		try {
 			$dbh = $this->conn;
 			$query = "SELECT * FROM `obat` WHERE 
-			`kd_obat` LIKE :keyword OR `nm_obat` LIKE :keyword
+			`kd_obat` LIKE :keyword OR `nm_obat` LIKE :keyword 
+			OR `jenis_obat` LIKE '%$keyword%'
 			ORDER BY `kd_obat` DESC";
 			if ($limitStart !== null && $limit !== null) {
 				$query .= " LIMIT $limitStart, $limit";
 			}
 			$stmt = $dbh->prepare($query);
-	        $keyword = "%$keyword%";
-	        $stmt->bindParam(':keyword', $keyword);
-	        $stmt->execute();
-	        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+			$keyword = "%$keyword%";
+			$stmt->bindParam(':keyword', $keyword);
+			$stmt->execute();
+			$results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-	        return $results;
+			return $results;
 
 		} catch (\PDOException $e) {
 			echo "Ooops error : ".$e->getMessage();
@@ -71,21 +92,22 @@ class DataObat {
 		}
 	}
 
-	public function store($data)
+	public function store($data, $id)
 	{
 		try{
 			$dbh = $this->conn;
 
-			$addNewUser = $dbh->prepare("INSERT INTO obat (kd_obat, nm_obat, jenis_obat, harga, stok) VALUES (:kd_obat, :nm_obat, :jenis_obat, :harga, :stok)");
-			$addNewUser->bindParam(':kd_obat', $data['kd_obat']);
-			$addNewUser->bindParam(':nm_obat', $data['nm_obat']);
-			$addNewUser->bindParam(':jenis_obat', $data['jenis_obat']);
-			$addNewUser->bindParam(':harga', $data['harga']);
-			$addNewUser->bindParam(':stok', $data['stok']);
+			$addNewObat = $dbh->prepare("INSERT INTO obat (id, kd_obat, nm_obat, jenis_obat, harga, stok) VALUES (:id, :kd_obat, :nm_obat, :jenis_obat, :harga, :stok)");
+			$addNewObat->bindParam(':id', $id);
+			$addNewObat->bindParam(':kd_obat', $data['kd_obat']);
+			$addNewObat->bindParam(':nm_obat', $data['nm_obat']);
+			$addNewObat->bindParam(':jenis_obat', $data['jenis_obat']);
+			$addNewObat->bindParam(':harga', $data['harga']);
+			$addNewObat->bindParam(':stok', $data['stok']);
 
-			$addNewUser->execute();
+			$addNewObat->execute();
 
-			return $addNewUser->rowCount();
+			return $addNewObat->rowCount();
 		} catch (\PDOException $e){
 			echo "Error PDO: " . $e->getMessage();
 		} catch (\Exception $e) {
