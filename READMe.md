@@ -6,8 +6,19 @@
 1. PHP Native with mvc concept (PHP 8.2)
 2. PHP::PDO Reusable object oriented for database communication
 3. MariaDB database server
-4. Javascript, JQuery, JQuery.Ajax, Sweetalert
+4. Javascript, JQuery, Select2 , JQuery.Ajax, Sweetalert
 5. Tailwindcss with plugins flowbite
+
+Link documentasi
+1. select2 = https://select2.org/searching
+2. sweetalert = https://sweetalert2.github.io/
+3. flowbite tailwind plugins = https://flowbite.com/docs/getting-started/quickstart/
+3. tailwindcss = https://tailwindcss.com/docs/installation
+4. fontawesome = https://fontawesome.com/search?o=r&m=free
+5. PHP :: PDO =
+    - https://www.php.net/manual/en/book.pdo.php
+    - https://www.phptutorial.net/php-pdo/
+6. Javascript = https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions
 
 
 ##### Run in dev

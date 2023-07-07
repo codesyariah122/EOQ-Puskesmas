@@ -17,7 +17,7 @@ $app->get('/login', 'LoginController@index');
 $app->post('/auth-login', 'LoginController@authenticate');
 $app->post('/logout', 'LoginController@logout');
 
-// Dashboard rute
+// Dashboard feature rute
 // Admin
 $app->get('/dashboard/admin', 'AdminController@index');
 // User
@@ -44,6 +44,15 @@ $app->get('/dashboard/data-obat/{param}', 'DataObatController@edit');
 $app->put('/update/data-obat/{dataParam}', 'DataObatController@update');
 // delete data obat
 $app->delete('/delete/data-obat/{dataParam}', 'DataObatController@delete');
+
+// Pengajuan obat
+$app->get('/dashboard/pengajuan-obat', 'PengajuanObatController@index');
+$app->get('/options/lists-obat', 'PengajuanObatController@lists_obat');
+$app->post('/add/pengajuan-obat', 'PengajuanObatController@store');
+
+// Laporan analisa EOQ
+$app->get('/dashboard/laporan-eoq', 'LaporanEoqController@index');
+$app->get('/lists/laporan-eoq', 'LaporanEoqController@all');
 
 // Jalankan router
 $app->run();

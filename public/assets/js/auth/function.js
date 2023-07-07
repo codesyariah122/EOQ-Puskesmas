@@ -36,7 +36,7 @@ const Login = (data) => {
 
 			if(userData.success) {
 				loginTime = userData.data.login_time
-				countdown(userData.data.login_time ? userData.data.login_time : loginTime)
+
 				setTimeout(() => {
 					loadingBtn.addClass('hidden')
 					textBtn.removeClass('hidden')
@@ -88,21 +88,3 @@ const Logout = () => {
 }
 
 
-
-function countdown(targetTime) {
-  let targetDate = new Date(targetTime * 1000).getTime();
-  let now = new Date().getTime();
-  let timeRemaining = targetDate - now;
-
-  // Konversi waktu dalam milidetik ke hari, jam, menit, detik
-  let days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-  let hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  let minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-  let seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-  // Tampilkan waktu hitung mundur dalam elemen dengan ID "countdown"
-  $('#sesi-login').html(days + " hari " + hours + " jam " + minutes + " menit " + seconds + " detik ");
-
-  // Perbarui waktu setiap detik (1000 milidetik)
-  setTimeout(countdown, 1000, targetTime);
-}

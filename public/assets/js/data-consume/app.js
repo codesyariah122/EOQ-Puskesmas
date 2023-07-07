@@ -3,9 +3,15 @@ $(document).ready(function() {
 	// Pagination displaying data consume
 	$('#displaying').on('click', '.page-link', function(e) {
 		e.preventDefault()
+		const keyword = $('#search-data').val();
 		const pageNum = $(this).data('num')
 
-		getAllData(pagePath, pageNum)
+		if(keyword) {
+			getAllData(pagePath, pageNum, keyword)
+		} else {
+			getAllData(pagePath, pageNum, keyword)
+		}
+
 	})
 
 	// Search displaying data consume
@@ -27,9 +33,9 @@ $(document).ready(function() {
 		loadingBtn.removeClass('hidden')
 		textBtn.addClass('hidden')
 
-		console.log(pagePath)
-
 		let prepareData = {}
+
+		console.log(kd_obatOption)
 
 		switch(pagePath) {
 			case 'data-user':
@@ -47,6 +53,15 @@ $(document).ready(function() {
 					jenis_obat: $('#jenis_obat').val(),
 					harga: $('input[name="harga"]').val(),
 					stok: $('input[name="stok"]').val()
+				}
+			break;
+
+			case "pengajuan-obat":
+				prepareData = {
+					kd_obat: kd_obatOption,
+					k_tahun: $('input[name="k_tahun"]').val(),
+					b_simpan: $('input[name="b_simpan"]').val(),
+					b_pesan: $('input[name="b_pesan"]').val()
 				}
 			break;
 
@@ -165,6 +180,30 @@ $(document).ready(function() {
 		loadingBtn.addClass('hidden')
 		textBtn.removeClass('hidden')
 	})
+
+
+	// option select lists obat from select2
+	$('#selectOption').select2({
+		placeholder: 'Pilih Obat',
+		allowClear: true,
+		minimumInputLength: 3, // Jumlah karakter minimal untuk memulai pencarian
+		ajax: {
+			url: $('#selectOption').data('action'), // Mendapatkan URL endpoint dari atribut data-action
+			dataType: 'json',
+			delay: 100,
+			processResults: function(data) {
+				return {
+					results: data
+				};
+			},
+			cache: true
+		}
+	}).on('select2:select', function(e) {
+	    let selectedValue = e.params.data.id; // Mendapatkan nilai (value) opsi terpilih
+	    kd_obatOption = selectedValue
+	});
+
+
 })
 
 

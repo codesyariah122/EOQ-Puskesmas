@@ -134,7 +134,6 @@ class WebApp {
 			];
 			break;
 
-
 			case "user":
 			$navbar = "app/views/layout/partials/dashboard/navbar.php";
 			$partials = [
@@ -171,6 +170,38 @@ class WebApp {
 				'loading' => 'app/views/layout/partials/loading.php',
 				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
 				"edit_user" => "app/views/contents/dashboard/edit/data-obat.php"
+			];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js',
+				'/public/assets/js/data-consume/function.js', 
+				'/public/assets/js/data-consume/app.js'
+			];
+			break;
+
+			case "pengajuan-obat":
+			$navbar = "app/views/layout/partials/dashboard/navbar.php";
+			$partials = [
+				'loading' => 'app/views/layout/partials/loading.php',
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+				"pengajuan_obat" => "app/views/contents/dashboard/pengajuan-obat.php"
+			];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js',
+				'/public/assets/js/data-consume/function.js', 
+				'/public/assets/js/data-consume/app.js'
+			];
+			break;
+
+			case "laporan-eoq":
+			$navbar = "app/views/layout/partials/dashboard/navbar.php";
+			$partials = [
+				'loading' => 'app/views/layout/partials/loading.php',
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+				"pengajuan_obat" => "app/views/contents/dashboard/laporan-eoq.php"
 			];
 			$scripts = [
 				'/public/assets/js/script.js', 

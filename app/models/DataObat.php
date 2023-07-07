@@ -33,6 +33,33 @@ class DataObat {
 		}
 	}
 
+	public function countAllData()
+    {
+        try {
+            $query = "SELECT COUNT(*) AS total FROM obat";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $result['total'];
+        } catch (\PDOException $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
+
+    public function countSearchData($keyword)
+    {
+        try {
+            $query = "SELECT COUNT(*) AS total FROM obat WHERE kd_obat LIKE :keyword OR nm_obat LIKE :keyword OR jenis_obat LIKE :keyword";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':keyword', "%$keyword%", \PDO::PARAM_STR);
+            $stmt->execute();
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $result['total'];
+        } catch (\PDOException $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
+
 	public function all($query)
 	{
 		try{
@@ -52,7 +79,8 @@ class DataObat {
 	}
 
 
-	function searchData($keyword, $limitStart, $limit){
+	function searchData($keyword, $limitStart, $limit)
+	{
 
 		try {
 			$dbh = $this->conn;
@@ -91,6 +119,7 @@ class DataObat {
 			echo $e->getMessage();
 		}
 	}
+
 
 	public function store($data, $id)
 	{

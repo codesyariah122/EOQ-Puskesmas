@@ -16,6 +16,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Poppins:wght@900&family=Quicksand:wght@500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="/public/assets/css/style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
 
     <script src="<?=$data['vendor']['sweetalert']?>"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

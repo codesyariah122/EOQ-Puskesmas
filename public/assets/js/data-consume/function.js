@@ -10,6 +10,14 @@ const formatIdr = (angka) => {
 
 }
 
+const hitungEconomics = (data) => {
+	return Math.round(Math.sqrt(2*(data.b_pesan * data.k_tahun) / data.b_simpan))
+}
+
+const hitungIntervalWaktu = (data) => {
+	return Math.round(Math.sqrt((2 * data.b_pesan) / (data.b_simpan * data.k_tahun)) * 365)
+}
+
 const setUpPagination = (data) => {
 	pagination.empty();
 	paging.totalData=data.totalData
@@ -40,8 +48,9 @@ const setUpPagination = (data) => {
 
 }
 
-const getAllData = (type, page=1) => {
-	const endPoint = `/lists/${type}?page=${page}`
+const getAllData = (type, page=1, keyword='') => {
+	const endPoint = `/lists/${type}?page=${page}${keyword ? '&keyword='+keyword : ''}`
+
 	$.ajax({
 		url: endPoint,
 		type: 'GET',
@@ -75,6 +84,9 @@ const getAllData = (type, page=1) => {
 								</td>
 								<td class="px-6 py-4">
 								${user.username}
+								</td>
+								<td class="px-6 py-4">
+								<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">${user.role}</span>
 								</td>
 
 								${user.username !== sessionUser ? 
@@ -134,6 +146,50 @@ const getAllData = (type, page=1) => {
 									</button>
 									</div>
 									</div>
+								</td>
+							</tr>
+							`;
+						})
+					break;
+
+					case "laporan-eoq":
+						const reports = lists.data
+
+						reports.map(report => {
+							domDataHTML += `
+								<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+								<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+								${report.kd_obat}
+								</th>
+								<td class="px-6 py-4">
+								${report.nm_obat}
+								</td>
+								<td class="px-6 py-4">${report.k_tahun}</td>
+								<td class="px-6 py-4">
+								${formatIdr(report.b_simpan)}
+								</td>
+								<td class="px-6 py-4">
+								${formatIdr(report.b_pesan)}
+								</td>
+								<td class="px-6 py-4">
+								<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+									${hitungEconomics({
+											b_pesan: report.b_pesan,
+											k_tahun: report.k_tahun,
+											b_simpan: report.b_simpan
+										})
+									} Tablet
+								</span>
+								</td>
+								<td class="px-6 py-4">
+								<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+									${hitungIntervalWaktu({
+											b_pesan: report.b_pesan,
+											k_tahun: report.k_tahun,
+											b_simpan: report.b_simpan
+										})
+									} Hari
+								</span>
 								</td>
 							</tr>
 							`;
@@ -326,6 +382,15 @@ const addData = (param, type) => {
 				stok: param.data.stok
 			}
 		break;
+
+		case "pengajuan-obat":
+			prepareData = {
+				kd_obat: param.data.kd_obat,
+				k_tahun: param.data.k_tahun,
+				b_simpan: param.data.b_simpan,
+				b_pesan: param.data.b_pesan
+			}
+		break;
 			// type lainnya ...
 
 		default:
@@ -397,6 +462,30 @@ const addData = (param, type) => {
 							alertSuccess.show();
 							messageSuccess.html(`
 								<span class="font-medium"> Berhasil menambah data obat baru!</span> ${responseData.message}
+								`)
+
+							loadingBtn.addClass('hidden')
+							textBtn.removeClass('hidden')
+							Swal.fire({
+								position: 'top-end',
+								icon: 'success',
+								title: responseData.message,
+								showConfirmButton: false,
+								timer: 1500
+							})
+
+						}, 1000)
+					break;
+
+					case "pengajuan-obat":
+						kd_obatOption = null
+						$('input[name="k_tahun"]').val('')
+						$('input[name="b_simpan"]').val('')
+						$('input[name="b_pesan"]').val('')
+						setTimeout(() => {
+							alertSuccess.show();
+							messageSuccess.html(`
+								<span class="font-medium"> Berhasil menambah data pengajuan obat baru!</span> ${responseData.message}
 								`)
 
 							loadingBtn.addClass('hidden')

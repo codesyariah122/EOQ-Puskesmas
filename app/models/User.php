@@ -68,6 +68,33 @@ class User {
 		}
 	}
 
+	public function countAllData()
+    {
+        try {
+            $query = "SELECT COUNT(*) AS total FROM admin";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $result['total'];
+        } catch (\PDOException $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
+
+    public function countSearchData($keyword)
+    {
+        try {
+            $query = "SELECT COUNT(*) AS total FROM admin WHERE kd_admin LIKE :keyword OR nm_lengkap LIKE :keyword OR role LIKE :keyword";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':keyword', "%$keyword%", \PDO::PARAM_STR);
+            $stmt->execute();
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $result['total'];
+        } catch (\PDOException $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
+
 	public function all($query)
 	{
 		try{

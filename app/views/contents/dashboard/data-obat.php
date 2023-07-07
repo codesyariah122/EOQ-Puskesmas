@@ -1,5 +1,5 @@
 
-<div class="py-20 p-4 sm:ml-64">
+<div class="py-[30px] p-4 sm:ml-64">
    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
       <div class="grid grid-cols-1 mb-6">
          <div class="col-span-full">

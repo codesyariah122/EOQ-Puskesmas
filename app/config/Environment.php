@@ -8,9 +8,20 @@ class Environment {
 	{
 		$dotenv = parse_ini_file('.env');
 
-		define('HOST',$dotenv['HOST_DB']);
-		define('USER',$dotenv['USER_DB']);
-		define('PASSWORD',$dotenv['USER_PW']);
-		define('DB',$dotenv['DB']);
+		if (!defined('HOST')) {
+            define('HOST', $dotenv['HOST_DB']);
+        }
+
+        if (!defined('USER')) {
+            define('USER', $dotenv['USER_DB']);
+        }
+
+        if (!defined('PASSWORD')) {
+            define('PASSWORD', $dotenv['USER_PW']);
+        }
+
+        if (!defined('DB')) {
+            define('DB', $dotenv['DB']);
+        }
 	}
 }

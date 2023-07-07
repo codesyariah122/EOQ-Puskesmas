@@ -103,43 +103,30 @@ class UserDataController {
             header("Content-Type: application/json");
 
             $limit = 5;
+            $keyword = isset($_GET['keyword']) ? @$_GET['keyword'] : '';
+            $page = isset($_GET['page']) ? intval(@$_GET['page']) : 1;
+            $offset = ($page - 1) * $limit;
 
-            if(@$_GET['page']) {
-                $countPage = count($this->data_model->all("SELECT * FROM `admin`"));
+            if (!empty($keyword)) {
+                $countPage = $this->data_model->countSearchData($keyword);
                 $totalPage = ceil($countPage / $limit);
-                $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
-                $limitStart = ($aktifPage - 1)*$limit;
-
-                $users = $this->data_model->all("SELECT * FROM `admin` ORDER BY `id` DESC LIMIT $limitStart, $limit");
-            } elseif (@$_GET['keyword']) {
-                $keyword = @$_GET['keyword'];
-
-                $countPage = count($this->data_model->all("SELECT * FROM `admin` WHERE 
-                    `kd_admin` LIKE '%$keyword%' OR `nm_lengkap` LIKE '%$keyword' OR `role` LIKE '%$keyword%' ORDER BY `id` DESC"));
-                $totalPage = ceil($countPage / $limit);
-                $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
-                $limitStart = ($aktifPage - 1)*$limit;
-
-                $users = $this->data_model->searchData($keyword, $limitStart, $limit);
+                $users = $this->data_model->searchData($keyword, $offset, $limit);
             } else {
-                $countPage = count($this->data_model->all("SELECT * FROM `admin`"));
+                $countPage = $this->data_model->countAllData();
                 $totalPage = ceil($countPage / $limit);
-                $aktifPage = (is_numeric(@$_GET['page'])) ? intval(@$_GET['page']) : 1;
-                $limitStart = ($aktifPage - 1)*$limit;
-                $users = $this->data_model->all("SELECT * FROM `admin` ORDER BY `id` DESC LIMIT $limitStart, $limit");
+                $users = $this->data_model->all("SELECT * FROM `admin` ORDER BY `id` DESC LIMIT $offset, $limit");
             }
-
 
             if (!empty($users)) { 
                 $data = [
                     'success' => true,
-                    'message' => "Lists of users!",
+                    'message' => "Lists of obat!",
                     'session_user' => $_SESSION['username'],
                     'data' => $users,
                     'totalData' => count($users),
                     'countPage' => $countPage,
                     'totalPage' => $totalPage,
-                    'aktifPage' => $aktifPage
+                    'aktifPage' => $page
                 ];
 
                 echo json_encode($data);
@@ -152,10 +139,10 @@ class UserDataController {
                 echo json_encode($data);
             }
 
-        } catch (\PDOException $e){
+        } catch (\PDOException $e) {
             $data = [
                 'error' => true,
-                'message' => "Terjadi kesalahan : ".$e->getMessage()
+                'message' => "Terjadi kesalahan : " . $e->getMessage()
             ];
 
             echo json_encode($data);
