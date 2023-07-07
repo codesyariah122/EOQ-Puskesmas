@@ -1,7 +1,7 @@
 
 
-<aside id="default-sidebar" class="fixed <?=!$is_mobile ? 'top-20' : 'top-0'?> left-0 z-40 w-64 h-screen transition-transform shadow-md box-shadow-md -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-   <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+<aside id="default-sidebar" class="fixed <?=!$is_mobile ? 'top-20' : 'top-0'?> left-0 z-40 w-64 h-screen transition-transform border-r-4 shadow-lg box-shadow-lg -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+   <div class="h-full px-3 py-8 overflow-y-auto bg-gray-50 dark:bg-gray-800">
       <ul class="space-y-2 font-medium">
          <li>
             <a href="/dashboard/<?=$_SESSION['role']?>" class="flex items-center p-2 <?=$page === $_SESSION['role'] ? 'bg-gray-400 text-white dark:text-white hover:bg-gray-600 dark:hover:bg-gray-700' : 'dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 '?> rounded-lg">

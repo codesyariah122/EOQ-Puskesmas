@@ -10,6 +10,7 @@
         filter: blur(10px);
       }
     </style>
+    
 
     <script src="<?=$data['vendor']['tailwind']?>"></script>
     <link href="<?=$data['vendor']['flowbite']['css']?>"  rel="stylesheet" />
@@ -21,7 +22,7 @@
 
     <script src="<?=$data['vendor']['sweetalert']?>"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>  
 
     <title><?=$meta['head_title']?></title>
 

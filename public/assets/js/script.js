@@ -22,6 +22,15 @@ let pagination = $('#pagination')
 let paging = {}
 let kd_obatOption = null
 
+// For pdf loaded
+let selectedData = [];
+let tableLaporan = $('#table-laporan')
+let container = $('#tableContainer'),  
+    cache_width = container.width(),  
+    a4 = [610.28, 841.89];
+let printLaporanBtn = $('#print-laporan')
+let closeSelectedBtn = $('#close-selected')
+
 setTimeout(() => {
 	loading.classList.remove('block')
 	loading.classList.add('hidden')

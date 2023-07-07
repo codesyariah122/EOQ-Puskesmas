@@ -10,6 +10,15 @@ const formatIdr = (angka) => {
 
 }
 
+const dateFormat = () => {
+	const currentDate = new Date();
+	const day = currentDate.getDate();
+	const month = currentDate.toLocaleString('default', { month: 'short' });
+	const year = currentDate.getFullYear();
+
+	return `${day} ${month} ${year}`;
+}
+
 const hitungEconomics = (data) => {
 	return Math.round(Math.sqrt(2*(data.b_pesan * data.k_tahun) / data.b_simpan))
 }
@@ -154,42 +163,48 @@ const getAllData = (type, page=1, keyword='') => {
 
 					case "laporan-eoq":
 						const reports = lists.data
-
 						reports.map(report => {
 							domDataHTML += `
 								<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+								<td>
+									<div class="flex justify-center space-x-4">
+										<div>
+											<input id="default-checkbox" type="checkbox" value="${report.kd_obat}" class="dataCheckbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                                
+										</div>
+									</div>
+								</td>
 								<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-								${report.kd_obat}
+									${report.kd_obat}
 								</th>
 								<td class="px-6 py-4">
-								${report.nm_obat}
+									${report.nm_obat}
 								</td>
 								<td class="px-6 py-4">${report.k_tahun}</td>
 								<td class="px-6 py-4">
-								${formatIdr(report.b_simpan)}
+									${formatIdr(report.b_simpan)}
 								</td>
 								<td class="px-6 py-4">
-								${formatIdr(report.b_pesan)}
+									${formatIdr(report.b_pesan)}
 								</td>
 								<td class="px-6 py-4">
-								<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-									${hitungEconomics({
-											b_pesan: report.b_pesan,
-											k_tahun: report.k_tahun,
-											b_simpan: report.b_simpan
-										})
-									} Tablet
-								</span>
+									<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+										${hitungEconomics({
+												b_pesan: report.b_pesan,
+												k_tahun: report.k_tahun,
+												b_simpan: report.b_simpan
+											})
+										} ${report.jenis_obat}
+									</span>
 								</td>
 								<td class="px-6 py-4">
-								<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
-									${hitungIntervalWaktu({
-											b_pesan: report.b_pesan,
-											k_tahun: report.k_tahun,
-											b_simpan: report.b_simpan
-										})
-									} Hari
-								</span>
+									<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+										${hitungIntervalWaktu({
+												b_pesan: report.b_pesan,
+												k_tahun: report.k_tahun,
+												b_simpan: report.b_simpan
+											})
+										} Hari
+									</span>
 								</td>
 							</tr>
 							`;
@@ -225,6 +240,13 @@ const searchData = (param, type) => {
 			}
 		break;
 		case 'data-obat':
+			endPoint = `/lists/${type}?keyword=${param.data}`
+			prepareData = {
+				keyword: param.data
+			}
+		break;
+
+		case "laporan-eoq":
 			endPoint = `/lists/${type}?keyword=${param.data}`
 			prepareData = {
 				keyword: param.data
@@ -327,6 +349,56 @@ const searchData = (param, type) => {
 									</button>
 									</div>
 									</div>
+								</td>
+							</tr>
+							`;
+						})
+					break;
+
+					case "laporan-eoq":
+						const reports = lists.data
+						reports.map(report => {
+							domDataHTML += `
+								<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+								<td>
+									<div class="flex justify-center space-x-4">
+										<div>
+											<input id="default-checkbox" type="checkbox" value="${report.kd_obat}" class="dataCheckbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                                
+										</div>
+									</div>
+								</td>
+								<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+									${report.kd_obat}
+								</th>
+								<td class="px-6 py-4">
+									${report.nm_obat}
+								</td>
+								<td class="px-6 py-4">${report.k_tahun}</td>
+								<td class="px-6 py-4">
+									${formatIdr(report.b_simpan)}
+								</td>
+								<td class="px-6 py-4">
+									${formatIdr(report.b_pesan)}
+								</td>
+								<td class="px-6 py-4">
+									<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+										${hitungEconomics({
+												b_pesan: report.b_pesan,
+												k_tahun: report.k_tahun,
+												b_simpan: report.b_simpan
+											})
+										} ${report.jenis_obat}
+									</span>
+								</td>
+								<td class="px-6 py-4">
+									<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+										${hitungIntervalWaktu({
+												b_pesan: report.b_pesan,
+												k_tahun: report.k_tahun,
+												b_simpan: report.b_simpan
+											})
+										} Hari
+									</span>
 								</td>
 							</tr>
 							`;
@@ -634,4 +706,5 @@ const deleteData = (param, type) => {
 			}
 		}
 	})
+
 }

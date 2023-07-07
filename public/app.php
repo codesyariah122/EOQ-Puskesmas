@@ -9,6 +9,7 @@ $app = new Router;
 // Menambahkan rute ke router
 // Homepage rute
 $app->get('/', 'HomeController@index');
+$app->get('/home', 'HomeController@index');
 $app->get('/about', 'HomeController@about');
 $app->post('/create-user', 'HomeController@create_user');
 
@@ -53,6 +54,7 @@ $app->post('/add/pengajuan-obat', 'PengajuanObatController@store');
 // Laporan analisa EOQ
 $app->get('/dashboard/laporan-eoq', 'LaporanEoqController@index');
 $app->get('/lists/laporan-eoq', 'LaporanEoqController@all');
+$app->post('/print/laporan-eoq', 'LaporanEoqController@print');
 
 // Jalankan router
 $app->run();

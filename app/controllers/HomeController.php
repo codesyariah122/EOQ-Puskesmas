@@ -25,6 +25,7 @@ class HomeController {
 		$meta = $webApp->getMetaTag($param['title']);
 		$partials = $webApp->getPartials($param['page']);
 		$helpers = $this->helpers;
+		$page = $param['page'];
 
 		foreach($views as $view):
 			require_once $view;

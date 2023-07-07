@@ -208,7 +208,8 @@ class WebApp {
 				'/public/assets/js/auth/function.js', 
 				'/public/assets/js/auth/app.js',
 				'/public/assets/js/data-consume/function.js', 
-				'/public/assets/js/data-consume/app.js'
+				'/public/assets/js/data-consume/app.js',
+				'/public/assets/js/data-consume/pdf.load.js'
 			];
 			break;
 

@@ -92,7 +92,7 @@ class LaporanEoqController {
             } else {
                 $countPage = $this->pengajuan_model->countAllData();
                 $totalPage = ceil($countPage / $limit);
-                $reports = $this->pengajuan_model->all("SELECT obat.kd_obat, obat.nm_obat, eoq.* FROM obat JOIN eoq ON obat.kd_obat = eoq.kd_obat ORDER BY eoq.id DESC LIMIT $offset, $limit");
+                $reports = $this->pengajuan_model->all("SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, eoq.* FROM obat JOIN eoq ON obat.kd_obat = eoq.kd_obat ORDER BY eoq.id DESC LIMIT $offset, $limit");
             }
 
             if (!empty($reports)) {
@@ -138,4 +138,43 @@ class LaporanEoqController {
     public function delete($dataParam)
     {
     }
+
+    public function print()
+    {
+        try {
+            $selectedData = $_POST['selectedData'];
+
+            $kd_obat_array = [];
+
+            foreach ($selectedData as $selected) {
+                $kd_obat = $selected['kd_obat'];
+                $kd_obat_array[] = $kd_obat;
+            }
+
+            $query = "SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, eoq.* 
+            FROM obat 
+            JOIN eoq ON obat.kd_obat = eoq.kd_obat 
+            WHERE obat.kd_obat IN (" . implode(",", array_fill(0, count($kd_obat_array), "?")) . ") 
+            ORDER BY eoq.id DESC";
+
+            $results = $this->pengajuan_model->printLaporan($query, $kd_obat_array);
+
+            $data = [
+                'success' => true,
+                'message' => "Lists of eoq reports!",
+                'session_user' => $_SESSION['username'],
+                'data' => $results,
+            ];
+
+            echo json_encode($data);
+        } catch (\PDOException $e) {
+            $data = [
+                'error' => true,
+                'message' => "Terjadi kesalahan : " . $e->getMessage()
+            ];
+
+            echo json_encode($data);
+        }
+    }
+
 }

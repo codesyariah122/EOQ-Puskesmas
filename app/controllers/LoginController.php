@@ -22,6 +22,8 @@ class LoginController {
 		$partials = $model->getPartials($param['page']);
 		$helpers = $this->helpers;
 
+		$page = $param['page'];
+
 		foreach($views as $view):
 			require_once $view;
 		endforeach;
@@ -37,7 +39,7 @@ class LoginController {
 		
 		$prepare_views = [
 			'header' => 'app/views/layout/app/header.php',
-			'home' => 'app/views/home.php',
+			'login' => 'app/views/login.php',
 			'footer' => 'app/views/layout/app/footer.php',
 		];
 
@@ -56,48 +58,58 @@ class LoginController {
 		$username = $_POST['username'];
 		$password = $_POST['password'];
 
-
-        // Validasi input
-		$userModel = new User;
-		$user = $userModel->getUserByUsername($username);
-
-		if (!$user) {
+	    // Validasi input
+		if(empty($username) || empty($password)) {
 			$data = [
 				'error' => true,
-				'message' => 'User, tidak ditemukan / belum terdaftar!'
+				'message' => 'Form login harus di isi dengan benar!'
 			];
 			echo json_encode($data);
-		} else {
-          
-			if(!password_verify($password, $user['password'])) {
+		} else {	
+			$userModel = new User;
+			$user = $userModel->getUserByUsername($username);
+
+			if (!$user) {
 				$data = [
 					'error' => true,
-					'message' => 'Username / password, salah!'
+					'message' => 'User, tidak ditemukan / belum terdaftar!'
 				];
 				echo json_encode($data);
 			} else {
-				$generate_token = $this->helpers->generate_token();
-				$_SESSION['user_id'] = $user['kd_admin'];
-				$_SESSION['username'] = $user['username'];
-				$_SESSION['role'] = $user['role'];
-				$_SESSION['token'] = $generate_token;
-				$_SESSION['login_time'] = time();
 
-				$data = [
-					'success' => true,
-					'message' => "Welcome, {$user['username']}",
-					'data' => [
-						'username' => $_SESSION['username'],
-						'role' => $_SESSION['role'],
-						'token' => $_SESSION['token'],
-						'login_time' => $_SESSION['login_time']
-					]
-				];
+				if(!password_verify($password, $user['password'])) {
+					$data = [
+						'error' => true,
+						'message' => 'Username / password, salah!'
+					];
+					echo json_encode($data);
+				} else {
+					$generate_token = $this->helpers->generate_token();
+					$_SESSION['user_id'] = $user['kd_admin'];
+					$_SESSION['name'] = $user['nm_lengkap'];
+					$_SESSION['username'] = $user['username'];
+					$_SESSION['role'] = $user['role'];
+					$_SESSION['token'] = $generate_token;
+					$_SESSION['login_time'] = time();
 
-				echo json_encode($data);
-				exit();
+					$data = [
+						'success' => true,
+						'message' => "Welcome, {$user['username']}",
+						'data' => [
+							'username' => $_SESSION['username'],
+							'role' => $_SESSION['role'],
+							'token' => $_SESSION['token'],
+							'login_time' => $_SESSION['login_time']
+						]
+					];
+
+					echo json_encode($data);
+					exit();
+				}
 			}
 		}
+
+
 	}
 
 	public function logout()

@@ -26,6 +26,17 @@ $(document).ready(function() {
 
 	})
 
+	// Close pdf selected
+	$('#displaying').on('click', '#close-selected', function(e) {
+		e.preventDefault()
+		tableLaporan.removeClass('hidden')
+		tableLaporan.show().fadeIn(1000)
+		container.hide('slow').fadeOut(1000)
+		printLaporanBtn.show().fadeIn(1000)
+		closeSelectedBtn.hide('slow').fadeOut(1000)
+		closeSelectedBtn.addClass('hidden')
+	})
+
 	// add displaying data consume
 	$('#displaying').on('click', '.add', function(e) {
 		e.preventDefault()
@@ -35,38 +46,36 @@ $(document).ready(function() {
 
 		let prepareData = {}
 
-		console.log(kd_obatOption)
-
 		switch(pagePath) {
-			case 'data-user':
-				prepareData = {
-					nm_lengkap: $('input[name="nm_lengkap"]').val(),
-					alamat: $('textarea[name="alamat"]').val(),
-					notlp: $('input[name="notlp"]').val(),
-					role: $('#role').val()
-				}
+		case 'data-user':
+			prepareData = {
+				nm_lengkap: $('input[name="nm_lengkap"]').val(),
+				alamat: $('textarea[name="alamat"]').val(),
+				notlp: $('input[name="notlp"]').val(),
+				role: $('#role').val()
+			}
 			break;
 
-			case 'data-obat':
-				prepareData = {
-					nm_obat: $('input[name="nm_obat"]').val(),
-					jenis_obat: $('#jenis_obat').val(),
-					harga: $('input[name="harga"]').val(),
-					stok: $('input[name="stok"]').val()
-				}
+		case 'data-obat':
+			prepareData = {
+				nm_obat: $('input[name="nm_obat"]').val(),
+				jenis_obat: $('#jenis_obat').val(),
+				harga: $('input[name="harga"]').val(),
+				stok: $('input[name="stok"]').val()
+			}
 			break;
 
-			case "pengajuan-obat":
-				prepareData = {
-					kd_obat: kd_obatOption,
-					k_tahun: $('input[name="k_tahun"]').val(),
-					b_simpan: $('input[name="b_simpan"]').val(),
-					b_pesan: $('input[name="b_pesan"]').val()
-				}
+		case "pengajuan-obat":
+			prepareData = {
+				kd_obat: kd_obatOption,
+				k_tahun: $('input[name="k_tahun"]').val(),
+				b_simpan: $('input[name="b_simpan"]').val(),
+				b_pesan: $('input[name="b_pesan"]').val()
+			}
 			break;
 
-			default: 
-				console.log("No type")
+		default: 
+			console.log("No type")
 		}
 
 		const param = {
@@ -75,6 +84,35 @@ $(document).ready(function() {
 
 		addData(param, pagePath)
 	})
+
+	// Check checkbox displaying data laporan
+	$('#displaying').on('change', '.selectAll', function(e) {
+		e.preventDefault();
+
+		let isChecked = $(this).prop("checked");
+		$(".dataCheckbox").prop("checked", isChecked);
+
+	    // Perbarui status checkbox individu
+		$(".dataCheckbox").each(function() {
+			$(this).prop("checked", isChecked);
+		});
+
+	    // Panggil fungsi getDataFromTable untuk mengambil data dari tabel
+	    getDataFromTable('checkAll'); // Panggil dengan selectType 'checkAll'
+	});
+
+	$('#displaying').on('change', '.dataCheckbox', function() {
+		
+		if ($(".dataCheckbox:checked").length === $(".dataCheckbox").length) {
+			$("#checkAll").prop("checked", true);
+		} else {
+			$("#checkAll").prop("checked", false);
+		}
+
+	    // Panggil fungsi getDataFromTable untuk mengambil data dari tabel
+	    getDataFromTable('checkIndividual'); // Panggil dengan selectType 'checkIndividual'
+	});
+
 
 	// edit data-user
 	$('#displaying').on('click', '.edit', function() {
@@ -93,30 +131,30 @@ $(document).ready(function() {
 		let id = null
 
 		switch(pagePath) {
-			case 'data-user':
-				prepareData = {
-					kd_admin: $('input[name="kd_admin"]').val(),
-					nm_lengkap: $('input[name="nm_lengkap"]').val(),
-					alamat: $('textarea[name="alamat"]').val(),
-					notlp: $('input[name="notlp"]').val(),
-					username: $('input[name="username"]').val()
-				}
-				id = prepareData.kd_admin
+		case 'data-user':
+			prepareData = {
+				kd_admin: $('input[name="kd_admin"]').val(),
+				nm_lengkap: $('input[name="nm_lengkap"]').val(),
+				alamat: $('textarea[name="alamat"]').val(),
+				notlp: $('input[name="notlp"]').val(),
+				username: $('input[name="username"]').val()
+			}
+			id = prepareData.kd_admin
 			break;
 
-			case 'data-obat':
-				prepareData = {
-					kd_obat: $('input[name="kd_obat"]').val(),
-					nm_obat: $('input[name="nm_obat"]').val(),
-					jenis_obat: $('#jenis_obat').val(),
-					harga: $('input[name="harga"]').val(),
-					stok: $('input[name="stok"]').val()
-				}
-				id = prepareData.kd_obat
+		case 'data-obat':
+			prepareData = {
+				kd_obat: $('input[name="kd_obat"]').val(),
+				nm_obat: $('input[name="nm_obat"]').val(),
+				jenis_obat: $('#jenis_obat').val(),
+				harga: $('input[name="harga"]').val(),
+				stok: $('input[name="stok"]').val()
+			}
+			id = prepareData.kd_obat
 			break;
 
-			default:
-				console.log("No type")
+		default:
+			console.log("No type")
 		}
 
 		const param = {
@@ -142,20 +180,20 @@ $(document).ready(function() {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				switch(pagePath) {
-					case 'data-user':
-						let kd_admin = $(this).attr('data-id')
-						prepareData = {
-							id: kd_admin,
-							field: kd_admin
-						}
+				case 'data-user':
+					let kd_admin = $(this).attr('data-id')
+					prepareData = {
+						id: kd_admin,
+						field: kd_admin
+					}
 					break;
 
-					case 'data-obat':
-						let kd_obat = $(this).attr('data-id')
-						prepareData = {
-							id: kd_obat,
-							field: kd_obat
-						}
+				case 'data-obat':
+					let kd_obat = $(this).attr('data-id')
+					prepareData = {
+						id: kd_obat,
+						field: kd_obat
+					}
 					break;
 				}
 
