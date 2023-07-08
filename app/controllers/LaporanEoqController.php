@@ -144,20 +144,27 @@ class LaporanEoqController {
         try {
             $selectedData = $_POST['selectedData'];
 
+            // var_dump($selectedData); die;
+
             $kd_obat_array = [];
+            $eoq_id_array = [];
 
             foreach ($selectedData as $selected) {
                 $kd_obat = $selected['kd_obat'];
+                $eoq_id = $selected['id'];
                 $kd_obat_array[] = $kd_obat;
+                $eoq_id_array[] = $eoq_id;
             }
 
             $query = "SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, eoq.* 
             FROM obat 
             JOIN eoq ON obat.kd_obat = eoq.kd_obat 
-            WHERE obat.kd_obat IN (" . implode(",", array_fill(0, count($kd_obat_array), "?")) . ") 
+            WHERE obat.kd_obat IN (" . implode(",", array_fill(0, count($kd_obat_array), "?")) . ") AND eoq.id IN (" . implode(",", array_fill(0, count($eoq_id_array), "?")) . ")
             ORDER BY eoq.id DESC";
 
-            $results = $this->pengajuan_model->printLaporan($query, $kd_obat_array);
+            $results = $this->pengajuan_model->printLaporan($query, $kd_obat_array, $eoq_id_array);
+
+            // var_dump($results); die;
 
             $data = [
                 'success' => true,

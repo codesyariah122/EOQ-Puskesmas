@@ -59,12 +59,12 @@ class PengajuanObat {
 		}
 	}
 
-	public function printLaporan($query, $kd_obat_array)
+	public function printLaporan($query, $kd_obat_array, $eoq_id_array)
 	{
 		try {
 			$dbh = $this->conn;
 			$stmt = $dbh->prepare($query);
-			$stmt->execute($kd_obat_array);
+			$stmt->execute(array_merge($kd_obat_array, $eoq_id_array));
 
 			$results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -84,7 +84,7 @@ class PengajuanObat {
 			// `kd_obat` LIKE :keyword OR `nm_obat` LIKE :keyword 
 			// OR `jenis_obat` LIKE '%$keyword%'
 			// ORDER BY `kd_obat` DESC";
-			$query = "SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, eoq.* FROM obat JOIN eoq ON obat.kd_obat = eoq.kd_obat WHERE eoq.kd_obat LIKE :keyword OR obat.nm_obat LIKE :keyword ORDER BY eoq.id DESC";
+			$query = "SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, eoq.* FROM obat JOIN eoq ON obat.kd_obat = eoq.kd_obat WHERE eoq.kd_obat LIKE :keyword OR obat.nm_obat LIKE :keyword OR obat.jenis_obat LIKE :keyword OR eoq.k_tahun LIKE :keyword ORDER BY eoq.id DESC";
 
 			if ($limitStart !== null && $limit !== null) {
 				$query .= " LIMIT $limitStart, $limit";

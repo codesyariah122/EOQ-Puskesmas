@@ -8,18 +8,33 @@ let cells = []
 
 // Ambil data dari tabel setelah checkbox dipilih
 function getDataFromTable(selectType) {
-    selectedData = []; // Kosongkan selectedData sebelum mengambil data dari tabel
-    $(".dataCheckbox:checked").each(function() {
-    	let value = $(this).val();
+  selectedData = [];
 
-    	let rowData = {
-    		type: selectType,
-    		kd_obat: value,
-            // Bisa di tambahkan lagi properti lain yang di butuhkan dari tabel
-    	};
-    	selectedData.push(rowData);
+  if (selectType === 'checkAll') {
+    // Jika selectType adalah 'checkAll', ambil semua data dari tabel
+    $(".dataCheckbox").each(function() {
+      const kdObat = $(this).val();
+      const eoqId = $(this).closest("tr").find(".eoq-id").data("id");
+      const rowData = {
+        kd_obat: kdObat,
+        id: eoqId
+      };
+      selectedData.push(rowData);
     });
+  } else if (selectType === 'checkIndividual') {
+    // Jika selectType adalah 'checkIndividual', ambil data yang dipilih
+    $(".dataCheckbox:checked").each(function() {
+      const kdObat = $(this).val();
+      const eoqId = $(this).closest("tr").find(".eoq-id").data("id");
+      const rowData = {
+        kd_obat: kdObat,
+        id: eoqId
+      };
+      selectedData.push(rowData);
+    });
+  }
 }
+
 
 $('#displaying').on('click', '#print-laporan', function(e) {
    e.preventDefault();

@@ -166,49 +166,52 @@ const getAllData = (type, page=1, keyword='') => {
 						const reports = lists.data
 						reports.map(report => {
 							domDataHTML += `
-								<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-								<td>
-									<div class="flex justify-center space-x-4">
-										<div>
-											<input id="default-checkbox" type="checkbox" value="${report.kd_obat}" class="dataCheckbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                                
-										</div>
+						<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+							<td>
+								<div class="flex justify-center space-x-4">
+									<div>
+									<input class="default-checkbox dataCheckbox" type="checkbox" value="${report.kd_obat}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                                
 									</div>
-								</td>
-								<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-									${report.kd_obat}
-								</th>
-								<td class="px-6 py-4">
-									${report.nm_obat}
-								</td>
-								<td class="px-6 py-4">${report.k_tahun}</td>
-								<td class="px-6 py-4">
-									${formatIdr(report.b_simpan)}
-								</td>
-								<td class="px-6 py-4">
-									${formatIdr(report.b_pesan)}
-								</td>
-								<td class="px-6 py-4">
-									<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+								</div>
+							</td>
+							<td class="eoq-id hidden" data-id="${report.id}">
+								${report.id}
+							</td>
+							<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+								${report.kd_obat}
+							</th>
+							<td class="px-6 py-4">
+								${report.nm_obat}
+							</td>
+							<td class="px-6 py-4">${report.k_tahun}</td>
+							<td class="px-6 py-4">
+								${formatIdr(report.b_simpan)}
+							</td>
+							<td class="px-6 py-4">
+								${formatIdr(report.b_pesan)}
+							</td>
+							<td class="px-6 py-4">
+								<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
 										${hitungEconomics({
-												b_pesan: report.b_pesan,
-												k_tahun: report.k_tahun,
-												b_simpan: report.b_simpan
-											})
-										} ${report.jenis_obat}
-									</span>
-								</td>
-								<td class="px-6 py-4">
-									<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
-										${hitungIntervalWaktu({
-												b_pesan: report.b_pesan,
-												k_tahun: report.k_tahun,
-												b_simpan: report.b_simpan
-											})
-										} Hari
-									</span>
-								</td>
-							</tr>
-							`;
+											b_pesan: report.b_pesan,
+											k_tahun: report.k_tahun,
+											b_simpan: report.b_simpan
+										})
+									} ${report.jenis_obat}
+								</span>
+							</td>
+							<td class="px-6 py-4">
+								<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+									${hitungIntervalWaktu({
+										b_pesan: report.b_pesan,
+										k_tahun: report.k_tahun,
+										b_simpan: report.b_simpan
+									})
+								} Hari
+								</span>
+							</td>
+						</tr>
+						`;
 						})
 					break;
 					// type lainnya ....
