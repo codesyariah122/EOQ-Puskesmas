@@ -1,56 +1,5 @@
 
 
-<style>
-   .dom-laporan-table > .table-footer {
-      float: right;
-   }
-   .table-footer {
-      margin-top: 3rem;
-      float: right;
-      text-align: right;
-      background-color: transparent;
-   }
-
-   .table-footer th,
-   .table-footer td {
-      text-align: right;
-      float: right;
-      background-color: transparent;
-      border: none!important;
-      width: 100%;
-   }
-
-   .table-footer .name {
-      margin-top: 3rem;
-   }
-
-   .dom-laporan-table {  
-     font-family: arial, sans-serif;  
-     border-collapse: collapse;  
-     width: 73%;  
-   }
-
-  .dom-laporan-table td {  
-     border: 1px solid #dddddd;  
-     text-align: left;  
-     padding: 8px;
-     font-size: 11px;
-     text-align: center!important;
-   } 
-  .dom-laporan-table th{
-     border: 1px solid #dddddd;  
-     text-align: left;  
-     padding: 8px;  
-     background-color: rgba(61, 61, 61, 0.7);  
-     color:white;
-     font-size: 11.3px;
-   }
-
-  .dom-laporan-table tr:nth-child(odd) {  
-     background-color: transparent;  
-   }
-</style>
-
 <div class="py-[30px] p-4 sm:ml-64">
    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
       <div class="grid grid-cols-1 mb-6">
@@ -93,13 +42,16 @@
    <div class="col-span-full">
 
       <!-- Dom data untuk preview print & pdf content -->
-      <div id="tableContainer" class="overflow-x-auto sm:rounded-lg py-2 mb-4">
-         <div id="tableContainerHeader" class="hidden mb-12 flex justify-center">
-            <div>               
-               <h4 align="center" class="table-header">Laporan &nbsp;&nbsp; Analisa &nbsp;&nbsp; EOQ</h4>
+      <center>         
+         <div id="tableContainer" class="overflow-x-auto sm:rounded-lg py-2 mb-4">
+            <div id="tableContainerHeader" class="hidden mb-12 flex justify-center">
+               <div>               
+                  <h4 align="center" class="table-header">Laporan &nbsp;Analisa &nbsp; EOQ</h4>
+               </div>
+               <br/>
             </div>
          </div>
-      </div>
+      </center>
 
       <div class="py-2 mb-2">
          <?php require_once 'molecules/laporan-eoq/search-data.php'?>
@@ -142,9 +94,8 @@
                </tr>
             </thead>
 
-            <!-- Data user di lakukan secara dom dari javascript -->
+            <!-- Data table di lakukan secara dom dari javascript -->
             <tbody id="laporan-eoq"></tbody>
-
          </table>
       </div>
 

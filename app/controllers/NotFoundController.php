@@ -2,7 +2,7 @@
 // NotFoundController.php
 namespace app\controllers;
 
-use app\models\WebApp;
+use app\datasources\WebApp;
 
 class NotFoundController {
 
@@ -24,10 +24,10 @@ class NotFoundController {
         
         // Halaman not found
         header("HTTP/1.0 404 Not Found");
-
+        $views = "app/views/404.php";
         $prepare_views = [
             'header' => 'app/views/layout/app/header.php',
-            'home' => 'app/views/404.php',
+            'home' => $views,
             'footer' => 'app/views/layout/app/footer.php',
         ];
 

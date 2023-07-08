@@ -2,9 +2,10 @@
 
 namespace app\controllers;
 
-use app\models\{WebApp, User};
+use app\models\{User};
 use app\datasources\UserPrepare;
 use app\helpers\{Helpers};
+use app\datasources\WebApp;
 
 class HomeController {
 
@@ -35,10 +36,10 @@ class HomeController {
 	public function index($param) 
 	{
 		session_start();
-
+		$views = 'app/views/home.php';
 		$prepare_views = [
 			'header' => 'app/views/layout/app/header.php',
-			'home' => 'app/views/home.php',
+			'home' => $views,
 			'footer' => 'app/views/layout/app/footer.php',
 		];
 

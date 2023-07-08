@@ -1,8 +1,9 @@
 <?php
 namespace app\controllers;
 
-use app\models\{WebApp, DataObat};
+use app\models\{DataObat};
 use app\helpers\{Helpers};
+use app\datasources\WebApp;
 
 class DataObatController {
 
@@ -49,11 +50,11 @@ class DataObatController {
 
     public function index($param) 
     {
-        $contents = 'app/views/dashboard/data-obat.php';
+        $views = 'app/views/dashboard/index.php';
 
         $prepare_views = [
             'header' => 'app/views/layout/dashboard/header.php',
-            'contents' => $contents,
+            'contents' => $views,
             'footer' => 'app/views/layout/dashboard/footer.php',
         ];
 

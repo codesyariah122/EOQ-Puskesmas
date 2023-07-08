@@ -56,5 +56,8 @@ $app->get('/dashboard/laporan-eoq', 'LaporanEoqController@index');
 $app->get('/lists/laporan-eoq', 'LaporanEoqController@all');
 $app->post('/print/laporan-eoq', 'LaporanEoqController@print');
 
+// Pembelian & laporan Pembelian
+$app->get('/dashboard/pembelian', 'PembelianController@index');
+
 // Jalankan router
 $app->run();

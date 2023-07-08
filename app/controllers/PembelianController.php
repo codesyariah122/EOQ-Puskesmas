@@ -5,7 +5,7 @@ use app\models\{DataObat, PengajuanObat};
 use app\helpers\{Helpers};
 use app\datasources\WebApp;
 
-class PengajuanObatController {
+class PembelianController {
 
 
     public $helpers, $conn, $data_model;
@@ -65,8 +65,8 @@ class PengajuanObatController {
         // var_dump($param); die;
 
         $data = [
-            'title' => "Aplikasi EOQ - Pengajuan Obat",
-            'page' => 'pengajuan-obat',
+            'title' => "Aplikasi EOQ - Pembelian",
+            'page' => 'pembelian',
             'data' => [
                 'username' => ucfirst($_SESSION['username']),
                 'dataParam' => ''

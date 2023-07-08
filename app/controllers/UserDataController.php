@@ -1,8 +1,9 @@
 <?php
 namespace app\controllers;
 
-use app\models\{WebApp, User};
+use app\models\{User};
 use app\helpers\{Helpers};
+use app\datasources\WebApp;
 
 class UserDataController {
 
@@ -51,11 +52,11 @@ class UserDataController {
 
     public function index($param) 
     {
-        $contents = 'app/views/dashboard/data-user.php';
+        $views = 'app/views/dashboard/index.php';
 
         $prepare_views = [
             'header' => 'app/views/layout/dashboard/header.php',
-            'contents' => $contents,
+            'contents' => $views,
             'footer' => 'app/views/layout/dashboard/footer.php',
         ];
 

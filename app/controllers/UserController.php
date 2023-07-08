@@ -2,9 +2,10 @@
 
 namespace app\controllers;
 
-use app\models\{WebApp, User};
+use app\models\{User};
 use app\datasources\UserPrepare;
 use app\helpers\{Helpers};
+use app\datasources\WebApp;
 
 class UserController {
 
@@ -45,11 +46,11 @@ class UserController {
 
 	public function index($param) 
 	{
-		$contents = 'app/views/user/index.php';
+		$views = 'app/views/user/index.php';
 
 		$prepare_views = [
 			'header' => 'app/views/layout/dashboard/header.php',
-			'contents' => $contents,
+			'contents' => $views,
 			'footer' => 'app/views/layout/dashboard/footer.php',
 		];
 

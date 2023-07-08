@@ -2,9 +2,10 @@
 
 namespace app\controllers;
 
-use app\models\{WebApp, User};
+use app\models\{User};
 use app\datasources\UserPrepare;
 use app\helpers\{Helpers};
+use app\datasources\WebApp;
 
 class AdminController {
 

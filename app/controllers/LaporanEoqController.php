@@ -1,8 +1,9 @@
 <?php
 namespace app\controllers;
 
-use app\models\{WebApp, DataObat, PengajuanObat};
+use app\models\{DataObat, PengajuanObat};
 use app\helpers\{Helpers};
+use app\datasources\WebApp;
 
 class LaporanEoqController {
 
@@ -48,11 +49,11 @@ class LaporanEoqController {
 
     public function index($param) 
     {
-        $contents = 'app/views/dashboard/laporan-eoq.php';
+        $views = 'app/views/dashboard/index.php';
 
         $prepare_views = [
             'header' => 'app/views/layout/dashboard/header.php',
-            'contents' => $contents,
+            'contents' => $views,
             'footer' => 'app/views/layout/dashboard/footer.php',
         ];
 

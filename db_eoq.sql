@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 06, 2023 at 08:33 AM
+-- Generation Time: Jul 08, 2023 at 06:32 AM
 -- Server version: 8.0.33-0ubuntu0.20.04.2
 -- PHP Version: 8.2.7
 
@@ -39,19 +39,6 @@ CREATE TABLE `admin` (
   `password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `admin`
---
-
-INSERT INTO `admin` (`id`, `kd_admin`, `nm_lengkap`, `alamat`, `notlp`, `username`, `role`, `password`) VALUES
-(1, 'KU01', 'Kepala Balai Kesehatan', 'Sekolah TI Al-Musthafawiyah Kec. Me', '6285921264904', 'admin01', 'admin', '$2y$10$IanrT0CUogUCnb.wSDy8V.BVEMw2nIXZBq1Licgzex4hMrjCNCVT2'),
-(2, 'KU02', 'Staf Balai Kesehatan', 'Sekolah TI Al-Musthafawiyah Kec. Me', '6285693171777', 'staf01', 'user', '$2y$10$TDhB4MD8U0Ut1e0l.QCVcOkksIAq0.Y8H7/DnH5zqw5igfQuKgbPa'),
-(3, 'KU03', 'Asep Danang', 'Jl. Toraja No.19 Rt.03/Rw.04', '6281290171787', 'ad11', 'user', '$2y$10$zt9nc8OUCUDbAwJVCMu6iuxIDAWpe7/UdFVb/1pp/MHeMFJMzQuii'),
-(4, 'KU04', 'Dian Minati', 'Jl. Kemuning No.10', '6281293171800', 'dm20', 'user', '$2y$10$LHzmTJM0iprnj4JfeXOG4uch93aMroHvNwjthLd6wMKLwKIbF3pYC'),
-(5, 'KU05', 'Riki Jiwa', 'Jl. Sekarwati No.11', '6289693171870', 'rj22', 'user', '$2y$10$fg7sNFNU1k5uGH5ZAxe5xOo3lm1rdNyIgCrduqy38pQAfumgjQpT2'),
-(6, 'KU06', 'Bambang Saputro', 'Jl. Ananda 45 Blok G1', '6285693171873', 'bs67', 'user', '$2y$10$k2zmHWP8cwTEYP4dAr3ueu3M0YHGZHt.aG0dNcVXwmE5jmKiWaRzC'),
-(7, 'KU07', 'Dea Zulkarnaen', 'Jl. Kemuning No. 21', '6285693171871', 'dz73', 'user', '$2y$10$rtIHzvIkvGfQ683t4BFX8udGBdXBqI5AYWUM99x8QvjugKS9acduC');
-
 -- --------------------------------------------------------
 
 --
@@ -86,7 +73,17 @@ CREATE TABLE `eoq` (
 
 INSERT INTO `eoq` (`id`, `kd_obat`, `k_tahun`, `b_simpan`, `b_pesan`) VALUES
 (1, 'KO1', 2500, 4800000, 750000),
-(2, 'KO1', 1900, 43715, 206521);
+(2, 'KO55', 1000, 5000000, 2500000),
+(3, 'KO18', 3000, 15000000, 10000000),
+(4, 'KO55', 200, 15000000, 10000000),
+(5, 'KO14', 400, 10000000, 15000000),
+(6, 'KO28', 1000, 25000000, 35000000),
+(7, 'KO33', 3000, 10000000, 11000000),
+(8, 'KO17', 200, 15000000, 25000000),
+(9, 'KO56', 5000, 50000000, 45000000),
+(10, 'KO21', 100, 1000000, 2000000),
+(11, 'KO18', 200, 2500000, 2000000),
+(12, 'KO37', 400, 10000000, 15000000);
 
 -- --------------------------------------------------------
 
@@ -165,12 +162,13 @@ INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `jenis_obat`, `harga`, `stok`) V
 (59, 'KO59', 'Trisela', 'TABLET', 500, 510),
 (6, 'KO6', 'Caviplex', 'CAPSULE', 420, 1900),
 (60, 'KO60', 'Vitazym', 'TABLET', 975, 200),
-(61, 'KO61', 'Voltadex', 'TABLET', 680, 300),
+(61, 'KO61', 'Voltadex', 'CAPSULE', 1000, 300),
 (62, 'KO62', 'Winatin', 'TABLET', 350, 320),
 (63, 'KO63', 'Zink', 'CAPSULE', 850, 130),
 (64, 'KO64', 'Amplodipin 5mg', 'TABLET', 220, 1000),
 (65, 'KO65', 'Amplodipin 10mg', 'TABLET', 300, 300),
 (66, 'KO66', 'Amoxillin', 'TABLET', 600, 560),
+(67, 'KO67', 'Tester ABC', 'TABLET', 5000, 100),
 (7, 'KO7', 'Cavicur', 'TABLET', 610, 390),
 (8, 'KO8', 'Cetirizine', 'TABLET', 230, 1710),
 (9, 'KO9', 'Cimetidine', 'TABLET', 400, 500);
@@ -211,7 +209,7 @@ ALTER TABLE `obat`
 -- AUTO_INCREMENT for table `eoq`
 --
 ALTER TABLE `eoq`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

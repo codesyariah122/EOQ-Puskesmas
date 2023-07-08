@@ -29,12 +29,18 @@ $(document).ready(function() {
 	// Close pdf selected
 	$('#displaying').on('click', '#close-selected', function(e) {
 		e.preventDefault()
+		container.hide('slow').fadeOut(1000)
 		tableLaporan.removeClass('hidden')
 		tableLaporan.show().fadeIn(1000)
-		container.hide('slow').fadeOut(1000)
 		printLaporanBtn.show().fadeIn(1000)
 		closeSelectedBtn.hide('slow').fadeOut(1000)
 		closeSelectedBtn.addClass('hidden')
+		container.hide('slow').fadeOut(1000)
+		// Clear the checkboxes
+		$(".dataCheckbox").prop("checked", false);
+		$("#checkAll").prop("checked", false);
+  		// Clear the selectedData array
+		selectedData = [];
 	})
 
 	// add displaying data consume

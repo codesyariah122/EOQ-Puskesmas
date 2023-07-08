@@ -3,7 +3,6 @@
  * Desc: File ini merupakan serangkaian instruksi untuk melakukan manipulasi data dan element pada struktur html. Melakukan ajax request secara asynchronous, sehingga memungkinkan untuk menambahkan nilai visual pada user experience.
  * */
 
-
 const formatIdr = (angka) => {
 	const formatRupiah = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(angka);
 

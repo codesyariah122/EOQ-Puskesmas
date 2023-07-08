@@ -2,8 +2,9 @@
 
 namespace app\controllers;
 
-use app\models\{WebApp, User};
+use app\models\{User};
 use app\helpers\{Helpers};
+use app\datasources\WebApp;
 
 class LoginController {
 
@@ -94,6 +95,7 @@ class LoginController {
 					$_SESSION['role'] = $user['role'];
 					$_SESSION['token'] = $generate_token;
 					$_SESSION['login_time'] = $expiryTime;
+					$_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 
 					$data = [
 						'success' => true,

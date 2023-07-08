@@ -27,7 +27,7 @@ let selectedData = []
 let tableLaporan = $('#table-laporan')
 let container = $('#tableContainer')
 let cache_width = container.width()
-let a4 = [610.28, 841.89]
+let a4 = [600.28, 841.89]
 let printLaporanBtn = $('#print-laporan')
 let closeSelectedBtn = $('#close-selected')
 
@@ -56,7 +56,7 @@ function countdownTimer(timestamp) {
 		const seconds = difference % 60;
 
     	// Memperbarui tampilan countdown time
-		countdownElement.innerHTML = `<i class="fas fa-business-time"></i> &nbsp;Sesi login: ${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
+		countdownElement.innerHTML = `<i class="fas fa-business-time"></i> &nbsp;Sesi login: ${minutes} menit ${seconds} detik`;
     	// Memeriksa apakah waktu countdown telah berakhir
 		if (difference <= 0) {
 			clearInterval(countdownInterval);

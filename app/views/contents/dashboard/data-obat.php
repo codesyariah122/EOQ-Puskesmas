@@ -68,7 +68,7 @@
                </tr>
             </thead>
 
-            <!-- Data user di lakukan secara dom dari javascript -->
+            <!-- Data table di lakukan secara dom dari javascript -->
             <tbody id="data-obat"></tbody>
 
          </table>

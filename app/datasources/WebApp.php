@@ -1,10 +1,10 @@
 <?php
 /**
  * @author Puji Ermanto <pujiermanto@gmail.com>
- * @return WebApp Model
+ * @return WebApp Data Source
 **/
 
-namespace app\models;
+namespace app\datasources;
 
 
 class WebApp {
@@ -193,6 +193,23 @@ class WebApp {
 				'loading' => 'app/views/layout/partials/loading.php',
 				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
 				"pengajuan_obat" => "app/views/contents/dashboard/laporan-eoq.php"
+			];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js',
+				'/public/assets/js/data-consume/function.js', 
+				'/public/assets/js/data-consume/app.js',
+				'/public/assets/js/data-consume/pdf.load.js'
+			];
+			break;
+
+			case "pembelian":
+			$navbar = "app/views/layout/partials/dashboard/navbar.php";
+			$partials = [
+				'loading' => 'app/views/layout/partials/loading.php',
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+				"pengajuan_obat" => "app/views/contents/dashboard/pembelian.php"
 			];
 			$scripts = [
 				'/public/assets/js/script.js', 

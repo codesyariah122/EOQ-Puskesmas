@@ -3,9 +3,9 @@
  * Desc: File ini merupakan serangkaian instruksi untuk melakukan manipulasi data dan element pada struktur html. Melakukan ajax request secara asynchronous, sehingga memungkinkan untuk menambahkan nilai visual pada user experience.
  * */
 
-// Check checkbox displaying data laporan
 let cells = []
 
+// Check checkbox displaying data laporan
 // Ambil data dari tabel setelah checkbox dipilih
 function getDataFromTable(selectType) {
   selectedData = [];
@@ -38,45 +38,44 @@ function getDataFromTable(selectType) {
 
 $('#displaying').on('click', '#print-laporan', function(e) {
    e.preventDefault();
-	
-   $.ajax({
-      url: '/print/laporan-eoq',
-      type: 'POST',
-      dataType: 'json',
-      data: { selectedData: selectedData },
-      startTime: new Date().getTime(),
-      success: function(response) {
-         if (response.success) {
-            // Mengambil konten dari elemen dengan id "tableContainerHeader"
-            let tableContainerHeaderContent = $('#tableContainerHeader').html();
-           
-            // hide table laporan
-            printLaporanBtn.hide('slow').fadeOut(1000);
-            closeSelectedBtn.removeClass('hidden');
-            // tableLaporan.hide('slow').fadeOut(1000);
+   if(selectedData.length > 0) {
+      closeSelectedBtn.show().fadeIn(1000)
+      $.ajax({
+         url: '/print/laporan-eoq',
+         type: 'POST',
+         dataType: 'json',
+         data: { selectedData: selectedData },
+         startTime: new Date().getTime(),
+         success: function(response) {
+            if (response.success) {
+               // Mengambil konten dari elemen dengan id "tableContainerHeader"
+               let tableContainerHeaderContent = $('#tableContainerHeader').html();
+      
+               // hide table laporan
+               printLaporanBtn.hide('slow').fadeOut(1000);
+               closeSelectedBtn.removeClass('hidden');
 
-            const tableData = response.data;
-            let header = `
-					
-            `;
+               const tableData = response.data;
 
-            let table = '<table class="dom-laporan-table">';
-            table += `
-            <thead>
-               <tr>
-                  <th>Kode Obat</th>
-                  <th>Nama Obat</th>
-                  <th>Kebutuhan Pertahun</th>
-                  <th>Biaya Simpan</th>
-                  <th>Biaya Pesan</th>
-                  <th>Jumlah Economics</th>
-                  <th>Waktu Pemesanan</th>
-               </tr>
-            </thead>`;
-
-            for (let i = 0; i < tableData.length; i++) {
+               let table = '<table class="dom-laporan-table">';
                table += `
+               <thead>
                <tr>
+               <th>Kode Obat</th>
+               <th>Nama Obat</th>
+               <th>Kebutuhan Pertahun</th>
+               <th>Biaya Simpan</th>
+               <th>Biaya Pesan</th>
+               <th>Jumlah Economics</th>
+               <th>Waktu Pemesanan</th>
+               </tr>
+               </thead>
+               <tbody>
+               `;
+
+               for (let i = 0; i < tableData.length; i++) {
+                  table += `
+                  <tr>
                   <td>${tableData[i].kd_obat}</td>
                   <td>${tableData[i].nm_obat}</td>
                   <td>${tableData[i].k_tahun}</td>
@@ -92,56 +91,88 @@ $('#displaying').on('click', '#print-laporan', function(e) {
                      k_tahun: tableData[i].k_tahun,
                      b_simpan: tableData[i].b_simpan
                   })} Hari</td>
-               </tr>`;
+                  </tr>`;
+               }
+
+               table += `
+               </tbody>
+
+               <tfoot class="table-footer">`
+               Array.from({ length: 5 }).map(() => {
+                   table += `
+                   <tr>
+                   <td colspan="4" class="float-right font-bold"></td>
+                   </tr>
+                   `;
+                }); 
+
+               table +=   
+                  `<tr>
+                     <td colspan="5" class="font-bold"></td>
+                     <td colspan="4" class="font-bold">Bogor, ${dateFormat()}</td>
+                  </tr>
+                  <tr>
+                     <td colspan="5" class="font-bold"></td>
+                     <td colspan="4" class="font-bold" style="margin-top: -12rem!important;">Mengetahui</td>
+                  </tr>`
+
+               Array.from({ length: 4 }).map(() => {
+                   table += `
+                   <tr>
+                   <td colspan="4" class="float-right font-bold"></td>
+                   </tr>
+                   `;
+                });
+
+               table +=  
+               `<tr>
+                     <td colspan="5" class="font-bold"></td>
+                     <td colspan="4" class="name font-bold">
+                     ${name}
+                     </td>
+                  </tr>
+               </tfoot>
+
+               `
+
+               table += '</table>';
+
+               // Mengubah konten elemen "tableContainer" dengan tabel baru
+               $('#tableContainer').html(table)
+               // Memasukkan kembali konten elemen anak dengan id "tableContainerHeader"
+               $('#tableContainer').prepend(tableContainerHeaderContent)
+
+               // Mengubah properti "display" menjadi "flex" pada elemen anak dengan id "tableContainerHeader"
+               $('#tableContainerHeader').css('display', 'flex')
+
+               loading.classList.remove('hidden')
+               loading.classList.add('block')
+
+               setTimeout(() => {
+                  loading.classList.remove('block')
+                  loading.classList.add('hidden')
+                  generatePDF(response.data)
+               }, 1000)
             }
-
-            table += `
-            <tfoot class="table-footer">
-            <tr>
-            <td colspan="4" class="float-right font-bold">Bogor, ${dateFormat()}</td>
-            <td colspan="4" class="font-bold">Mengetahui</td>
-            </tr>
-            <tr>
-            <td colspan="4" class="name float-right font-bold">
-            ${name}
-            </td>
-            </tr>
-            </tfoot>
-            `;
-
-            table += '</table>';
-
-            // Mengubah konten elemen "tableContainer" dengan tabel baru
-            $('#tableContainer').html(table);
-
-            // Memasukkan kembali konten elemen anak dengan id "tableContainerHeader"
-            $('#tableContainer').prepend(tableContainerHeaderContent);
-
-            // Mengubah properti "display" menjadi "flex" pada elemen anak dengan id "tableContainerHeader"
-            $('#tableContainerHeader').css('display', 'flex');
-
-            loading.classList.remove('hidden');
-            loading.classList.add('block');
-
-            setTimeout(() => {
-               loading.classList.remove('block');
-               loading.classList.add('hidden');
-               generatePDF(response.data);
-            }, 1000);
          }
-      }
-   });
-});
+      })
+   } else {
+      Swal.fire(
+         'Ooppps?',
+       'Pilih data laporan EOQ terlebih dahulu ?',
+       'question'
+       )
+      closeSelectedBtn.hide()
+   }
+})
 
 
 function generatePDF() {  
-	// Menyembunyikan tombol cetak
-    $('.dom-laporan-table').hide('slow').fadeOut(1000)
-    printLaporanBtn.show().fadeIn(1000)
-    closeSelectedBtn.addClass('hidden')
-
-    // Menginisialisasi kembali container
-    container = $('#tableContainer');
+   $(".dataCheckbox").prop("checked", false);
+   $("#checkAll").prop("checked", false);
+   // printLaporanBtn.show().fadeIn(1000)
+   closeSelectedBtn.addClass('hidden')
+   container = $('#tableContainer');
 
 	getCanvas().then(function (canvas) {  
 		let img = canvas.toDataURL("image/png"),  
@@ -149,11 +180,27 @@ function generatePDF() {
 			unit: 'px',  
 			format: 'a4'  
 		})
-		doc.addImage(img, 'JPEG', 20, 20) 
-		doc.save('laporan-eoq.pdf')
-		container.width(cache_width) 
-		$('.table-header').addClass('hidden') 
-	});  
+		doc.addImage(img, 'JPEG', 20, 20)
+      // aktifkan bagian ini (doc.save) jika ingin file pdf otomatis langsung tersimpan 
+		// doc.save('laporan-eoq.pdf')
+      // doc.output('dataurlnewwindow', 'laporan-eoq-preview.pdf')
+      let pdfWindow = window.open("");
+      pdfWindow.document.write(`<iframe width='100%' height='100%' src='${doc.output('datauristring')}'></iframe>`);
+      pdfWindow.document.title = 'laporan-eoq-preview.pdf'
+
+      const pageCount = doc.internal.getNumberOfPages();
+      for (let i = 0; i < pageCount; i++) {
+         doc.setPage(i);
+         doc.setFontSize(8);
+         doc.setTextColor(128);
+         doc.text(20, doc.internal.pageSize.getHeight() - 10, `Page ${i + 1} of ${pageCount}`);
+      }
+
+		container.width(cache_width)
+	})
+
+
+
 }  
 
 function getCanvas() {  
