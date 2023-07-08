@@ -39,9 +39,25 @@ function getDataFromTable(selectType) {
 $('#displaying').on('click', '#print-laporan', function(e) {
    e.preventDefault();
    if(selectedData.length > 0) {
+      let endPoint = ''
+
+      switch(pagePath) {
+         case 'laporan-eoq':
+            endPoint = '/print/laporan-eoq'
+         break;
+
+         case 'laporan-pembelian':
+            endPoint = '/print/laporan-pembelian'
+         break;
+
+         default:
+         console.log("No endpoint")
+      }
+
       closeSelectedBtn.show().fadeIn(1000)
+      
       $.ajax({
-         url: '/print/laporan-eoq',
+         url: endPoint,
          type: 'POST',
          dataType: 'json',
          data: { selectedData: selectedData },
@@ -151,7 +167,7 @@ $('#displaying').on('click', '#print-laporan', function(e) {
                setTimeout(() => {
                   loading.classList.remove('block')
                   loading.classList.add('hidden')
-                  generatePDF(response.data)
+                  // generatePDF(response.data)
                }, 1000)
             }
          }
