@@ -1,15 +1,15 @@
 <?php
 namespace app\controllers;
 
-use app\models\{DataObat, PengajuanObat};
+use app\models\{DataObat, Pembelian};
 use app\helpers\{Helpers};
 use app\datasources\WebApp;
 
 class PembelianController {
 
 
-    public $helpers, $conn, $data_model;
-    private $pengajuan_model;
+    public $helpers, $conn, $obat_model;
+    private $pembelian_model;
 
     public function __construct()
     {
@@ -20,8 +20,8 @@ class PembelianController {
         }
 
         $this->helpers = new Helpers;
-        $this->data_model = new DataObat;
-        $this->pengajuan_model = new PengajuanObat;
+        $this->obat_model = new DataObat;
+        $this->pembelian_model = new Pembelian;
     }
 
     public function views($views, $param)
@@ -40,12 +40,6 @@ class PembelianController {
         $is_mobile = $helpers->isMobileDevice();
 
         $partials = $webApp->getPartials($param['page']);
-
-         // Query data from database
-        $limit = 10;
-        $page = isset($_GET['page']) ? intval(@$_GET['page']) : 1;
-        $offset = ($page - 1) * $limit;
-        $obats = $this->data_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $offset, $limit");
 
         foreach($views as $view):
             require_once $view;
@@ -76,44 +70,6 @@ class PembelianController {
         $this->views($prepare_views, $data);
     }
 
-    public function lists_obat()
-    {
-        try {
-            $limit = 10;
-            $keyword = isset($_GET['term']) ? @$_GET['term'] : '';
-            $page = isset($_GET['page']) ? intval(@$_GET['page']) : 1;
-            $offset = ($page - 1) * $limit;
-
-            if ($keyword) {
-                $countPage = $this->data_model->countSearchData($keyword);
-                $obats = $this->data_model->searchData($keyword, $offset, $limit);
-            } else {
-                $countPage = $this->data_model->countAllData();
-                $obats = $this->data_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $offset, $limit");
-            }
-
-            $totalPage = ceil($countPage / $limit);
-
-            $results = [];
-
-            foreach ($obats as $obat) {
-                $results[] = [
-                    'id' => $obat['kd_obat'],
-                    'text' => $obat['kd_obat'] . ' - ' . $obat['nm_obat']
-                ];
-            }
-
-            echo json_encode($results);
-        } catch (\PDOException $e) {
-            $data = [
-                'error' => true,
-                'message' => "Terjadi kesalahan : " . $e->getMessage()
-            ];
-
-            echo json_encode($data);
-        }
-    }
-
 
     public function edit($dataParam)
     {
@@ -128,7 +84,7 @@ class PembelianController {
         try {
             header("Content-Type: application/json");
 
-            if (empty(@$_POST['kd_obat']) || empty( @$_POST['k_tahun']) || empty(@$_POST['b_simpan']) || empty(@$_POST['b_pesan'])) {
+            if (empty(@$_POST['kd_obat']) || empty( @$_POST['jumlah'])) {
                 $data = [
                     'error' => true,
                     'message' => "Data tidak boleh kosong"
@@ -137,23 +93,26 @@ class PembelianController {
                 echo json_encode($data);
                 exit();
             } else {
+                $last_id = $this->pembelian_model->lastIdBeli();
+                $date = new \DateTime();
+                $dataObat = $this->obat_model->obatById(@$_POST['kd_obat']);
+                $kode_beli = Helpers::generateRandomString(8);
+
                 $prepareData = [
+                    'kd_beli' => $kode_beli,
+                    'tgl_beli' => $date->format('Y-m-d, H:i:s'),
                     'kd_obat' => @$_POST['kd_obat'],
-                    'k_tahun' => @$_POST['k_tahun'],
-                    'b_simpan' => @$_POST['b_simpan'],
-                    'b_pesan' => @$_POST['b_pesan']
+                    'jumlah' => @$_POST['jumlah']
                 ];
 
 
-                if($this->pengajuan_model->store($prepareData) > 0) {
-                    $pengajuanObat = $this->pengajuan_model->pengajuanById(@$_POST['kd_obat']);
-
-                    // var_dump($pengajuanObat);die;
+                if($this->pembelian_model->store($prepareData, $last_id !== NULL ? $last_id+=1 : 1) > 0){
+                    $pembelian = $this->pembelian_model->pembelianById(@$_POST['kd_obat']);
 
                     $data = [
                         'success' => true,
-                        'message' => "Pengajuan baru dengan kode : {$pengajuanObat['kd_obat']}, berhasil ditambahkan!",
-                        'data' => $pengajuanObat
+                        'message' => "Pembelian baru dengan kode : {$pembelian['kd_beli']}, berhasil ditambahkan!",
+                        'data' => $pembelian
                     ];
                     echo json_encode($data);
                 }

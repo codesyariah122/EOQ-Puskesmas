@@ -58,6 +58,10 @@ $app->post('/print/laporan-eoq', 'LaporanEoqController@print');
 
 // Pembelian & laporan Pembelian
 $app->get('/dashboard/pembelian', 'PembelianController@index');
+$app->post('/add/pembelian', 'PembelianController@store');
+$app->get('/dashboard/laporan-pembelian', 'LaporanPembelianController@index');
+$app->get('/lists/laporan-pembelian', 'LaporanPembelianController@all');
+$app->post('/print/laporan-pembelian', 'LaporanPembelianController@print');
 
 // Jalankan router
 $app->run();

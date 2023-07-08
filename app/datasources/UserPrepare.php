@@ -37,7 +37,7 @@ class UserPrepare {
 				'nm_lengkap' => 'Asep Danang',
 				'alamat' => trim('Jl. Toraja No.19 Rt.03/Rw.04'),
 				'notlp' => $helpers->formatPhoneNumber('081290171787'),
-				'username' => $helpers->generate_username('Asep Danang'),
+				'username' => $helpers->generateUsernameFromName('Asep Danang'),
 				'role' => 'user',
 				'password' => password_hash("user", PASSWORD_DEFAULT)
 			],
@@ -47,7 +47,7 @@ class UserPrepare {
 				'nm_lengkap' => 'Dian Minati',
 				'alamat' => trim('Jl. Kemuning No.10'),
 				'notlp' => $helpers->formatPhoneNumber('081293171800'),
-				'username' => $helpers->generate_username('Dian Minati'),
+				'username' => $helpers->generateUsernameFromName('Dian Minati'),
 				'role' => 'user',
 				'password' => password_hash("user", PASSWORD_DEFAULT)
 			],
@@ -57,7 +57,7 @@ class UserPrepare {
 				'nm_lengkap' => 'Riki Jiwa',
 				'alamat' => trim('Jl. Sekarwati No.11'),
 				'notlp' => $helpers->formatPhoneNumber('089693171870'),
-				'username' => $helpers->generate_username('Riki Jiwa'),
+				'username' => $helpers->generateUsernameFromName('Riki Jiwa'),
 				'role' => 'user',
 				'password' => password_hash("user", PASSWORD_DEFAULT)
 			],
@@ -67,7 +67,7 @@ class UserPrepare {
 				'nm_lengkap' => 'Bambang Saputro',
 				'alamat' => trim('Jl. Ananda 45 Blok G1'),
 				'notlp' => $helpers->formatPhoneNumber('085693171873'),
-				'username' => $helpers->generate_username('Bambang Saputro'),
+				'username' => $helpers->generateUsernameFromName('Bambang Saputro'),
 				'role' => 'user',
 				'password' => password_hash("user", PASSWORD_DEFAULT)
 			],
@@ -77,7 +77,7 @@ class UserPrepare {
 				'nm_lengkap' => 'Dea Zulkarnaen',
 				'alamat' => trim('Jl. Kemuning No. 21'),
 				'notlp' => $helpers->formatPhoneNumber('085693171871'),
-				'username' => $helpers->generate_username('Dea Zulkarnaen'),
+				'username' => $helpers->generateUsernameFromName('Dea Zulkarnaen'),
 				'role' => 'user',
 				'password' => password_hash("user", PASSWORD_DEFAULT)
 			]

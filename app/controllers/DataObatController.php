@@ -8,7 +8,7 @@ use app\datasources\WebApp;
 class DataObatController {
 
 
-    public $helpers, $conn, $data_model;
+    public $helpers, $conn, $obat_model;
 
     public function __construct()
     {
@@ -19,7 +19,7 @@ class DataObatController {
         }
 
         $this->helpers = new Helpers;
-        $this->data_model = new DataObat;
+        $this->obat_model = new DataObat;
     }
 
     public function views($views, $param)
@@ -41,7 +41,7 @@ class DataObatController {
 
          // Query data from database
         $jenis_obat = ['TABLET', 'CAPSULE', 'SYRUP'];
-        $dataObat = $this->data_model->obatById($dataParam);
+        $dataObat = $this->obat_model->obatById($dataParam);
 
         foreach($views as $view):
             require_once $view;
@@ -107,13 +107,13 @@ class DataObatController {
             $offset = ($page - 1) * $limit;
 
             if (!empty($keyword)) {
-                $countPage = $this->data_model->countSearchData($keyword);
+                $countPage = $this->obat_model->countSearchData($keyword);
                 $totalPage = ceil($countPage / $limit);
-                $obats = $this->data_model->searchData($keyword, $offset, $limit);
+                $obats = $this->obat_model->searchData($keyword, $offset, $limit);
             } else {
-                $countPage = $this->data_model->countAllData();
+                $countPage = $this->obat_model->countAllData();
                 $totalPage = ceil($countPage / $limit);
-                $obats = $this->data_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $offset, $limit");
+                $obats = $this->obat_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $offset, $limit");
             }
 
             if (!empty($obats)) { 
@@ -153,7 +153,7 @@ class DataObatController {
         try {
             header("Content-Type: application/json");
 
-            $get_obat_max = $this->data_model->maxKdObat();
+            $get_obat_max = $this->obat_model->maxKdObat();
             $last_id = $get_obat_max ? $get_obat_max+=1 : 1;
             $last_kdObat = "KO".$last_id;
             if (empty(@$_POST['nm_obat']) || empty( @$_POST['jenis_obat']) || empty(@$_POST['harga']) || empty(@$_POST['stok'])) {
@@ -174,8 +174,8 @@ class DataObatController {
                 ];
 
 
-                if($this->data_model->store($prepareData, $get_obat_max) > 0) {
-                    $newObat = $this->data_model->obatById($last_kdObat);
+                if($this->obat_model->store($prepareData, $get_obat_max) > 0) {
+                    $newObat = $this->obat_model->obatById($last_kdObat);
                     // var_dump($newObat); die;
                     $data = [
                         'success' => true,
@@ -210,8 +210,8 @@ class DataObatController {
                 'stok' => @$_POST['stok']
             ];
 
-            $obatHasUpdate = $this->data_model->obatById($dataParam);
-            if($this->data_model->update($prepareData, $dataParam) === 1) {
+            $obatHasUpdate = $this->obat_model->obatById($dataParam);
+            if($this->obat_model->update($prepareData, $dataParam) === 1) {
                 $data = [
                     'success' => true,
                     'message' => "Obat with kode : {$dataParam}, berhasil di update!",
@@ -242,8 +242,8 @@ class DataObatController {
         try {
             header("Content-Type: application/json");
 
-            if($this->data_model->delete($dataParam) === 1) {
-                $obatHasUpdate = $this->data_model->obatById($dataParam);
+            if($this->obat_model->delete($dataParam) === 1) {
+                $obatHasUpdate = $this->obat_model->obatById($dataParam);
                 $data = [
                     'success' => true,
                     'message' => "Obat with kode : {$dataParam}, berhasil di delete!",

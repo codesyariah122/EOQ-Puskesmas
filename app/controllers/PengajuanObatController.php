@@ -8,7 +8,7 @@ use app\datasources\WebApp;
 class PengajuanObatController {
 
 
-    public $helpers, $conn, $data_model;
+    public $helpers, $conn, $obat_model;
     private $pengajuan_model;
 
     public function __construct()
@@ -20,7 +20,7 @@ class PengajuanObatController {
         }
 
         $this->helpers = new Helpers;
-        $this->data_model = new DataObat;
+        $this->obat_model = new DataObat;
         $this->pengajuan_model = new PengajuanObat;
     }
 
@@ -40,12 +40,6 @@ class PengajuanObatController {
         $is_mobile = $helpers->isMobileDevice();
 
         $partials = $webApp->getPartials($param['page']);
-
-         // Query data from database
-        $limit = 10;
-        $page = isset($_GET['page']) ? intval(@$_GET['page']) : 1;
-        $offset = ($page - 1) * $limit;
-        $obats = $this->data_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $offset, $limit");
 
         foreach($views as $view):
             require_once $view;
@@ -85,11 +79,11 @@ class PengajuanObatController {
             $offset = ($page - 1) * $limit;
 
             if ($keyword) {
-                $countPage = $this->data_model->countSearchData($keyword);
-                $obats = $this->data_model->searchData($keyword, $offset, $limit);
+                $countPage = $this->obat_model->countSearchData($keyword);
+                $obats = $this->obat_model->searchData($keyword, $offset, $limit);
             } else {
-                $countPage = $this->data_model->countAllData();
-                $obats = $this->data_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $offset, $limit");
+                $countPage = $this->obat_model->countAllData();
+                $obats = $this->obat_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $offset, $limit");
             }
 
             $totalPage = ceil($countPage / $limit);

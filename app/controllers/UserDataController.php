@@ -161,7 +161,7 @@ class UserDataController {
             preg_match($pattern, $last_kdAdmin, $matches);
             $match_kdAdmin = intval($matches[0]) + 1;
             $kd_admin = "KU0{$match_kdAdmin}";
-            $username = $this->helpers->generate_username(@$_POST['nm_lengkap']);
+            $username = $this->helpers->generateUsernameFromName(@$_POST['nm_lengkap']);
             $check_notlp = $this->helpers->validatePhoneNumber(@$_POST['notlp']);
 
             

@@ -30,6 +30,7 @@ let cache_width = container.width()
 let a4 = [600.28, 841.89]
 let printLaporanBtn = $('#print-laporan')
 let closeSelectedBtn = $('#close-selected')
+let select2Elem = $('.select2-results').data('select2')
 
 setTimeout(() => {
 	loading.classList.remove('block')

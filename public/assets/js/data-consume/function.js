@@ -3,11 +3,27 @@
  * Desc: File ini merupakan serangkaian instruksi untuk melakukan manipulasi data dan element pada struktur html. Melakukan ajax request secara asynchronous, sehingga memungkinkan untuk menambahkan nilai visual pada user experience.
  * */
 
+
 const formatIdr = (angka) => {
 	const formatRupiah = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(angka);
 
 	return formatRupiah
 
+}
+
+const formatDateIndonesia = (dateString) => {
+  // Mendapatkan objek Date dari string tanggal
+  const date = new Date(dateString);
+
+  // Mendapatkan komponen tanggal, bulan, dan tahun
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Ditambahkan 1 karena bulan dimulai dari 0
+  const year = date.getFullYear();
+
+  // Mengatur format tanggal menjadi "DD-MM-YYYY"
+  const formattedDate = `${day.toString().padStart(2, '0')}-${month.toString().padStart(2, '0')}-${year}`;
+
+  return formattedDate;
 }
 
 const dateFormat = () => {
@@ -17,6 +33,11 @@ const dateFormat = () => {
 	const year = currentDate.getFullYear();
 
 	return `${day} ${month} ${year}`;
+}
+
+const hitungTotal = (data) => {
+	const total = Math.round(data.harga * data.jumlah)
+	return formatIdr(total)
 }
 
 const hitungEconomics = (data) => {
@@ -66,6 +87,7 @@ const getAllData = (type, page=1, keyword='') => {
 		dataType: 'json',
 		data: {},
 		success: function (response) {
+
 			let lists = response
 
 			if(lists.success) {
@@ -165,57 +187,96 @@ const getAllData = (type, page=1, keyword='') => {
 					const reports = lists.data
 					reports.map(report => {
 						domDataHTML += `
-						<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-						<td>
-						<div class="flex justify-center space-x-4">
-						<div>
-						<input class="default-checkbox dataCheckbox" type="checkbox" value="${report.kd_obat}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                                
-						</div>
-						</div>
+							<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+							<td>
+							<div class="flex justify-center space-x-4">
+							<div>
+							<input class="default-checkbox dataCheckbox" type="checkbox" value="${report.kd_obat}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                                
+							</div>
+							</div>
+							</td>
+							<td class="eoq-id hidden" data-id="${report.id}">
+							${report.id}
+							</td>
+							<th scope="row" class="px-6 py-4 text-xs font-medium text-gray-900 whitespace-nowrap dark:text-white">
+							${report.kd_obat}
+							</th>
+							<td class="px-6 py-4">
+							${report.nm_obat}
+							</td>
+							<td class="px-6 py-4">${report.k_tahun}</td>
+							<td class="px-6 py-4">
+							${formatIdr(report.b_simpan)}
+							</td>
+							<td class="px-6 py-4">
+							${formatIdr(report.b_pesan)}
+							</td>
+							<td class="px-6 py-4">
+							<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+							${hitungEconomics({
+								b_pesan: report.b_pesan,
+								k_tahun: report.k_tahun,
+								b_simpan: report.b_simpan
+								})
+							} ${report.jenis_obat}
+							</span>
+							</td>
+							<td class="px-6 py-4">
+							<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+							${hitungIntervalWaktu({
+								b_pesan: report.b_pesan,
+								k_tahun: report.k_tahun,
+								b_simpan: report.b_simpan
+							})
+						} Hari
+						</span>
 						</td>
-						<td class="eoq-id hidden" data-id="${report.id}">
-						${report.id}
-						</td>
-						<th scope="row" class="px-6 py-4 text-xs font-medium text-gray-900 whitespace-nowrap dark:text-white">
-						${report.kd_obat}
-						</th>
-						<td class="px-6 py-4">
-						${report.nm_obat}
-						</td>
-						<td class="px-6 py-4">${report.k_tahun}</td>
-						<td class="px-6 py-4">
-						${formatIdr(report.b_simpan)}
-						</td>
-						<td class="px-6 py-4">
-						${formatIdr(report.b_pesan)}
-						</td>
-						<td class="px-6 py-4">
-						<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-						${hitungEconomics({
-							b_pesan: report.b_pesan,
-							k_tahun: report.k_tahun,
-							b_simpan: report.b_simpan
-						})
-					} ${report.jenis_obat}
-					</span>
-					</td>
-					<td class="px-6 py-4">
-					<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
-					${hitungIntervalWaktu({
-						b_pesan: report.b_pesan,
-						k_tahun: report.k_tahun,
-						b_simpan: report.b_simpan
-					})
-				} Hari
-				</span>
-				</td>
-				</tr>
-				`;
-			})
+						</tr>
+					`;})
+					break;
+
+					case "laporan-pembelian":
+						const reportsbeli = lists.data
+						reportsbeli.map(report => {
+							domDataHTML += `
+								<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+								<td>
+								<div class="flex justify-center space-x-4">
+								<div>
+								<input class="default-checkbox dataCheckbox" type="checkbox" value="${report.kd_beli}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                                
+								</div>
+								</div>
+								</td>
+								<td class="eoq-id hidden" data-id="${report.id}">
+								${report.id}
+								</td>
+								<th scope="row" class="px-6 py-4 text-xs font-medium text-gray-900 whitespace-nowrap dark:text-white">
+
+								<div class="kd_beli">${report.kd_beli}</div>
+								<button type="button" class="copyButton text-gray-700 border-none hover:bg-gray-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg p-2.5 text-center inline-flex items-center mr-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500" data-kode="${report.kd_beli}">
+								<i class="fa-solid fa-clipboard"></i>
+								<span class="sr-only">Icon description</span>
+								</button>
+								</th>
+								<td class="px-6 py-4">
+								${formatDateIndonesia(report.tgl_beli)}
+								</td>
+								<td class="px-6 py-4">${report.kd_obat}</td>
+								<td class="px-6 py-4">${report.nm_obat}</td>
+								<td class="px-6 py-4">${report.jumlah}</td>
+								<td class="px-6 py-4">
+								${formatIdr(report.harga)}
+								</td>
+								<td class="px-6 py-4">
+								${hitungTotal({harga: report.harga, jumlah: report.jumlah})}
+								</td>
+								
+							</tr>
+						`;})
 					break;
 					// type lainnya ....
 
-				default:
+					default:
 
 				}
 				
@@ -236,24 +297,31 @@ const searchData = (param, type) => {
 	let prepareData = {}
 
 	switch(type) {
-	case 'data-user':
-		endPoint = `/lists/${type}?keyword=${param.data}`
-		prepareData = {
-			keyword: param.data
-		}
+		case 'data-user':
+			endPoint = `/lists/${type}?keyword=${param.data}`
+			prepareData = {
+				keyword: param.data
+			}
 		break;
-	case 'data-obat':
-		endPoint = `/lists/${type}?keyword=${param.data}`
-		prepareData = {
-			keyword: param.data
-		}
+		case 'data-obat':
+			endPoint = `/lists/${type}?keyword=${param.data}`
+			prepareData = {
+				keyword: param.data
+			}
 		break;
 
-	case "laporan-eoq":
-		endPoint = `/lists/${type}?keyword=${param.data}`
-		prepareData = {
-			keyword: param.data
-		}
+		case "laporan-eoq":
+			endPoint = `/lists/${type}?keyword=${param.data}`
+			prepareData = {
+				keyword: param.data
+			}
+		break;
+
+		case "laporan-pembelian":
+			endPoint = `/lists/${type}?keyword=${param.data}`
+			prepareData = {
+				keyword: param.data
+			}
 		break;
 			// type lainnya ...
 
@@ -273,139 +341,179 @@ const searchData = (param, type) => {
 			if(lists.success) {
 				
 				switch(type) {
-				case 'data-user':
-					const users = lists?.data
-					const sessionUser = lists?.session_user
+					case 'data-user':
+						const users = lists?.data
+						const sessionUser = lists?.session_user
 
-					users?.map(user => {
-						domDataHTML += `
-						<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-						<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-						${user.kd_admin}
-						</th>
-						<td class="px-6 py-4">
-						${user.nm_lengkap}
-						</td>
-						<td class="px-6 py-4">
-						${user.alamat}
-						</td>
-						<td class="px-6 py-4">
-						${user.notlp}
-						</td>
-						<td class="px-6 py-4">
-						${user.username}
-						</td>
+						users?.map(user => {
+							domDataHTML += `
+							<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+							<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+							${user.kd_admin}
+							</th>
+							<td class="px-6 py-4">
+							${user.nm_lengkap}
+							</td>
+							<td class="px-6 py-4">
+							${user.alamat}
+							</td>
+							<td class="px-6 py-4">
+							${user.notlp}
+							</td>
+							<td class="px-6 py-4">
+							${user.username}
+							</td>
 
-						${user.username !== sessionUser ? 
-						`<td>
-						<div class="flex justify-center space-x-4">
-						<div>
-						<button type="button" class="edit px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
-						<i class="fa-solid fa-pen-to-square"></i>
-						</button>                                 
-						</div>
-						<div>
-						<button type="button" class="delete px-3 py-2 text-xs font-medium text-center text-white text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
-						<i class="fa-solid fa-trash"></i>
-						</button>
-						</div>
-						</div>
-						</td>` : 
+							${user.username !== sessionUser ? 
+							`<td>
+							<div class="flex justify-center space-x-4">
+							<div>
+							<button type="button" class="edit px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
+							<i class="fa-solid fa-pen-to-square"></i>
+							</button>                                 
+							</div>
+							<div>
+							<button type="button" class="delete px-3 py-2 text-xs font-medium text-center text-white text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
+							<i class="fa-solid fa-trash"></i>
+							</button>
+							</div>
+							</div>
+							</td>` : 
 
-						''
-					}
-					</tr>
-					`;
-				})
-					break;
-					
-				case 'data-obat':
-					const obats = lists.data
-					obats.map(obat => {
-						domDataHTML += `
-						<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-						<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-						${obat.kd_obat}
-						</th>
-						<td class="px-6 py-4">
-						${obat.nm_obat}
-						</td>
-						<td class="px-6 py-4">
-						<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">${obat.jenis_obat}</span>
-						</td>
-						<td class="px-6 py-4">
-						${formatIdr(obat.harga)}
-						</td>
-						<td class="px-6 py-4">
-						${obat.stok}
-						</td>
-						<td>
-						<div class="flex justify-center space-x-4">
-						<div>
-						<button type="button" class="edit px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg" data-id="${obat.kd_obat}">
-						<i class="fa-solid fa-pen-to-square"></i>
-						</button>                                 
-						</div>
-						<div>
-						<button type="button" class="delete px-3 py-2 text-xs font-medium text-center text-white text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg" data-id="${obat.kd_obat}">
-						<i class="fa-solid fa-trash"></i>
-						</button>
-						</div>
-						</div>
-						</td>
+							''
+						}
 						</tr>
 						`;
 					})
 					break;
-
-				case "laporan-eoq":
-					const reports = lists.data
-					reports.map(report => {
-						domDataHTML += `
-						<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-						<td>
-						<div class="flex justify-center space-x-4">
-						<div>
-						<input id="default-checkbox" type="checkbox" value="${report.kd_obat}" class="dataCheckbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                                
-						</div>
-						</div>
-						</td>
-						<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-						${report.kd_obat}
-						</th>
-						<td class="px-6 py-4">
-						${report.nm_obat}
-						</td>
-						<td class="px-6 py-4">${report.k_tahun}</td>
-						<td class="px-6 py-4">
-						${formatIdr(report.b_simpan)}
-						</td>
-						<td class="px-6 py-4">
-						${formatIdr(report.b_pesan)}
-						</td>
-						<td class="px-6 py-4">
-						<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-						${hitungEconomics({
-							b_pesan: report.b_pesan,
-							k_tahun: report.k_tahun,
-							b_simpan: report.b_simpan
+					
+					case 'data-obat':
+						const obats = lists.data
+						obats.map(obat => {
+							domDataHTML += `
+							<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+							<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+							${obat.kd_obat}
+							</th>
+							<td class="px-6 py-4">
+							${obat.nm_obat}
+							</td>
+							<td class="px-6 py-4">
+							<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">${obat.jenis_obat}</span>
+							</td>
+							<td class="px-6 py-4">
+							${formatIdr(obat.harga)}
+							</td>
+							<td class="px-6 py-4">
+							${obat.stok}
+							</td>
+							<td>
+							<div class="flex justify-center space-x-4">
+							<div>
+							<button type="button" class="edit px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg" data-id="${obat.kd_obat}">
+							<i class="fa-solid fa-pen-to-square"></i>
+							</button>                                 
+							</div>
+							<div>
+							<button type="button" class="delete px-3 py-2 text-xs font-medium text-center text-white text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg" data-id="${obat.kd_obat}">
+							<i class="fa-solid fa-trash"></i>
+							</button>
+							</div>
+							</div>
+							</td>
+							</tr>
+							`;
 						})
-					} ${report.jenis_obat}
-					</span>
-					</td>
-					<td class="px-6 py-4">
-					<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
-					${hitungIntervalWaktu({
-						b_pesan: report.b_pesan,
-						k_tahun: report.k_tahun,
-						b_simpan: report.b_simpan
-					})
-				} Hari
-				</span>
-				</td>
-				</tr>
-				`;
-			})
+					break;
+
+					case "laporan-eoq":
+						const reports = lists.data
+						reports.map(report => {
+							domDataHTML += `
+							<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+							<td>
+							<div class="flex justify-center space-x-4">
+							<div>
+							<input id="default-checkbox" type="checkbox" value="${report.kd_obat}" class="dataCheckbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                                
+							</div>
+							</div>
+							</td>
+							<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+							${report.kd_obat}
+							</th>
+							<td class="px-6 py-4">
+							${report.nm_obat}
+							</td>
+							<td class="px-6 py-4">${report.k_tahun}</td>
+							<td class="px-6 py-4">
+							${formatIdr(report.b_simpan)}
+							</td>
+							<td class="px-6 py-4">
+							${formatIdr(report.b_pesan)}
+							</td>
+							<td class="px-6 py-4">
+							<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+							${hitungEconomics({
+								b_pesan: report.b_pesan,
+								k_tahun: report.k_tahun,
+								b_simpan: report.b_simpan
+							})
+							} ${report.jenis_obat}
+							</span>
+							</td>
+							<td class="px-6 py-4">
+							<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+							${hitungIntervalWaktu({
+								b_pesan: report.b_pesan,
+								k_tahun: report.k_tahun,
+								b_simpan: report.b_simpan
+							})
+							} Hari
+							</span>
+							</td>
+							</tr>
+							`;
+						})
+					break;
+
+					case "laporan-pembelian":
+						const reportsbeli = lists.data
+						reportsbeli.map(report => {
+							domDataHTML += `
+								<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+								<td>
+								<div class="flex justify-center space-x-4">
+								<div>
+								<input class="default-checkbox dataCheckbox" type="checkbox" value="${report.kd_beli}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                                
+								</div>
+								</div>
+								</td>
+								<td class="eoq-id hidden" data-id="${report.id}">
+								${report.id}
+								</td>
+								<th scope="row" class="px-6 py-4 text-xs font-medium text-gray-900 whitespace-nowrap dark:text-white">
+
+								<div class="kd_beli">${report.kd_beli}</div>
+								<button type="button" class="copyButton text-gray-700 border-none hover:bg-gray-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg p-2.5 text-center inline-flex items-center mr-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500" data-kode="${report.kd_beli}">
+								<i class="fa-solid fa-clipboard"></i>
+								<span class="sr-only">Icon description</span>
+								</button>
+								</th>
+								<td class="px-6 py-4">
+								${formatDateIndonesia(report.tgl_beli)}
+								</td>
+								<td class="px-6 py-4">${report.kd_obat}</td>
+								<td class="px-6 py-4">${report.nm_obat}</td>
+								<td class="px-6 py-4">${report.jumlah}</td>
+								<td class="px-6 py-4">
+								${formatIdr(report.harga)}
+								</td>
+								<td class="px-6 py-4">
+								${hitungTotal({harga: report.harga, jumlah: report.jumlah})}
+								</td>
+								
+							</tr>
+						`;})
 					break;
 					// type lainnya ....
 
@@ -440,31 +548,38 @@ const addData = (param, type) => {
 	let prepareData = {}
 
 	switch(type) {
-	case 'data-user':
-		prepareData = {
-			nm_lengkap: param.data.nm_lengkap,
-			alamat: param.data.alamat,
-			notlp: param.data.notlp,
-			role: param.data.role
-		}
+		case 'data-user':
+			prepareData = {
+				nm_lengkap: param.data.nm_lengkap,
+				alamat: param.data.alamat,
+				notlp: param.data.notlp,
+				role: param.data.role
+			}
 		break;
 
-	case 'data-obat':
-		prepareData = {
-			nm_obat: param.data.nm_obat,
-			jenis_obat: param.data.jenis_obat,
-			harga: param.data.harga,
-			stok: param.data.stok
-		}
+		case 'data-obat':
+			prepareData = {
+				nm_obat: param.data.nm_obat,
+				jenis_obat: param.data.jenis_obat,
+				harga: param.data.harga,
+				stok: param.data.stok
+			}
 		break;
 
-	case "pengajuan-obat":
-		prepareData = {
-			kd_obat: param.data.kd_obat,
-			k_tahun: param.data.k_tahun,
-			b_simpan: param.data.b_simpan,
-			b_pesan: param.data.b_pesan
-		}
+		case "pengajuan-obat":
+			prepareData = {
+				kd_obat: param.data.kd_obat,
+				k_tahun: param.data.k_tahun,
+				b_simpan: param.data.b_simpan,
+				b_pesan: param.data.b_pesan
+			}
+		break;
+
+		case "pembelian":
+			prepareData = {
+				kd_obat: param.data.kd_obat,
+				jumlah: param.data.jumlah
+			}
 		break;
 			// type lainnya ...
 
@@ -504,78 +619,102 @@ const addData = (param, type) => {
 				console.log("This request took "+time+" ms");
 
 				switch(type) {
-				case 'data-user':
-					$('input[name="nm_lengkap"]').val('')
-					$('textarea[name="alamat"]').val('')
-					$('input[name="notlp"]').val('')
-					$('#role').val('Pilih Role')
-					setTimeout(() => {
-						alertSuccess.show();
-						messageSuccess.html(`
-							<span class="font-medium"> Berhasil menambah pengguna baru!</span> ${responseData.message}
-							`)
+					case 'data-user':
+						$('input[name="nm_lengkap"]').val('')
+						$('textarea[name="alamat"]').val('')
+						$('input[name="notlp"]').val('')
+						$('#role').val('Pilih Role')
+						setTimeout(() => {
+							alertSuccess.show();
+							messageSuccess.html(`
+								<span class="font-medium"> Berhasil menambah pengguna baru!</span> ${responseData.message}
+								`)
 
-						loadingBtn.addClass('hidden')
-						textBtn.removeClass('hidden')
-						Swal.fire({
-							position: 'top-end',
-							icon: 'success',
-							title: responseData.message,
-							showConfirmButton: false,
-							timer: 1500
-						})
+							loadingBtn.addClass('hidden')
+							textBtn.removeClass('hidden')
+							Swal.fire({
+								position: 'top-end',
+								icon: 'success',
+								title: responseData.message,
+								showConfirmButton: false,
+								timer: 1500
+							})
 
-					}, 1000)
+						}, 1000)
 					break;
 
-				case "data-obat":
-					$('input[name="nm_obat"]').val('')
-					$('#jenis_obat').val('Pilih Jenis Obat')
-					$('input[name="harga"]').val('')
-					$('input[name="stok"]').val('')
-					setTimeout(() => {
-						alertSuccess.show();
-						messageSuccess.html(`
-							<span class="font-medium"> Berhasil menambah data obat baru!</span> ${responseData.message}
-							`)
+					case "data-obat":
+						$('input[name="nm_obat"]').val('')
+						$('#jenis_obat').val('Pilih Jenis Obat')
+						$('input[name="harga"]').val('')
+						$('input[name="stok"]').val('')
+						setTimeout(() => {
+							alertSuccess.show();
+							messageSuccess.html(`
+								<span class="font-medium"> Berhasil menambah data obat baru!</span> ${responseData.message}
+								`)
 
-						loadingBtn.addClass('hidden')
-						textBtn.removeClass('hidden')
-						Swal.fire({
-							position: 'top-end',
-							icon: 'success',
-							title: responseData.message,
-							showConfirmButton: false,
-							timer: 1500
-						})
+							loadingBtn.addClass('hidden')
+							textBtn.removeClass('hidden')
+							Swal.fire({
+								position: 'top-end',
+								icon: 'success',
+								title: responseData.message,
+								showConfirmButton: false,
+								timer: 1500
+							})
 
-					}, 1000)
+						}, 1000)
 					break;
 
-				case "pengajuan-obat":
-					kd_obatOption = null
-					$('input[name="k_tahun"]').val('')
-					$('input[name="b_simpan"]').val('')
-					$('input[name="b_pesan"]').val('')
-					setTimeout(() => {
-						alertSuccess.show();
-						messageSuccess.html(`
-							<span class="font-medium"> Berhasil menambah data pengajuan obat baru!</span> ${responseData.message}
-							<a href="/dashboard/laporan-eoq" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
-							Lihat data pengajuan
-							</a>`)
+					case "pengajuan-obat":
+						kd_obatOption = null
+						$('input[name="k_tahun"]').val('')
+						$('input[name="b_simpan"]').val('')
+						$('input[name="b_pesan"]').val('')
+						setTimeout(() => {
+							alertSuccess.show();
+							messageSuccess.html(`
+								<span class="font-medium"> Berhasil menambah data pengajuan obat baru!</span> ${responseData.message}
+								&nbsp;<a href="/dashboard/laporan-eoq" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+								Lihat data pengajuan
+								</a>`)
 
-						loadingBtn.addClass('hidden')
-						textBtn.removeClass('hidden')
-						Swal.fire({
-							position: 'top-end',
-							icon: 'success',
-							title: responseData.message,
-							showConfirmButton: false,
-							timer: 1500
-						})
+							loadingBtn.addClass('hidden')
+							textBtn.removeClass('hidden')
+							Swal.fire({
+								position: 'top-end',
+								icon: 'success',
+								title: responseData.message,
+								showConfirmButton: false,
+								timer: 1500
+							})
 
-					}, 1000)
+						}, 1000)
+					break;
+
+					case "pembelian":
+						kd_obatOption = ''
+						$('input[name="jumlah"]').val('')
+						setTimeout(() => {
+							alertSuccess.show();
+							messageSuccess.html(`
+								<span class="font-medium"> Pembelian baru berhasil!</span> ${responseData.message}
+								&nbsp;<a href="/dashboard/laporan-pembelian" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+								Lihat laporan pembelian
+								</a>`)
+
+							loadingBtn.addClass('hidden')
+							textBtn.removeClass('hidden')
+							Swal.fire({
+								position: 'top-end',
+								icon: 'success',
+								title: responseData.message,
+								showConfirmButton: false,
+								timer: 1500
+							})
+
+						}, 1000)
 					break;
 
 					// type lainnya
@@ -712,5 +851,28 @@ const deleteData = (param, type) => {
 			}
 		}
 	})
+}
 
+function showToast(message) {
+  const toastContainer = document.getElementById('toastContainer');
+
+  // Create toast element
+  const toast = document.createElement('div');
+  toast.classList.add('toast');
+  toast.innerHTML = message;
+
+  // Add toast to container
+  toastContainer.appendChild(toast);
+
+  // Show toast
+  toast.classList.add('show');
+
+  // Auto hide after 3 seconds
+  setTimeout(() => {
+    toast.classList.add('hide');
+    setTimeout(() => {
+      // Remove toast from container
+      toastContainer.removeChild(toast);
+    }, 300);
+  }, 3000);
 }

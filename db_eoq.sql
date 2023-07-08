@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
-  `id` int NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
   `kd_admin` char(255) NOT NULL,
   `nm_lengkap` varchar(25) NOT NULL,
   `alamat` varchar(255) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE `admin` (
 --
 
 CREATE TABLE `beli` (
-  `id` int NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
   `kd_beli` char(10) NOT NULL,
   `tgl_beli` date NOT NULL,
   `kd_obat` char(10) NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE `beli` (
 --
 
 CREATE TABLE `eoq` (
-  `id` int NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
   `kd_obat` char(10) NOT NULL,
   `k_tahun` int NOT NULL,
   `b_simpan` int NOT NULL,
@@ -92,7 +92,7 @@ INSERT INTO `eoq` (`id`, `kd_obat`, `k_tahun`, `b_simpan`, `b_pesan`) VALUES
 --
 
 CREATE TABLE `obat` (
-  `id` int NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
   `kd_obat` char(10) NOT NULL,
   `nm_obat` varchar(25) NOT NULL,
   `jenis_obat` enum('TABLET','CAPSULE','SYRUP') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -106,6 +106,14 @@ CREATE TABLE `obat` (
 
 INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `jenis_obat`, `harga`, `stok`) VALUES
 (1, 'KO1', 'Alpara', 'TABLET', 1200, 2190),
+(2, 'KO2', 'Acyclovir 400mg', 'TABLET', 1100, 100),
+(3, 'KO3', 'Biolysin tab', 'TABLET', 450, 1380),
+(4, 'KO4', 'Becom C', 'TABLET', 2050, 300),
+(6, 'KO6', 'Caviplex', 'CAPSULE', 420, 1900),
+(5, 'KO5', 'Bufantacid', 'CAPSULE', 300, 1020),
+(7, 'KO7', 'Cavicur', 'TABLET', 610, 390),
+(8, 'KO8', 'Cetirizine', 'TABLET', 230, 1710),
+(9, 'KO9', 'Cimetidine', 'TABLET', 400, 500),
 (10, 'KO10', 'Cefadroxil 500mg', 'TABLET', 700, 610),
 (11, 'KO11', 'Diaform', 'TABLET', 234, 1500),
 (12, 'KO12', 'Allupurinol 100mg', 'TABLET', 220, 850),
@@ -116,7 +124,6 @@ INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `jenis_obat`, `harga`, `stok`) V
 (17, 'KO17', 'OBH Surya Itrasal 100', 'SYRUP', 10000, 200),
 (18, 'KO18', 'Dionicol', 'TABLET', 1050, 190),
 (19, 'KO19', 'Domperidone', 'TABLET', 600, 330),
-(2, 'KO2', 'Acyclovir 400mg', 'TABLET', 1100, 100),
 (20, 'KO20', 'Etafenin', 'TABLET', 320, 800),
 (21, 'KO21', 'Etabion', 'TABLET', 250, 1260),
 (22, 'KO22', 'Farmabex C', 'TABLET', 900, 200),
@@ -127,7 +134,6 @@ INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `jenis_obat`, `harga`, `stok`) V
 (27, 'KO27', 'Grathazon', 'TABLET', 250, 300),
 (28, 'KO28', 'Gasela', 'TABLET', 250, 300),
 (29, 'KO29', 'Glibenclamide 5mg', 'TABLET', 250, 300),
-(3, 'KO3', 'Biolysin tab', 'TABLET', 450, 1380),
 (30, 'KO30', 'Gludefatic', 'TABLET', 300, 200),
 (31, 'KO31', 'Grafalin 4mg', 'TABLET', 100, 250),
 (32, 'KO32', 'Hufamag tab', 'TABLET', 380, 2000),
@@ -138,7 +144,6 @@ INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `jenis_obat`, `harga`, `stok`) V
 (37, 'KO37', 'Incidal', 'TABLET', 3200, 300),
 (38, 'KO38', 'Imodium', 'TABLET', 1220, 100),
 (39, 'KO39', 'Lopamid', 'TABLET', 450, 840),
-(4, 'KO4', 'Becom C', 'TABLET', 2050, 300),
 (40, 'KO40', 'Loratadine 10mg', 'CAPSULE', 150, 550),
 (41, 'KO41', 'Mirasic', 'TABLET', 510, 4100),
 (42, 'KO42', 'Mefinal', 'TABLET', 410, 2100),
@@ -149,7 +154,6 @@ INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `jenis_obat`, `harga`, `stok`) V
 (47, 'KO47', 'Metrolet', 'TABLET', 550, 120),
 (48, 'KO48', 'Opistan', 'TABLET', 700, 900),
 (49, 'KO49', 'Orphen', 'TABLET', 200, 1700),
-(5, 'KO5', 'Bufantacid', 'CAPSULE', 300, 1020),
 (50, 'KO50', 'Omedom tab', 'TABLET', 400, 340),
 (51, 'KO51', 'Omefulvin', 'TABLET', 1850, 100),
 (52, 'KO52', 'Paraflu', 'TABLET', 370, 300),
@@ -160,7 +164,6 @@ INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `jenis_obat`, `harga`, `stok`) V
 (57, 'KO57', 'Arkavit c', 'CAPSULE', 450, 500),
 (58, 'KO58', 'Selcom C', 'TABLET', 450, 500),
 (59, 'KO59', 'Trisela', 'TABLET', 500, 510),
-(6, 'KO6', 'Caviplex', 'CAPSULE', 420, 1900),
 (60, 'KO60', 'Vitazym', 'TABLET', 975, 200),
 (61, 'KO61', 'Voltadex', 'CAPSULE', 1000, 300),
 (62, 'KO62', 'Winatin', 'TABLET', 350, 320),
@@ -168,10 +171,7 @@ INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `jenis_obat`, `harga`, `stok`) V
 (64, 'KO64', 'Amplodipin 5mg', 'TABLET', 220, 1000),
 (65, 'KO65', 'Amplodipin 10mg', 'TABLET', 300, 300),
 (66, 'KO66', 'Amoxillin', 'TABLET', 600, 560),
-(67, 'KO67', 'Tester ABC', 'TABLET', 5000, 100),
-(7, 'KO7', 'Cavicur', 'TABLET', 610, 390),
-(8, 'KO8', 'Cetirizine', 'TABLET', 230, 1710),
-(9, 'KO9', 'Cimetidine', 'TABLET', 400, 500);
+(67, 'KO67', 'Tester ABC', 'TABLET', 5000, 100);
 
 --
 -- Indexes for dumped tables
@@ -181,13 +181,13 @@ INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `jenis_obat`, `harga`, `stok`) V
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
-  ADD PRIMARY KEY (`kd_admin`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `beli`
 --
 ALTER TABLE `beli`
-  ADD PRIMARY KEY (`kd_beli`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `eoq`
@@ -199,7 +199,7 @@ ALTER TABLE `eoq`
 -- Indexes for table `obat`
 --
 ALTER TABLE `obat`
-  ADD PRIMARY KEY (`kd_obat`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -209,7 +209,7 @@ ALTER TABLE `obat`
 -- AUTO_INCREMENT for table `eoq`
 --
 ALTER TABLE `eoq`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

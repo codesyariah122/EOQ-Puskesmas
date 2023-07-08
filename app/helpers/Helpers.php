@@ -145,4 +145,45 @@ class Helpers {
 
     }
 
+    public function generateUsernameFromName($fullname)
+    {
+    	$namaLengkap = $fullname;
+
+		// Mengubah nama lengkap menjadi array kata
+    	$namaArray = explode(' ', $namaLengkap);
+
+		// Mengambil kata terakhir sebagai nama pengguna
+    	$namaPengguna = end($namaArray);
+
+		// Mengubah nama pengguna menjadi lowercase
+    	$namaPengguna = strtolower($namaPengguna);
+
+		// Menghapus spasi pada nama pengguna
+    	$namaPengguna = str_replace(' ', '', $namaPengguna);
+
+		// Menambahkan angka acak dari 1 sampai 99
+    	$angkaAcak = rand(1, 99);
+
+		// Menggabungkan nama pengguna dengan angka acak
+    	$username = $namaPengguna . sprintf('%02d', $angkaAcak);
+
+		// Output hasil username
+    	return $username;
+    }
+
+
+    public static function generateRandomChar() {
+	  $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Karakter yang tersedia
+	  $randomChar = $chars[rand(0, strlen($chars) - 1)]; // Memilih karakter acak
+	  return $randomChar;
+	}
+
+	public static function generateRandomString($length) {
+		$result = '';
+		for ($i = 0; $i < $length; $i++) {
+	    	$result .= Helpers::generateRandomChar(); // Menambahkan karakter acak ke dalam string hasil
+		}
+		return $result;
+	}
+
 }

@@ -1,4 +1,30 @@
+
 $(document).ready(function() {
+
+	$('#displaying').on('click', '.close-toast', function() {
+		$('#toast-success').addClass('hidden')
+		$('#toast-success').hide('slow').fadeOut(1000)
+	})
+
+	$('#displaying').on('click', '.copyButton', function() {
+		let kode = $(this).data('kode');
+		let toast = $(`.toast-${kode}`)
+		let textToCopy = $(this).prev('.kd_beli')[0];
+		let range = document.createRange();
+		range.selectNode(textToCopy);
+		window.getSelection().removeAllRanges();
+		window.getSelection().addRange(range);
+
+		try {
+			document.execCommand('copy');
+			showToast(`<i class="fa-solid fa-check"></i> Kode Beli ${kode} berhasil di copy`);
+			// alert(`Kode ${kode} berhasil disalin: ${textToCopy.textContent}`);
+		} catch (err) {
+			console.error('Gagal menyalin teks ke clipboard:', err);
+		}
+
+		window.getSelection().removeAllRanges();
+	});
 
 	// Pagination displaying data consume
 	$('#displaying').on('click', '.page-link', function(e) {
@@ -53,35 +79,42 @@ $(document).ready(function() {
 		let prepareData = {}
 
 		switch(pagePath) {
-		case 'data-user':
-			prepareData = {
-				nm_lengkap: $('input[name="nm_lengkap"]').val(),
-				alamat: $('textarea[name="alamat"]').val(),
-				notlp: $('input[name="notlp"]').val(),
-				role: $('#role').val()
-			}
+			case 'data-user':
+				prepareData = {
+					nm_lengkap: $('input[name="nm_lengkap"]').val(),
+					alamat: $('textarea[name="alamat"]').val(),
+					notlp: $('input[name="notlp"]').val(),
+					role: $('#role').val()
+				}
 			break;
 
-		case 'data-obat':
-			prepareData = {
-				nm_obat: $('input[name="nm_obat"]').val(),
-				jenis_obat: $('#jenis_obat').val(),
-				harga: $('input[name="harga"]').val(),
-				stok: $('input[name="stok"]').val()
-			}
+			case 'data-obat':
+				prepareData = {
+					nm_obat: $('input[name="nm_obat"]').val(),
+					jenis_obat: $('#jenis_obat').val(),
+					harga: $('input[name="harga"]').val(),
+					stok: $('input[name="stok"]').val()
+				}
 			break;
 
-		case "pengajuan-obat":
-			prepareData = {
-				kd_obat: kd_obatOption,
-				k_tahun: $('input[name="k_tahun"]').val(),
-				b_simpan: $('input[name="b_simpan"]').val(),
-				b_pesan: $('input[name="b_pesan"]').val()
-			}
+			case "pengajuan-obat":
+				prepareData = {
+					kd_obat: kd_obatOption,
+					k_tahun: $('input[name="k_tahun"]').val(),
+					b_simpan: $('input[name="b_simpan"]').val(),
+					b_pesan: $('input[name="b_pesan"]').val()
+				}
 			break;
 
-		default: 
-			console.log("No type")
+			case "pembelian":
+				prepareData = {
+					kd_obat: kd_obatOption,
+					jumlah: $('input[name="jumlah"]').val()
+				}
+			break;
+
+			default: 
+				console.log("No type")
 		}
 
 		const param = {
@@ -229,28 +262,32 @@ $(document).ready(function() {
 
 	// option select lists obat from select2
 	$('#selectOption').select2({
-		placeholder: 'Pilih Obat',
-		allowClear: true,
-		minimumInputLength: 3, // Jumlah karakter minimal untuk memulai pencarian
-		ajax: {
-			url: $('#selectOption').data('action'), // Mendapatkan URL endpoint dari atribut data-action
-			dataType: 'json',
-			delay: 100,
-			processResults: function(data) {
-				return {
-					results: data
-				};
-			},
-			cache: true
-		}
+    	placeholder: 'Pilih Obat',
+	    allowClear: true,
+	    minimumInputLength: 3, // Jumlah karakter minimal untuk memulai pencarian
+	    ajax: {
+	        url: $('#selectOption').data('action'), // Mendapatkan URL endpoint dari atribut data-action
+	        dataType: 'json',
+	        delay: 100,
+	        processResults: function(data) {
+	        	return {
+	        		results: data
+	        	};
+	        },
+	        cache: true
+	    }
 	}).on('select2:select', function(e) {
 	    let selectedValue = e.params.data.id; // Mendapatkan nilai (value) opsi terpilih
-	    kd_obatOption = selectedValue
+	    kd_obatOption = selectedValue;
+	});
+
+	$('#selectOption').on('select2:open', function() {
+		$(this).data('select2').dropdown.$search.attr('autofocus', 'autofocus');
 	});
 
 
 })
 
-if(pagePath !== 'pengajuan-obat') {
+if(pagePath !== 'pengajuan-obat' && pagePath !== 'pembelian') {
 	getAllData(pagePath, 1)
 }

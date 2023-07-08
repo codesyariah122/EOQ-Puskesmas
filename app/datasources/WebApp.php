@@ -221,6 +221,23 @@ class WebApp {
 			];
 			break;
 
+			case "laporan-pembelian";
+			$navbar = "app/views/layout/partials/dashboard/navbar.php";
+			$partials = [
+				'loading' => 'app/views/layout/partials/loading.php',
+				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+				"pengajuan_obat" => "app/views/contents/dashboard/laporan-pembelian.php"
+			];
+			$scripts = [
+				'/public/assets/js/script.js', 
+				'/public/assets/js/auth/function.js', 
+				'/public/assets/js/auth/app.js',
+				'/public/assets/js/data-consume/function.js', 
+				'/public/assets/js/data-consume/app.js',
+				'/public/assets/js/data-consume/pdf.load.js'
+			];
+			break;
+
 			default:
 			$partials = [];
 			$scripts = [];
