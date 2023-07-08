@@ -53,7 +53,10 @@ class LoginController {
 
 	public function authenticate()
 	{
-
+		$expiryTime = time() + 3600;
+		// Mengatur waktu kedaluwarsa sesi PHP
+		session_set_cookie_params(3600);
+		
 		session_start();
 		$username = $_POST['username'];
 		$password = $_POST['password'];
@@ -90,7 +93,7 @@ class LoginController {
 					$_SESSION['username'] = $user['username'];
 					$_SESSION['role'] = $user['role'];
 					$_SESSION['token'] = $generate_token;
-					$_SESSION['login_time'] = time();
+					$_SESSION['login_time'] = $expiryTime;
 
 					$data = [
 						'success' => true,

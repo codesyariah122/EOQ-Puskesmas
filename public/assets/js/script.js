@@ -5,8 +5,8 @@
 
 // Run consume data
 let url = new URL(window.location.href),
-	path = url.pathname,
-	pagePath = path.split('/')[2]
+path = url.pathname,
+pagePath = path.split('/')[2]
 
 // Initialisasi variable
 let loading = document.querySelector('#loading')
@@ -35,3 +35,35 @@ setTimeout(() => {
 	loading.classList.remove('block')
 	loading.classList.add('hidden')
 }, 1500)
+
+
+function countdownTimer(timestamp) {
+  	// Mendapatkan elemen HTML untuk menampilkan countdown time
+	const countdownElement = document.getElementById('login-time');
+
+  	// Mengupdate tampilan countdown time setiap detik
+	const countdownInterval = setInterval(() => {
+    	// Mendapatkan tanggal sekarang
+		const now = Math.floor(Date.now() / 1000);
+
+    	// Menghitung selisih waktu antara timestamp dan tanggal sekarang
+		const difference = Math.abs(timestamp - now);
+
+    	// Menghitung jumlah hari, jam, menit, dan detik
+		const days = Math.floor(difference / (24 * 60 * 60));
+		const hours = Math.floor((difference % (24 * 60 * 60)) / 3600);
+		const minutes = Math.floor((difference % 3600) / 60);
+		const seconds = difference % 60;
+
+    	// Memperbarui tampilan countdown time
+		countdownElement.innerHTML = `<i class="fas fa-business-time"></i> &nbsp;Sesi login: ${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
+    	// Memeriksa apakah waktu countdown telah berakhir
+		if (difference <= 0) {
+			clearInterval(countdownInterval);
+			countdownElement.textContent = "Sesi Login Habis";
+			location.replace="/logout"
+		}
+  }, 1000); // Set interval 1 detik (1000 milidetik)
+}
+
+countdownTimer(expired_login ? expired_login : null)
