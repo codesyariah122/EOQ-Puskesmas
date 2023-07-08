@@ -245,5 +245,6 @@ $(document).ready(function() {
 
 })
 
-
-getAllData(pagePath, 1)
+if(pagePath !== 'pengajuan-obat') {
+	getAllData(pagePath, 1)
+}

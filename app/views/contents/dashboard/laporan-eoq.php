@@ -27,7 +27,7 @@
    .dom-laporan-table {  
      font-family: arial, sans-serif;  
      border-collapse: collapse;  
-     width: 75%;  
+     width: 73%;  
    }
 
   .dom-laporan-table td {  
@@ -109,10 +109,11 @@
          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                <tr>
-                  <th scope="col" class="px-6 py-3">
-                  	<div class="flex items-center mb-4">
-                  		<input id="default-checkbox" type="checkbox" value="" class="selectAll w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                  	</div>
+                  <th scope="col" class="p-4">
+                     <div class="flex items-center">
+                        <input id="default-checkbox" type="checkbox" class="selectAll w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="default-checkbox" class="sr-only">All</label>
+                     </div>
                   </th>
                   <th scope="col" class="px-6 py-3 hidden">
                      #ID
