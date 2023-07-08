@@ -38,7 +38,7 @@ $('#displaying').on('click', '#print-laporan', function(e) {
             // hide table laporan
             printLaporanBtn.hide('slow').fadeOut(1000);
             closeSelectedBtn.removeClass('hidden');
-            tableLaporan.hide('slow').fadeOut(1000);
+            // tableLaporan.hide('slow').fadeOut(1000);
 
             const tableData = response.data;
             let header = `
@@ -84,7 +84,7 @@ $('#displaying').on('click', '#print-laporan', function(e) {
             <tfoot class="table-footer">
             <tr>
             <td colspan="4" class="float-right font-bold">Bogor, ${dateFormat()}</td>
-            <td colspan="4" class="float-right font-bold">Mengetahui</td>
+            <td colspan="4" class="font-bold">Mengetahui</td>
             </tr>
             <tr>
             <td colspan="4" class="name float-right font-bold">
@@ -120,15 +120,24 @@ $('#displaying').on('click', '#print-laporan', function(e) {
 
 
 function generatePDF() {  
+	// Menyembunyikan tombol cetak
+    $('.dom-laporan-table').hide('slow').fadeOut(1000)
+    printLaporanBtn.show().fadeIn(1000)
+    closeSelectedBtn.addClass('hidden')
+
+    // Menginisialisasi kembali container
+    container = $('#tableContainer');
+
 	getCanvas().then(function (canvas) {  
-		var img = canvas.toDataURL("image/png"),  
+		let img = canvas.toDataURL("image/png"),  
 		doc = new jsPDF({  
 			unit: 'px',  
 			format: 'a4'  
 		})
 		doc.addImage(img, 'JPEG', 20, 20) 
 		doc.save('laporan-eoq.pdf')
-		container.width(cache_width)  
+		container.width(cache_width) 
+		$('.table-header').addClass('hidden') 
 	});  
 }  
 

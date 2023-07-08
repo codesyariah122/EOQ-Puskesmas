@@ -1,27 +1,33 @@
 
 
 <style>
+   .dom-laporan-table > .table-footer {
+      float: right;
+   }
    .table-footer {
-       margin-top: 3rem;
-       float: right;
-       text-align: right;
-       background-color: transparent;
+      margin-top: 3rem;
+      float: right;
+      text-align: right;
+      background-color: transparent;
    }
 
    .table-footer th,
    .table-footer td {
-       background-color: #fff;
-       border: none!important;
+      text-align: right;
+      float: right;
+      background-color: transparent;
+      border: none!important;
+      width: 100%;
    }
 
    .table-footer .name {
-      margin-top: 4rem;
+      margin-top: 3rem;
    }
 
    .dom-laporan-table {  
      font-family: arial, sans-serif;  
      border-collapse: collapse;  
-     width: 100%;  
+     width: 75%;  
    }
 
   .dom-laporan-table td {  
@@ -41,7 +47,7 @@
    }
 
   .dom-laporan-table tr:nth-child(odd) {  
-     background-color: #dddddd;  
+     background-color: transparent;  
    }
 </style>
 
@@ -73,7 +79,7 @@
    </div>
 </div>
 
-<div id="displaying" class="mb-4 py-2">
+<div id="displaying" class="py-2">
 
 	<div class="grid grid-cols-1 justify-items-center sm:py-6 py-0">
       <div class="col-span-full">
@@ -93,13 +99,11 @@
          </div>
       </div>
 
+      <div class="py-2 mb-2">
+         <?php require_once 'molecules/laporan-eoq/search-data.php'?>
+      </div>
 
-      <div id="table-laporan"  class="relative overflow-x-auto shadow-md sm:rounded-lg">
-
-      	<div class="py-4 mb-4">
-      		<?php require_once 'molecules/laporan-eoq/search-data.php'?>
-      	</div>
-
+      <div id="table-laporan" class="relative overflow-x-auto shadow-md sm:rounded-lg">
          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                <tr>

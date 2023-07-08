@@ -88,7 +88,7 @@ $(document).ready(function() {
 	// Check checkbox displaying data laporan
 	$('#displaying').on('change', '.selectAll', function(e) {
 		e.preventDefault();
-
+		container.show().fadeIn(1000)
 		let isChecked = $(this).prop("checked");
 		$(".dataCheckbox").prop("checked", isChecked);
 
@@ -103,12 +103,13 @@ $(document).ready(function() {
 
 	$('#displaying').on('change', '.dataCheckbox', function() {
 		
+		container.show().fadeIn(1000)
+
 		if ($(".dataCheckbox:checked").length === $(".dataCheckbox").length) {
 			$("#checkAll").prop("checked", true);
 		} else {
 			$("#checkAll").prop("checked", false);
 		}
-
 	    // Panggil fungsi getDataFromTable untuk mengambil data dari tabel
 	    getDataFromTable('checkIndividual'); // Panggil dengan selectType 'checkIndividual'
 	});

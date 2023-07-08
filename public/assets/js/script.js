@@ -4,9 +4,9 @@
  * */
 
 // Run consume data
-let url = new URL(window.location.href);
-let path = url.pathname;
-let pagePath = path.split('/')[2]
+let url = new URL(window.location.href),
+	path = url.pathname,
+	pagePath = path.split('/')[2]
 
 // Initialisasi variable
 let loading = document.querySelector('#loading')
@@ -23,11 +23,11 @@ let paging = {}
 let kd_obatOption = null
 
 // For pdf loaded
-let selectedData = [];
+let selectedData = []
 let tableLaporan = $('#table-laporan')
-let container = $('#tableContainer'),  
-    cache_width = container.width(),  
-    a4 = [610.28, 841.89];
+let container = $('#tableContainer')
+let cache_width = container.width()
+let a4 = [610.28, 841.89]
 let printLaporanBtn = $('#print-laporan')
 let closeSelectedBtn = $('#close-selected')
 
