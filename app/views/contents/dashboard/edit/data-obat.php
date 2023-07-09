@@ -12,7 +12,9 @@
          <div class="col-span-full">
             <div class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Edit Data Obat</h5>
-            <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Data Obat <?=ucfirst($dataObat['nm_obat'])?></p>
+            <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Data Obat <?=ucfirst($dataEdit['nm_obat'])?></p>
+
+            <?php require_once 'login-countdown.php' ?>
          </div>
 
          <div id="alert-error" class="w-full mb-2 py-2 hidden">
@@ -39,22 +41,22 @@
             <blockquote class="text-md font-normal italic">*Edit melalui form data obat berikut ini...</blockquote>
             <form class="py-10">
                <div class="relative z-0 w-full mb-6 group">
-                <input type="text" name="kd_obat" id="kd_obat" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$dataObat['kd_obat']?>" />
+                <input type="text" name="kd_obat" id="kd_obat" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$dataEdit['kd_obat']?>" />
                 <label for="kd_obat" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Kode Obat</label>
                </div>
 
                <div class="relative z-0 w-full mb-6 group">
-                  <input type="text" name="nm_obat" id="nm_obat" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$dataObat['nm_obat']?>"/>
+                  <input type="text" name="nm_obat" id="nm_obat" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$dataEdit['nm_obat']?>"/>
                   <label for="nm_obat" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Obat</label>
                </div>
                
                <div class="relative z-0 w-full mb-10 group">
                   <!-- <label for="jenis_obat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis Obat</label> -->
                   <select id="jenis_obat" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                  <option value="<?=$dataObat['jenis_obat']?>" selected><?=ucfirst(strtolower($dataObat['jenis_obat']))?></option>
+                  <option value="<?=$dataEdit['jenis_obat']?>" selected><?=ucfirst(strtolower($dataEdit['jenis_obat']))?></option>
                   <!-- <option>Pilih Jenis Obat</option> -->
                   <?php foreach($jenis_obat as $jn_obat): ?>
-                     <?php if($jn_obat !== $dataObat['jenis_obat']):?>
+                     <?php if($jn_obat !== $dataEdit['jenis_obat']):?>
                         <option value="<?=$jn_obat?>"><?=ucfirst(strtolower($jn_obat))?></option>
                      <?php endif;?>    
                   <?php endforeach; ?>
@@ -62,12 +64,12 @@
              </div>
 
              <div class="relative z-0 w-full mb-6 group">
-               <input type="number" name="harga" id="harga" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$helpers->formatRupiah($dataObat['harga'])?>"/>
+               <input type="number" name="harga" id="harga" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$helpers->formatRupiah($dataEdit['harga'])?>"/>
                <label for="harga" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Harga</label>
             </div>
 
             <div class="relative z-0 w-full mb-6 group">
-               <input type="number" name="stok" id="stok" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$dataObat['stok']?>"/>
+               <input type="number" name="stok" id="stok" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$dataEdit['stok']?>"/>
                <label for="stok" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Stok</label>
             </div>
 

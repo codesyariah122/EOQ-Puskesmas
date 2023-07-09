@@ -42,6 +42,9 @@ class PembelianController {
 
         $partials = $webApp->getPartials($param['page']);
 
+        $dataEdit = $this->pembelian_model->pembelianById($dataParam);
+
+
         foreach($views as $view):
             require_once $view;
         endforeach;
@@ -72,10 +75,76 @@ class PembelianController {
 
     public function edit($dataParam)
     {
+        $contents = 'app/views/dashboard/edit/index.php';
+
+        $prepare_views = [
+            'header' => 'app/views/layout/dashboard/header.php',
+            'contents' => $contents,
+            'footer' => 'app/views/layout/dashboard/footer.php',
+        ];
+
+
+        $data = [
+            'title' => "Aplikasi EOQ - {$dataParam}",
+            'page' => 'data-pembelian-edit',
+            'data' => [
+                'username' => ucfirst($_SESSION['username']),
+                'dataParam' => $dataParam
+            ],
+        ];
+
+        $this->views($prepare_views, $data);
     }
 
     public function all()
     {
+        try {
+            header("Content-Type: application/json");
+
+            $limit = 10;
+            $keyword = isset($_GET['keyword']) ? @$_GET['keyword'] : '';
+            $page = isset($_GET['page']) ? intval(@$_GET['page']) : 1;
+            $offset = ($page - 1) * $limit;
+
+            if (!empty($keyword)) {
+                $countPage = $this->pembelian_model->countSearchData($keyword);
+                $totalPage = ceil($countPage / $limit);
+                $reports = $this->pembelian_model->searchData($keyword, $offset, $limit);
+            } else {
+                $countPage = $this->pembelian_model->countAllData();
+                $totalPage = ceil($countPage / $limit);
+                $reports = $this->pembelian_model->all("SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, obat.harga, beli.* FROM obat JOIN beli ON obat.kd_obat = beli.kd_obat ORDER BY beli.id DESC LIMIT $offset, $limit");
+            }
+
+            if (!empty($reports)) {
+                $data = [
+                    'success' => true,
+                    'message' => "Lists of beli reports!",
+                    'session_user' => $_SESSION['username'],
+                    'data' => $reports,
+                    'totalData' => count($reports),
+                    'countPage' => $countPage,
+                    'totalPage' => $totalPage,
+                    'aktifPage' => $page
+                ];
+
+                echo json_encode($data);
+            } else {
+                $data = [
+                    'empty' => true,
+                    'message' => "Data not found !!",
+                ];
+
+                echo json_encode($data);
+            }
+        } catch (\PDOException $e) {
+            $data = [
+                'error' => true,
+                'message' => "Terjadi kesalahan : " . $e->getMessage()
+            ];
+
+            echo json_encode($data);
+        }
     }
 
     public function store()
@@ -130,9 +199,65 @@ class PembelianController {
 
     public function update($dataParam)
     {
+        try {
+            header("Content-Type: application/json");
+
+            $prepareData = [
+                'kd_beli' => $dataParam,
+                'kd_obat' => @$_POST['kd_obat'],
+                'tgl_beli' => @$_POST['tgl_beli'],
+                'jumlah' => @$_POST['jumlah']
+            ];
+
+            $pembelianHasUpdate = $this->pembelian_model->pembelianById($dataParam);
+            
+            if($this->pembelian_model->update($prepareData, $dataParam) === 1) {
+                $data = [
+                    'success' => true,
+                    'message' => "Pembelian : {$dataParam}, berhasil di update!",
+                    'data' => $pembelianHasUpdate
+                ];
+                echo json_encode($data);
+            } else {
+                $data = [
+                    'success' => true,
+                    'message' => "Pembelian: {$dataParam}, tidak ada perubahan data!",
+                    'data' => $pembelianHasUpdate
+                ];
+                echo json_encode($data);
+            }
+
+        } catch (\PDOException $e){
+            $data = [
+                'error' => true,
+                'message' => "Terjadi kesalahan : ".$e->getMessage()
+            ];
+
+            echo json_encode($data);
+        }
     }
 
     public function delete($dataParam)
     {
+        try {
+            header("Content-Type: application/json");
+
+            if($this->pembelian_model->delete($dataParam) === 1) {
+                $pembelianHasUpdate = $this->pembelian_model->pembelianById($dataParam);
+                $data = [
+                    'success' => true,
+                    'message' => "Data beli: {$dataParam}, berhasil di delete!",
+                    'data' => $pembelianHasUpdate
+                ];
+                echo json_encode($data);
+            }
+        } catch (\PDOException $e){
+            $data = [
+                'error' => true,
+                'message' => "Terjadi kesalahan : ".$e->getMessage()
+            ];
+
+            echo json_encode($data);
+        }
     }
 }

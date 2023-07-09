@@ -56,9 +56,17 @@ $app->get('/dashboard/laporan-eoq', 'LaporanEoqController@index');
 $app->get('/lists/laporan-eoq', 'LaporanEoqController@all');
 $app->post('/print/laporan-eoq', 'LaporanEoqController@print');
 
-// Pembelian & laporan Pembelian
+// Pembelian
 $app->get('/dashboard/pembelian', 'PembelianController@index');
+$app->get('/lists/pembelian', 'PembelianController@all');
 $app->post('/add/pembelian', 'PembelianController@store');
+// edit data obat
+$app->get('/dashboard/pembelian/{param}', 'PembelianController@edit');
+$app->put('/update/pembelian/{dataParam}', 'PembelianController@update');
+// delete data obat
+$app->delete('/delete/pembelian/{dataParam}', 'PembelianController@delete');
+
+// Laporan Pembelian
 $app->get('/dashboard/laporan-pembelian', 'LaporanPembelianController@index');
 $app->get('/lists/laporan-pembelian', 'LaporanPembelianController@all');
 $app->post('/print/laporan-pembelian', 'LaporanPembelianController@print');

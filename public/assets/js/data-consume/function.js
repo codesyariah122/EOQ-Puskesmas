@@ -120,24 +120,24 @@ const getAllData = (type, page=1, keyword='') => {
 						<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">${user.role}</span>
 						</td>
 
-						${user.username !== sessionUser ? 
-						`<td>
-						<div class="flex justify-center space-x-4">
-						<div>
-						<button type="button" class="edit px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
-						<i class="fa-solid fa-pen-to-square"></i>
-						</button>                                 
-						</div>
-						<div>
-						<button type="button" class="delete px-3 py-2 text-xs font-medium text-center text-white text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
-						<i class="fa-solid fa-trash"></i>
-						</button>
-						</div>
-						</div>
-						</td>` : 
+							${user.username !== sessionUser ? 
+							`<td>
+								<div class="flex justify-center space-x-4">
+								<div>
+								<button type="button" class="edit px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
+								<i class="fa-solid fa-pen-to-square"></i>
+								</button>                                 
+								</div>
+								<div>
+								<button type="button" class="delete px-3 py-2 text-xs font-medium text-center text-white text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg" data-id="${user.kd_admin}">
+								<i class="fa-solid fa-trash"></i>
+								</button>
+								</div>
+								</div>
+							</td>` : 
 
-						''
-					}
+							''
+						}
 					</tr>
 					`;
 				})
@@ -274,6 +274,52 @@ const getAllData = (type, page=1, keyword='') => {
 							</tr>
 						`;})
 					break;
+
+					case "pembelian":
+						const listsBeli = lists.data
+						listsBeli.map(report => {
+							domDataHTML += `
+								<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+								<td class="field-id hidden" data-id="${report.id}">
+								${report.id}
+								</td>
+								<th scope="row" class="px-6 py-4 text-xs font-medium text-gray-900 whitespace-nowrap dark:text-white">
+
+								<div class="kd_beli">${report.kd_beli}</div>
+								<button type="button" class="copyButton text-gray-700 border-none hover:bg-gray-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg p-2.5 text-center inline-flex items-center mr-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500" data-kode="${report.kd_beli}">
+								<i class="fa-solid fa-clipboard"></i>
+								<span class="sr-only">Icon description</span>
+								</button>
+								</th>
+								<td class="px-6 py-4">
+								${formatDateIndonesia(report.tgl_beli)}
+								</td>
+								<td class="px-6 py-4">${report.kd_obat}</td>
+								<td class="px-6 py-4">${report.nm_obat}</td>
+								<td class="px-6 py-4">${report.jumlah}</td>
+								<td class="px-6 py-4">
+								${formatIdr(report.harga)}
+								</td>
+								<td class="px-6 py-4">
+								${hitungTotal({harga: report.harga, jumlah: report.jumlah})}
+								</td>
+								<td>
+								<div class="flex justify-center space-x-4">
+								<div>
+								<button type="button" class="edit px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg" data-id="${report.kd_beli}">
+								<i class="fa-solid fa-pen-to-square"></i>
+								</button>                                 
+								</div>
+								<div>
+								<button type="button" class="delete px-3 py-2 text-xs font-medium text-center text-white text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg" data-id="${report.kd_beli}">
+								<i class="fa-solid fa-trash"></i>
+								</button>
+								</div>
+								</div>
+								</td>
+							</tr>
+						`;})
+					break;
 					// type lainnya ....
 
 					default:
@@ -286,7 +332,7 @@ const getAllData = (type, page=1, keyword='') => {
 				// pagination
 				setUpPagination(lists)
 			} else {
-				console.log("No response here !")
+				domDataLists.html('')
 			}
 		}
 	})
@@ -318,6 +364,13 @@ const searchData = (param, type) => {
 		break;
 
 		case "laporan-pembelian":
+			endPoint = `/lists/${type}?keyword=${param.data}`
+			prepareData = {
+				keyword: param.data
+			}
+		break;
+
+		case "pembelian":
 			endPoint = `/lists/${type}?keyword=${param.data}`
 			prepareData = {
 				keyword: param.data
@@ -512,6 +565,53 @@ const searchData = (param, type) => {
 								${hitungTotal({harga: report.harga, jumlah: report.jumlah})}
 								</td>
 								
+							</tr>
+						`;})
+					break;
+
+					case "pembelian":
+						const listsBeli = lists.data
+						listsBeli.map(report => {
+							console.log(report)
+							domDataHTML += `
+								<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+								<td class="field-id hidden" data-id="${report.id}">
+								${report.id}
+								</td>
+								<th scope="row" class="px-6 py-4 text-xs font-medium text-gray-900 whitespace-nowrap dark:text-white">
+
+								<div class="kd_beli">${report.kd_beli}</div>
+								<button type="button" class="copyButton text-gray-700 border-none hover:bg-gray-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg p-2.5 text-center inline-flex items-center mr-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500" data-kode="${report.kd_beli}">
+								<i class="fa-solid fa-clipboard"></i>
+								<span class="sr-only">Icon description</span>
+								</button>
+								</th>
+								<td class="px-6 py-4">
+								${formatDateIndonesia(report.tgl_beli)}
+								</td>
+								<td class="px-6 py-4">${report.kd_obat}</td>
+								<td class="px-6 py-4">${report.nm_obat}</td>
+								<td class="px-6 py-4">${report.jumlah}</td>
+								<td class="px-6 py-4">
+								${formatIdr(report.harga)}
+								</td>
+								<td class="px-6 py-4">
+								${hitungTotal({harga: report.harga, jumlah: report.jumlah})}
+								</td>
+								<td>
+								<div class="flex justify-center space-x-4">
+								<div>
+								<button type="button" class="edit px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg" data-id="${report.kd_obat}">
+								<i class="fa-solid fa-pen-to-square"></i>
+								</button>                                 
+								</div>
+								<div>
+								<button type="button" class="delete px-3 py-2 text-xs font-medium text-center text-white text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg" data-id="${report.kd_obat}">
+								<i class="fa-solid fa-trash"></i>
+								</button>
+								</div>
+								</div>
+								</td>
 							</tr>
 						`;})
 					break;
@@ -731,26 +831,36 @@ const updateData = (param, type) => {
 	let endPoint = ''
 	let prepareData = {}
 	switch(type) {
-	case 'data-user':
-		endPoint = `/update/${type}/${param.id}`
-		prepareData = {
-			kd_admin: param.data.kd_admin,
-			nm_lengkap: param.data.nm_lengkap,
-			alamat: param.data.alamat,
-			notlp: param.data.notlp,
-			username: param.data.username
-		}
+		case 'data-user':
+			endPoint = `/update/${type}/${param.id}`
+			prepareData = {
+				kd_admin: param.data.kd_admin,
+				nm_lengkap: param.data.nm_lengkap,
+				alamat: param.data.alamat,
+				notlp: param.data.notlp,
+				username: param.data.username
+			}
 		break;
 
-	case 'data-obat':
-		endPoint = `/update/${type}/${param.id}`
-		prepareData = {
-			kd_obat: param.data.kd_obat,
-			nm_obat: param.data.nm_obat,
-			jenis_obat: param.data.jenis_obat,
-			harga: param.data.harga,
-			stok: param.data.stok
-		}
+		case 'data-obat':
+			endPoint = `/update/${type}/${param.id}`
+			prepareData = {
+				kd_obat: param.data.kd_obat,
+				nm_obat: param.data.nm_obat,
+				jenis_obat: param.data.jenis_obat,
+				harga: param.data.harga,
+				stok: param.data.stok
+			}
+		break;
+
+		case 'pembelian':
+			endPoint = `/update/${type}/${param.id}`
+			prepareData = {
+				kd_beli: param.data.kd_beli,
+				kd_obat: param.data.kd_obat,
+				tgl_beli: param.data.tgl_beli,
+				jumlah: param.data.jumlah
+			}
 		break;
 		// type lainnya ....
 
@@ -822,7 +932,7 @@ const deleteData = (param, type) => {
 		data: `${param.field}=${param.id}`,
 		startTime: new Date().getTime(),
 		success: function(response) {
-
+			console.log(paging.aktifPage)
 			const responseData = response
 			
 			let time = (new Date().getTime() - this.startTime);
@@ -833,7 +943,7 @@ const deleteData = (param, type) => {
 				setTimeout(() => {
 					loading.classList.remove('block')
 					loading.classList.add('hidden')
-					getAllData(type)
+					getAllData(type, paging.aktifPage)
 					alertSuccess.show();
 					messageSuccess.html(`
 						<span class="font-medium"> Deleted successfully!</span> ${responseData.message}

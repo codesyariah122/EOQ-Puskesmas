@@ -41,7 +41,7 @@ class DataObatController {
 
          // Query data from database variable ini akan di gunakan untuk input field jenis_obat
         $jenis_obat = ['TABLET', 'CAPSULE', 'SYRUP'];
-        $dataObat = $this->obat_model->obatById($dataParam);
+        $dataEdit = $this->obat_model->obatById($dataParam);
 
         foreach($views as $view):
             require_once $view;
@@ -73,7 +73,7 @@ class DataObatController {
 
     public function edit($dataParam)
     {
-        $contents = 'app/views/dashboard/edit/data-user.php';
+        $contents = 'app/views/dashboard/edit/index.php';
 
         $prepare_views = [
             'header' => 'app/views/layout/dashboard/header.php',

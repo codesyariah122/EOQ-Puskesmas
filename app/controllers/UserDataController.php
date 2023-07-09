@@ -77,7 +77,7 @@ class UserDataController {
 
     public function edit($dataParam)
     {
-        $contents = 'app/views/dashboard/edit/data-user.php';
+        $contents = 'app/views/dashboard/edit/index.php';
 
         $prepare_views = [
             'header' => 'app/views/layout/dashboard/header.php',

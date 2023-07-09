@@ -125,13 +125,13 @@ class Pembelian {
 		}
 	}
 
-	public function pembelianById($kd_obat)
+	public function pembelianById($kd_beli)
 	{
 		try{
 			$dbh = $this->conn;
-			$sql = "SELECT * FROM beli WHERE kd_obat = :kd_obat";
+			$sql = "SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, obat.harga, beli.* FROM obat JOIN beli ON obat.kd_obat = beli.kd_obat WHERE kd_beli = :kd_beli";
 			$stmt = $dbh->prepare($sql);
-			$stmt->bindParam(':kd_obat', $kd_obat);
+			$stmt->bindParam(':kd_beli', $kd_beli);
 			$stmt->execute();
 
 			$beli = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -164,11 +164,38 @@ class Pembelian {
 		}
 	}
 
-	public function update($data, $kd_obat)
+	public function update($data, $kd_beli)
 	{
+		try{
+			$dbh = $this->conn;
+			$sql = "UPDATE beli SET kd_beli=?, tgl_beli=?, kd_obat=?, jumlah=? WHERE `kd_beli` = ?";
+			
+			$update = $dbh->prepare($sql);
+			
+			$update->execute([$data['kd_beli'], $data['tgl_beli'], $data['kd_obat'], $data['jumlah'], $kd_beli]);
+
+			return $update->rowCount();
+
+		}catch(\PDOException $e){
+			echo $e->getMessage();
+		}
 	}
 
-	public function delete($kd_obat)
+	public function delete($kd_beli)
 	{
+		try {
+			$dbh = $this->conn;
+			$delete = $dbh->prepare("DELETE FROM `beli` WHERE `kd_beli` = :kd_beli");
+			$delete->bindParam(":kd_beli", $kd_beli);
+			$delete->execute();
+			
+			$dbh->exec("ALTER TABLE `beli` AUTO_INCREMENT = 1");
+
+			return $delete->rowCount();
+
+
+		}catch(\PDOException $e){
+			echo $e->getMessage();
+		}
 	}
 }

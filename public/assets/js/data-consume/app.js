@@ -182,26 +182,37 @@ $(document).ready(function() {
 		let id = null
 
 		switch(pagePath) {
-		case 'data-user':
-			prepareData = {
-				kd_admin: $('input[name="kd_admin"]').val(),
-				nm_lengkap: $('input[name="nm_lengkap"]').val(),
-				alamat: $('textarea[name="alamat"]').val(),
-				notlp: $('input[name="notlp"]').val(),
-				username: $('input[name="username"]').val()
-			}
-			id = prepareData.kd_admin
+			case 'data-user':
+				prepareData = {
+					kd_admin: $('input[name="kd_admin"]').val(),
+					nm_lengkap: $('input[name="nm_lengkap"]').val(),
+					alamat: $('textarea[name="alamat"]').val(),
+					notlp: $('input[name="notlp"]').val(),
+					username: $('input[name="username"]').val()
+				}
+				id = prepareData.kd_admin
 			break;
 
-		case 'data-obat':
-			prepareData = {
-				kd_obat: $('input[name="kd_obat"]').val(),
-				nm_obat: $('input[name="nm_obat"]').val(),
-				jenis_obat: $('#jenis_obat').val(),
-				harga: $('input[name="harga"]').val(),
-				stok: $('input[name="stok"]').val()
-			}
-			id = prepareData.kd_obat
+			case 'data-obat':
+				prepareData = {
+					kd_obat: $('input[name="kd_obat"]').val(),
+					nm_obat: $('input[name="nm_obat"]').val(),
+					jenis_obat: $('#jenis_obat').val(),
+					harga: $('input[name="harga"]').val(),
+					stok: $('input[name="stok"]').val()
+				}
+				id = prepareData.kd_obat
+			break;
+
+			case 'pembelian':
+				prepareData = {
+					kd_beli: $('#kd_beli').val(),
+					kd_obat: $('#selectOption').val(),
+					tgl_beli: $('input[name="tgl_beli"]').val(),
+					jumlah: $('input[name="jumlah"]').val(),
+				}
+
+				id = prepareData.kd_beli
 			break;
 
 		default:
@@ -231,21 +242,28 @@ $(document).ready(function() {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				switch(pagePath) {
-				case 'data-user':
-					let kd_admin = $(this).attr('data-id')
-					prepareData = {
-						id: kd_admin,
-						field: kd_admin
-					}
+					case 'data-user':
+						let kd_admin = $(this).attr('data-id')
+						prepareData = {
+							id: kd_admin,
+							field: kd_admin
+						}
 					break;
 
-				case 'data-obat':
-					let kd_obat = $(this).attr('data-id')
-					prepareData = {
-						id: kd_obat,
-						field: kd_obat
-					}
+					case 'data-obat':
+						let kd_obat = $(this).attr('data-id')
+						prepareData = {
+							id: kd_obat,
+							field: kd_obat
+						}
 					break;
+
+				case 'pembelian':
+					let kd_beli = $(this).attr('data-id')
+					prepareData = {
+						id: kd_beli,
+						field: kd_beli
+					}
 				}
 
 				loading.classList.remove('hidden')
@@ -299,6 +317,6 @@ $(document).ready(function() {
 
 })
 
-if(pagePath !== 'pengajuan-obat' && pagePath !== 'pembelian') {
+if(pagePath !== 'pengajuan-obat') {
 	getAllData(pagePath, 1)
 }

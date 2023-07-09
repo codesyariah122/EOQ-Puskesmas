@@ -15,7 +15,7 @@
     <script src="<?=$data['vendor']['tailwind']?>"></script>
     <link href="<?=$data['vendor']['flowbite']['css']?>"  rel="stylesheet" />
     <script src="<?=$data['vendor']['flowbite']['js']?>"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/datepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Poppins:wght@900&family=Quicksand:wght@500&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
