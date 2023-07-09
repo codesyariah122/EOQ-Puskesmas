@@ -1,7 +1,8 @@
 <?php
 /**
+ * File: Helpers.php
  * @author Puji Ermanto <pujiermanto@gmail.com>
- * @return USER_AGENT
+ * Description: File ini berisi berbagai fungsi bantu (helper functions).
 **/
 
 namespace app\helpers;
@@ -14,6 +15,11 @@ class Helpers {
 		
 	}
 
+	/**
+     * Memeriksa apakah pengguna menggunakan perangkat mobile.
+     *
+     * @return bool True jika pengguna menggunakan perangkat mobile, false jika tidak.
+     */
 	public function isMobileDevice() {
 		$userAgent = $_SERVER['HTTP_USER_AGENT'];
 		$mobileKeywords = ['Mobile', 'Android', 'iPhone', 'iPad', 'Windows Phone']; 
@@ -28,17 +34,11 @@ class Helpers {
 	}
 
 	
-	public function format_wa_send($data)
-	{
-		$mobil = $data['category'] !== 'Paket City Tour' ? "Mobil: " . $data['title']. ",\n" : '' ;
-
-		$text = "Hello, D&N Tour. Saya ingin " . ($data['category'] === 'Sewa Mobil' ? $data['category'] : 'memesan') . " " . ($data['category'] !== 'Sewa Mobil' ? 'paket' : '') . " dari D&N Tour, berikut rincian pesanan saya:\n"
-		. "Category: " . $data['category'] . ",\n"
-		. $mobil
-		. "Price: " . $data['price'];
-
-		return str_replace(' ', '+', urlencode($text));
-	}
+	 /**
+	 * Menghasilkan token acak.
+	 *
+	 * @return string Token acak yang dihasilkan.
+	 */
 
 	public function generate_token() 
 	{
@@ -47,6 +47,12 @@ class Helpers {
 	    return $token;
 	}
 
+	/**
+     * Menghasilkan username dari nama lengkap.
+     *
+     * @param string $name Nama lengkap pengguna.
+     * @return string Username yang dihasilkan.
+     */
 	public function generate_username($name) 
 	{
 		$namaLengkap = $name; // Nama lengkap pengguna
@@ -70,6 +76,13 @@ class Helpers {
 		return $username;
 	}
 
+
+	/**
+     * Validasi nomor telepon.
+     *
+     * @param string $phoneNumber Nomor telepon yang akan divalidasi.
+     * @return bool True jika nomor telepon valid, false jika tidak valid.
+     */
 	function validatePhoneNumber($phoneNumber) {
   		// Hapus karakter selain angka
 		$phoneNumber = preg_replace('/[^0-9]/', '', $phoneNumber);
@@ -93,6 +106,12 @@ class Helpers {
 	}
 
 
+	 /**
+     * Memformat nomor telepon.
+     *
+     * @param string $nohp Nomor telepon yang akan diformat.
+     * @return string|false Nomor telepon yang diformat atau false jika nomor telepon tidak valid.
+     */
 	public function formatPhoneNumber($nohp)
     {
         // kadang ada penulisan no hp 0811 239 345
@@ -122,6 +141,12 @@ class Helpers {
         return $hp;
     }
 
+    /**
+     * Format a phone number for editing.
+     * @author Puji Ermanto <pujiermanto@gmail.com>
+     * @param string $phoneNumber The phone number to format.
+     * @return void
+     */
     public function formatPhoneEdit($phoneNumber)
     {
     	// Mengambil 3 karakter pertama
@@ -137,6 +162,12 @@ class Helpers {
     	echo $formattedNumber;
     }
 
+    /**
+     * Format a number to Indonesian Rupiah currency format.
+     * @author Puji Ermanto <pujiermanto@gmail.com> 
+     * @param float $num The number to format.
+     * @return string The formatted number.
+     */
     public function formatRupiah($num)
     {
     	$rupiah = number_format($num, 0, ',', '.');
@@ -145,6 +176,12 @@ class Helpers {
 
     }
 
+    /**
+     * Generate a username from a name.
+     * @author Puji Ermanto <pujiermanto@gmail.com> 
+     * @param string $fullname The full name.
+     * @return string The generated username.
+     */
     public function generateUsernameFromName($fullname)
     {
     	$namaLengkap = $fullname;
@@ -171,13 +208,23 @@ class Helpers {
     	return $username;
     }
 
-
+    /**
+     * Generate a random character.
+     * @author Puji Ermanto <pujiermanto@gmail.com> 
+     * @return string The generated random character.
+     */
     public static function generateRandomChar() {
 	  $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Karakter yang tersedia
 	  $randomChar = $chars[rand(0, strlen($chars) - 1)]; // Memilih karakter acak
 	  return $randomChar;
 	}
 
+	 /**
+     * Generate a random string of the specified length.
+     * @author Puji Ermanto <pujiermanto@gmail.com>
+     * @param int $length The length of the generated string.
+     * @return string The generated random string.
+     */
 	public static function generateRandomString($length) {
 		$result = '';
 		for ($i = 0; $i < $length; $i++) {
@@ -187,3 +234,20 @@ class Helpers {
 	}
 
 }
+
+
+/*
+Penjelasan:
+
+    Class Helpers adalah sebuah class yang berisi berbagai fungsi bantu (helper functions) yang dapat digunakan dalam proyek PHP.
+    Fungsi isMobileDevice() digunakan untuk memeriksa apakah pengguna sedang menggunakan perangkat mobile berdasarkan HTTP User Agent.
+    Fungsi generate_token() digunakan untuk menghasilkan token acak.
+    Fungsi generate_username() digunakan untuk menghasilkan username berdasarkan nama lengkap.
+    Fungsi validatePhoneNumber() digunakan untuk memvalidasi nomor telepon.
+    Fungsi formatPhoneNumber() digunakan untuk memformat nomor telepon.
+    Fungsi formatPhoneEdit() digunakan untuk memformat nomor telepon dalam mode edit.
+    Fungsi formatRupiah() digunakan untuk memformat angka menjadi format mata uang Rupiah.
+    Fungsi generateUsernameFromName() digunakan untuk menghasilkan username dari nama.
+    Fungsi generateRandomChar() digunakan untuk menghasilkan karakter acak.
+    Fungsi generateRandomString() digunakan untuk menghasilkan string acak dengan panjang tertentu.
+*/
