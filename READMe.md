@@ -42,7 +42,7 @@ Link documentasi
 
 ***  
 
-> Silahkan upload terlebih dahulu file database yang tersedia di dalam direktori repository, file database dengan nama ```db_eoq.sql``` , akses database service yang biasa di gunakan, dalam kasus ini saya menggunakan phpmyadmin, kemudian buat database baru lalu import table baru dari file ```db_eoq.sql```.
+> Silahkan import terlebih dahulu file database yang tersedia di dalam direktori repository, file database dengan nama ```db_eoq.sql``` , akses database service yang biasa di gunakan, dalam kasus ini saya menggunakan phpmyadmin, kemudian buat database baru lalu import table baru dari file ```db_eoq.sql```.
 
 > Selanjutnya setup file .env, buka kembali terminal akses direktori repository hasil clone, kemudian jalankan baris perintah berikut ini :
 
