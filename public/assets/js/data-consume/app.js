@@ -54,19 +54,30 @@ $(document).ready(function() {
 
 	// Close pdf selected
 	$('#displaying').on('click', '#close-selected', function(e) {
-		e.preventDefault()
-		container.hide('slow').fadeOut(1000)
-		tableLaporan.removeClass('hidden')
-		tableLaporan.show().fadeIn(1000)
-		printLaporanBtn.show().fadeIn(1000)
-		closeSelectedBtn.hide('slow').fadeOut(1000)
-		closeSelectedBtn.addClass('hidden')
-		container.hide('slow').fadeOut(1000)
-		// Clear the checkboxes
-		$(".dataCheckbox").prop("checked", false);
-		$("#checkAll").prop("checked", false);
-  		// Clear the selectedData array
-		selectedData = [];
+		// 	e.preventDefault()
+		// 	container.hide('slow').fadeOut(1000)
+		// 	tableLaporan.removeClass('hidden')
+		// 	tableLaporan.show().fadeIn(1000)
+		// 	printLaporanBtn.show().fadeIn(1000)
+		// 	closeSelectedBtn.hide('slow').fadeOut(1000)
+		// 	closeSelectedBtn.addClass('hidden')
+		// 	container.hide('slow').fadeOut(1000)
+		// 	$('.dom-laporan-table').remove()
+		// 	$('#tableContainerHeader').removeClass('hidden')
+		// 	$(".dataCheckbox").prop("checked", false);
+		// 	$(".checkAll").prop("checked", false);
+		// 	selectedData = [];
+
+		// 	// Mengambil konten dari elemen dengan id "tableContainerHeader"
+		// 	let tableContainerHeaderContent = $('#tableContainerHeader').html();
+
+		   // // Memasukkan kembali konten elemen anak dengan id "tableContainerHeader"
+		// 	$('#tableContainer').prepend(tableContainerHeaderContent);
+
+		   // // Mengubah properti "display" menjadi "flex" pada elemen anak dengan id "tableContainerHeader"
+		// 	$('#tableContainerHeader').css('display', 'flex');
+
+		location.reload()
 	})
 
 	// add displaying data consume
@@ -125,7 +136,7 @@ $(document).ready(function() {
 	})
 
 	// Check checkbox displaying data laporan
-	$('#displaying').on('change', '.selectAll', function(e) {
+	$('#displaying').on('change', '.checkAll', function(e) {
 		e.preventDefault();
 		container.show().fadeIn(1000)
 		let isChecked = $(this).prop("checked");

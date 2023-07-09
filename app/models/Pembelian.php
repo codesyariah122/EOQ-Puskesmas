@@ -85,6 +85,11 @@ class Pembelian {
 			$stmt = $dbh->prepare($query);
 			$stmt->execute(array_merge($kd_obat_array, $beli_id_array));
 
+			$errorInfo = $stmt->errorInfo();
+			if ($errorInfo[0] !== '00000') {
+				echo "Error executing query: " . $errorInfo[2];
+			}
+			
 			$results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
 			return $results;
@@ -92,6 +97,7 @@ class Pembelian {
 			echo $e->getMessage();
 		}
 	}
+
 
 
 	function searchData($keyword, $limitStart, $limit)

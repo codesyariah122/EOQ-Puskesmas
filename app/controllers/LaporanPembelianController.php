@@ -128,53 +128,6 @@ class LaporanPembelianController {
 
     public function store()
     {
-        try {
-            header("Content-Type: application/json");
-
-            $limit = 10;
-            $keyword = isset($_GET['keyword']) ? @$_GET['keyword'] : '';
-            $page = isset($_GET['page']) ? intval(@$_GET['page']) : 1;
-            $offset = ($page - 1) * $limit;
-
-            if (!empty($keyword)) {
-                $countPage = $this->pembelian_model->countSearchData($keyword);
-                $totalPage = ceil($countPage / $limit);
-                $reports = $this->pembelian_model->searchData($keyword, $offset, $limit);
-            } else {
-                $countPage = $this->pembelian_model->countAllData();
-                $totalPage = ceil($countPage / $limit);
-                $reports = $this->pembelian_model->all("SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, eoq.* FROM obat JOIN eoq ON obat.kd_obat = eoq.kd_obat ORDER BY eoq.id DESC LIMIT $offset, $limit");
-            }
-
-            if (!empty($reports)) {
-                $data = [
-                    'success' => true,
-                    'message' => "Lists of eoq reports!",
-                    'session_user' => $_SESSION['username'],
-                    'data' => $reports,
-                    'totalData' => count($reports),
-                    'countPage' => $countPage,
-                    'totalPage' => $totalPage,
-                    'aktifPage' => $page
-                ];
-
-                echo json_encode($data);
-            } else {
-                $data = [
-                    'empty' => true,
-                    'message' => "Data not found !!",
-                ];
-
-                echo json_encode($data);
-            }
-        } catch (\PDOException $e) {
-            $data = [
-                'error' => true,
-                'message' => "Terjadi kesalahan : " . $e->getMessage()
-            ];
-
-            echo json_encode($data);
-        }
     }
 
     public function update($dataParam)
@@ -202,17 +155,16 @@ class LaporanPembelianController {
 
             $query = "SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, obat.harga, beli.* 
             FROM obat 
-            JOIN eoq ON obat.kd_obat = beli.kd_obat 
-            WHERE obat.kd_obat IN (" . implode(",", array_fill(0, count($kd_obat_array), "?")) . ") AND beli.id IN (" . implode(",", array_fill(0, count($eoq_id_array), "?")) . ")
+            JOIN beli ON obat.kd_obat = beli.kd_obat 
+            WHERE obat.kd_obat IN (" . implode(",", array_fill(0, count($kd_obat_array), "?")) . ") AND beli.id IN (" . implode(",", array_fill(0, count($beli_id_array), "?")) . ")
             ORDER BY beli.id DESC";
 
-            $results = $this->pembelian_model->printLaporan($query, $kd_obat_array, $eoq_id_array);
+            $results = $this->pembelian_model->printLaporan($query, $kd_obat_array, $beli_id_array);
 
-            // var_dump($results); die;
 
             $data = [
                 'success' => true,
-                'message' => "List laporan pembelian!",
+                'message' => "Lists pembelian reports!",
                 'session_user' => $_SESSION['username'],
                 'data' => $results,
             ];

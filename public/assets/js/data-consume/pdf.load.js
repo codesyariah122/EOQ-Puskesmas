@@ -13,23 +13,52 @@ function getDataFromTable(selectType) {
   if (selectType === 'checkAll') {
     // Jika selectType adalah 'checkAll', ambil semua data dari tabel
     $(".dataCheckbox").each(function() {
-      const kdObat = $(this).val();
-      const eoqId = $(this).closest("tr").find(".eoq-id").data("id");
-      const rowData = {
-        kd_obat: kdObat,
-        id: eoqId
-      };
+      const kdField = $(this).val();
+      const id = $(this).closest("tr").find(".field-id").data("id");
+      let rowData = {}
+
+      switch(pagePath) {
+         case 'laporan-eoq':
+            rowData = {
+             kd_obat: kdField,
+             id: id
+            };
+         break;
+
+         case 'laporan-pembelian':
+            rowData = {
+               kd_obat: kdField,
+               id: id
+           };
+         break;
+      }
+
       selectedData.push(rowData);
+
     });
   } else if (selectType === 'checkIndividual') {
     // Jika selectType adalah 'checkIndividual', ambil data yang dipilih
     $(".dataCheckbox:checked").each(function() {
-      const kdObat = $(this).val();
-      const eoqId = $(this).closest("tr").find(".eoq-id").data("id");
-      const rowData = {
-        kd_obat: kdObat,
-        id: eoqId
-      };
+      const kdField = $(this).val();
+      const id = $(this).closest("tr").find(".field-id").data("id");
+      let rowData = {}
+
+      switch(pagePath) {
+         case 'laporan-eoq':
+            rowData = {
+             kd_obat: kdField,
+             id: id
+            };
+         break;
+
+         case 'laporan-pembelian':
+            rowData = {
+               kd_obat: kdField,
+               id: id
+           };
+         break;
+      }
+
       selectedData.push(rowData);
     });
   }
@@ -40,6 +69,8 @@ $('#displaying').on('click', '#print-laporan', function(e) {
    e.preventDefault();
    if(selectedData.length > 0) {
       let endPoint = ''
+
+      // console.log(selectedData)
 
       switch(pagePath) {
          case 'laporan-eoq':
@@ -63,6 +94,7 @@ $('#displaying').on('click', '#print-laporan', function(e) {
          data: { selectedData: selectedData },
          startTime: new Date().getTime(),
          success: function(response) {
+
             if (response.success) {
                // Mengambil konten dari elemen dengan id "tableContainerHeader"
                let tableContainerHeaderContent = $('#tableContainerHeader').html();
@@ -72,86 +104,169 @@ $('#displaying').on('click', '#print-laporan', function(e) {
                closeSelectedBtn.removeClass('hidden');
 
                const tableData = response.data;
+               let table = ''
 
-               let table = '<table class="dom-laporan-table">';
-               table += `
-               <thead>
-               <tr>
-               <th>Kode Obat</th>
-               <th>Nama Obat</th>
-               <th>Kebutuhan Pertahun</th>
-               <th>Biaya Simpan</th>
-               <th>Biaya Pesan</th>
-               <th>Jumlah Economics</th>
-               <th>Waktu Pemesanan</th>
-               </tr>
-               </thead>
-               <tbody>
-               `;
+               switch(pagePath) {
+                  case "laporan-eoq":
+                     table += '<table class="dom-laporan-table">';
+                     table += `
+                     <thead>
+                     <tr>
+                     <th>Kode Obat</th>
+                     <th>Nama Obat</th>
+                     <th>Kebutuhan Pertahun</th>
+                     <th>Biaya Simpan</th>
+                     <th>Biaya Pesan</th>
+                     <th>Jumlah Economics</th>
+                     <th>Waktu Pemesanan</th>
+                     </tr>
+                     </thead>
+                     <tbody>
+                     `;
 
-               for (let i = 0; i < tableData.length; i++) {
-                  table += `
-                  <tr>
-                  <td>${tableData[i].kd_obat}</td>
-                  <td>${tableData[i].nm_obat}</td>
-                  <td>${tableData[i].k_tahun}</td>
-                  <td>${formatIdr(tableData[i].b_simpan)}</td>
-                  <td>${formatIdr(tableData[i].b_pesan)}</td>
-                  <td>${hitungEconomics({
-                     b_pesan: tableData[i].b_pesan,
-                     k_tahun: tableData[i].k_tahun,
-                     b_simpan: tableData[i].b_simpan
-                  })} ${tableData[i].jenis_obat}</td>
-                  <td>${hitungIntervalWaktu({
-                     b_pesan: tableData[i].b_pesan,
-                     k_tahun: tableData[i].k_tahun,
-                     b_simpan: tableData[i].b_simpan
-                  })} Hari</td>
-                  </tr>`;
-               }
+                     for (let i = 0; i < tableData.length; i++) {
+                        table += `
+                        <tr>
+                        <td>${tableData[i].kd_obat}</td>
+                        <td>${tableData[i].nm_obat}</td>
+                        <td>${tableData[i].k_tahun}</td>
+                        <td>${formatIdr(tableData[i].b_simpan)}</td>
+                        <td>${formatIdr(tableData[i].b_pesan)}</td>
+                        <td>${hitungEconomics({
+                           b_pesan: tableData[i].b_pesan,
+                           k_tahun: tableData[i].k_tahun,
+                           b_simpan: tableData[i].b_simpan
+                        })} ${tableData[i].jenis_obat}</td>
+                        <td>${hitungIntervalWaktu({
+                           b_pesan: tableData[i].b_pesan,
+                           k_tahun: tableData[i].k_tahun,
+                           b_simpan: tableData[i].b_simpan
+                        })} Hari</td>
+                        </tr>`;
+                     }
 
-               table += `
-               </tbody>
+                     table += `
+                     </tbody>
 
-               <tfoot class="table-footer">`
-               Array.from({ length: 5 }).map(() => {
-                   table += `
-                   <tr>
-                   <td colspan="4" class="float-right font-bold"></td>
-                   </tr>
-                   `;
-                }); 
+                     <tfoot class="table-footer">`
+                     Array.from({ length: 5 }).map(() => {
+                      table += `
+                      <tr>
+                      <td colspan="4" class="float-right font-bold"></td>
+                      </tr>
+                      `;
+                   }); 
 
-               table +=   
-                  `<tr>
+                     table +=   
+                     `<tr>
                      <td colspan="5" class="font-bold"></td>
                      <td colspan="4" class="font-bold">Bogor, ${dateFormat()}</td>
-                  </tr>
-                  <tr>
+                     </tr>
+                     <tr>
                      <td colspan="5" class="font-bold"></td>
                      <td colspan="4" class="font-bold" style="margin-top: -12rem!important;">Mengetahui</td>
-                  </tr>`
+                     </tr>`
 
-               Array.from({ length: 4 }).map(() => {
-                   table += `
-                   <tr>
-                   <td colspan="4" class="float-right font-bold"></td>
-                   </tr>
-                   `;
-                });
+                     Array.from({ length: 4 }).map(() => {
+                      table += `
+                      <tr>
+                      <td colspan="4" class="float-right font-bold"></td>
+                      </tr>
+                      `;
+                   });
 
-               table +=  
-               `<tr>
+                     table +=  
+                     `<tr>
                      <td colspan="5" class="font-bold"></td>
                      <td colspan="4" class="name font-bold">
                      ${name}
                      </td>
-                  </tr>
-               </tfoot>
+                     </tr>
+                     </tfoot>
 
-               `
+                     `
 
-               table += '</table>';
+                     table += '</table>';
+                  break;
+
+                  case "laporan-pembelian":
+                     table += '<table class="dom-laporan-table">';
+                     table += `
+                     <thead>
+                     <tr>
+                     <th>Kode Pembelian</th>
+                     <th>Tanggal Pembelian</th>
+                     <th>Kode Obat</th>
+                     <th>Nama Obat</th>
+                     <th>Jumlah beli</th>
+                     <th>Harga</th>
+                     <th>Total</th>
+                     </tr>
+                     </thead>
+                     <tbody>
+                     `;
+
+                     for (let i = 0; i < tableData.length; i++) {
+                        table += `
+                        <tr>
+                        <td>${tableData[i].kd_beli}</td>
+                        <td>${tableData[i].tgl_beli}</td>
+                        <td>${tableData[i].kd_obat}</td>
+                        <td>${tableData[i].nm_obat}</td>
+                        <td>${tableData[i].jumlah}</td>
+                        <td class="px-6 py-4">
+                        ${formatIdr(tableData[i].harga)}
+                        </td>
+                        <td class="px-6 py-4">
+                        ${hitungTotal({harga: tableData[i].harga, jumlah: tableData[i].jumlah})}
+                        </td>
+                        </tr>`;
+                     }
+
+                     table += `
+                     </tbody>
+
+                     <tfoot class="table-footer">`
+                     Array.from({ length: 5 }).map(() => {
+                       table += `
+                       <tr>
+                       <td colspan="4" class="float-right font-bold"></td>
+                       </tr>
+                       `;
+                    }); 
+
+                     table +=   
+                     `<tr>
+                     <td colspan="5" class="font-bold"></td>
+                     <td colspan="4" class="font-bold">Bogor, ${dateFormat()}</td>
+                     </tr>
+                     <tr>
+                     <td colspan="5" class="font-bold"></td>
+                     <td colspan="4" class="font-bold" style="margin-top: -12rem!important;">Mengetahui</td>
+                     </tr>`
+
+                     Array.from({ length: 4 }).map(() => {
+                       table += `
+                       <tr>
+                       <td colspan="4" class="float-right font-bold"></td>
+                       </tr>
+                       `;
+                    });
+
+                     table +=  
+                     `<tr>
+                     <td colspan="5" class="font-bold"></td>
+                     <td colspan="4" class="name font-bold">
+                     ${name}
+                     </td>
+                     </tr>
+                     </tfoot>
+
+                     `
+
+                     table += '</table>';
+                  break;
+               }
 
                // Mengubah konten elemen "tableContainer" dengan tabel baru
                $('#tableContainer').html(table)
@@ -167,7 +282,7 @@ $('#displaying').on('click', '#print-laporan', function(e) {
                setTimeout(() => {
                   loading.classList.remove('block')
                   loading.classList.add('hidden')
-                  // generatePDF(response.data)
+                  generatePDF(response.data)
                }, 1000)
             }
          }
@@ -185,7 +300,7 @@ $('#displaying').on('click', '#print-laporan', function(e) {
 
 function generatePDF() {  
    $(".dataCheckbox").prop("checked", false);
-   $("#checkAll").prop("checked", false);
+   $(".checkAll").prop("checked", false);
    // printLaporanBtn.show().fadeIn(1000)
    closeSelectedBtn.addClass('hidden')
    container = $('#tableContainer');
