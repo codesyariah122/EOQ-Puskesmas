@@ -3,7 +3,7 @@
 /**
 * @author : Puji Ermanto <pujiermanto@gmail.com>
 * @return __construct
-* @desc : File ini akan mengambil setiap method dalam file controller kemudian menjalankan nya secara synchronous
+* @desc : File ini difungsikan untuk menangani request url dari client dan setiap method menentukan rute mana yang akan di gunakan dari request url di sisi client
 **/
 
 namespace app\config;
@@ -20,6 +20,13 @@ class Router {
         $this->notfound = new NotFoundController;
     }
 
+    // Method ini di fungsikan supaya kita tidak mengulang struktur code untuk menangani request berikut di setiap method rute nya.
+    private function addRoute($method, $route, $handler): void {
+        $paramPattern = ($method === 'GET') ? '{param}' : '{dataParam}';
+        $route = str_replace($paramPattern, '([^/]+)', $route);
+        $this->routes[$route] = $handler;
+    }
+
     /**
      * Menambahkan route GET
      * 
@@ -28,8 +35,7 @@ class Router {
      * @return void
      */
     public function get($route, $handler): void {
-       $route = str_replace('{param}', '([^/]+)', $route);
-       $this->routes[$route] = $handler;
+       $this->addRoute('GET', $route, $handler);
     }
 
     /**
@@ -40,18 +46,15 @@ class Router {
      * @return void
      */
     public function post($route, $handler): void {
-        $route = str_replace('{param}', '([^/]+)', $route);
-        $this->routes[$route] = $handler;
+        $this->addRoute('POST', $route, $handler);
     }
 
     public function put($route, $handler): void {
-        $route = str_replace('{dataParam}', '([^/]+)', $route);
-        $this->routes[$route] = $handler;
+        $this->addRoute('PUT', $route, $handler);
     }
 
     public function delete($route, $handler): void {
-        $route = str_replace('{dataParam}', '([^/]+)', $route);
-        $this->routes[$route] = $handler;
+        $this->addRoute('DELETE', $route, $handler);
     }
 
     /**

@@ -56,8 +56,6 @@ class LaporanPembelianController {
             'footer' => 'app/views/layout/dashboard/footer.php',
         ];
 
-        // var_dump($param); die;
-
         $data = [
             'title' => "Aplikasi EOQ - Laporan Pembelian",
             'page' => 'laporan-pembelian',

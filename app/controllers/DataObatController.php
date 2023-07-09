@@ -39,7 +39,7 @@ class DataObatController {
 
         $partials = $webApp->getPartials($param['page']);
 
-         // Query data from database
+         // Query data from database variable ini akan di gunakan untuk input field jenis_obat
         $jenis_obat = ['TABLET', 'CAPSULE', 'SYRUP'];
         $dataObat = $this->obat_model->obatById($dataParam);
 
@@ -57,8 +57,6 @@ class DataObatController {
             'contents' => $views,
             'footer' => 'app/views/layout/dashboard/footer.php',
         ];
-
-        // var_dump($param); die;
 
         $data = [
             'title' => "Aplikasi EOQ - Data Obat",

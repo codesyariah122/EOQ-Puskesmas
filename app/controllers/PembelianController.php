@@ -33,6 +33,7 @@ class PembelianController {
         $welcome_text = "Welcome , {$param['data']['username']}";
         $description = "Sistem Informasi Pengelolaan Pengadaan Obat Balai Kesehatan";
         
+        // variable ini digunakan untuk menentukan footer content di homepage jadi jangan di hapus
         $page = $param['page'];
 
         $dataParam = $param['data']['dataParam'];
@@ -55,8 +56,6 @@ class PembelianController {
             'contents' => $views,
             'footer' => 'app/views/layout/dashboard/footer.php',
         ];
-
-        // var_dump($param); die;
 
         $data = [
             'title' => "Aplikasi EOQ - Pembelian",

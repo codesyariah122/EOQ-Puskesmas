@@ -13,6 +13,7 @@ class NotFoundController {
         $data = $model->getData();
         $meta = $model->getMetaTag($param['title']);
         $partials = $model->getPartials($param['page']);
+        $page = $param['page'];
 
         foreach($views as $view):
             require_once $view;

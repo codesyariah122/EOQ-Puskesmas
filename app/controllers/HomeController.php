@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author Puji Ermanto <pujiermanto@gmail.com>
+ * Please setup config environment for database configuration first & then import db.sql to database
+ * */
 // Before run app , please import database first
 
 namespace app\controllers;

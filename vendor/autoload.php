@@ -7,7 +7,7 @@
 
 // Fungsi ini akan dipanggil setiap kali memuat class yang belum didefinisikan
 spl_autoload_register(function($className) {
-    // Mengubah namespace menjadi path file dengan DIRECTORY_SEPARATOR
+    // Mengubah namespace menjadi path file dengan DIRECTORY_SEPARATOR yg merupakan bagian dari built in constant di PHP
     $classPath = str_replace('\\', DIRECTORY_SEPARATOR, $className);
     
     // Menambahkan ekstensi file class

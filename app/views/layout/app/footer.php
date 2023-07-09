@@ -1,9 +1,11 @@
 
+<?php if(isset($page)): ?>
 	<?php if($page !== 'login'):?>
 		<section id="footer">
 			<?php require_once 'app/views/layout/partials/footer_content.php'; ?>
 		</section>
 	<?php endif;?>
+<?php endif;?>
 
 		<script src="<?=$data['vendor']['flowbite']['js']?>"></script>
 
