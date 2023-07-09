@@ -95,7 +95,7 @@ CREATE TABLE `obat` (
   `id` bigint UNSIGNED NOT NULL,
   `kd_obat` char(10) NOT NULL,
   `nm_obat` varchar(25) NOT NULL,
-  `jenis_obat` enum('TABLET','CAPSULE','SYRUP') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jenis_obat` enum('TABLET', 'CAIR', 'CAPSULE') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `harga` int NOT NULL,
   `stok` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -121,7 +121,7 @@ INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `jenis_obat`, `harga`, `stok`) V
 (14, 'KO14', 'Dextral', 'TABLET', 870, 1920),
 (15, 'KO15', 'Diatabs', 'TABLET', 900, 930),
 (16, 'KO16', 'Dapyrin', 'TABLET', 1700, 200),
-(17, 'KO17', 'OBH Surya Itrasal 100', 'SYRUP', 10000, 200),
+(17, 'KO17', 'OBH Surya Itrasal 100', 'CAIR', 10000, 200),
 (18, 'KO18', 'Dionicol', 'TABLET', 1050, 190),
 (19, 'KO19', 'Domperidone', 'TABLET', 600, 330),
 (20, 'KO20', 'Etafenin', 'TABLET', 320, 800),

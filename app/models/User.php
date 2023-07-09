@@ -21,7 +21,7 @@ class User {
 			$users = $dbh->query($query);
 			return $users;
 		} catch (\PDOException $e) {
-			return ;
+			echo "Terjadi kesalahan: " . $e->getMessage();
 		}
 	}
 
@@ -77,7 +77,7 @@ class User {
             $result = $stmt->fetch(\PDO::FETCH_ASSOC);
             return $result['total'];
         } catch (\PDOException $e) {
-            throw new Exception("Error: " . $e->getMessage());
+            echo "Ooops error : ".$e->getMessage();
         }
     }
 

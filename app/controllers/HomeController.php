@@ -1,4 +1,5 @@
 <?php
+// Before run app , please import database first
 
 namespace app\controllers;
 
@@ -20,7 +21,9 @@ class HomeController {
 	{
 		$webApp = new WebApp;
 		$data = $webApp->getData();
+
 		$users = new User;
+
 		$rows_count = $users->get_user_first("SELECT COUNT(*) AS total FROM admin")->fetch(\PDO::FETCH_ASSOC);
 
 		$meta = $webApp->getMetaTag($param['title']);
@@ -61,11 +64,13 @@ class HomeController {
 
 			if($row_counts > 0) {
 				$results = $users->get_user_first($query)->fetchAll(\PDO::FETCH_ASSOC);
-				header('Location: /', true);
+				header('Location: /login', true);
 				exit();
 			} else {
 				$user_prepare = new UserPrepare;
 				$data_user = $users->create_new_user($user_prepare->user_data());
+				header('Location: /login', true);
+				exit();
 			}
 
 		} catch (\PDOException $e) {
