@@ -93,6 +93,7 @@ $(document).ready(function() {
 			case 'data-user':
 				prepareData = {
 					nm_lengkap: $('input[name="nm_lengkap"]').val(),
+					password: $('input[name="password"]').val(),
 					alamat: $('textarea[name="alamat"]').val(),
 					notlp: $('input[name="notlp"]').val(),
 					role: $('#role').val()

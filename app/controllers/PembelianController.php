@@ -175,7 +175,7 @@ class PembelianController {
 
 
                 if($this->pembelian_model->store($prepareData, $last_id !== NULL ? $last_id+=1 : 1) > 0){
-                    $pembelian = $this->pembelian_model->pembelianById(@$_POST['kd_obat']);
+                    $pembelian = $this->pembelian_model->pembelianById($prepareData['kd_beli']);
 
                     $data = [
                         'success' => true,

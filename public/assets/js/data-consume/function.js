@@ -651,6 +651,7 @@ const addData = (param, type) => {
 		case 'data-user':
 			prepareData = {
 				nm_lengkap: param.data.nm_lengkap,
+				password: param.data.password,
 				alamat: param.data.alamat,
 				notlp: param.data.notlp,
 				role: param.data.role
@@ -723,6 +724,7 @@ const addData = (param, type) => {
 						$('input[name="nm_lengkap"]').val('')
 						$('textarea[name="alamat"]').val('')
 						$('input[name="notlp"]').val('')
+						$('input[name="password"]').val('')
 						$('#role').val('Pilih Role')
 						setTimeout(() => {
 							alertSuccess.show();

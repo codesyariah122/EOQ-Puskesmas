@@ -157,10 +157,11 @@ class User {
 		try{
 			$dbh = $this->conn;
 
-			$addNewUser = $dbh->prepare("INSERT INTO admin (id, kd_admin, nm_lengkap, alamat, notlp, username, role) VALUES (:id, :kd_admin, :nm_lengkap, :alamat, :notlp, :username, :role)");
+			$addNewUser = $dbh->prepare("INSERT INTO admin (id, kd_admin, nm_lengkap, password, alamat, notlp, username, role) VALUES (:id, :kd_admin, :nm_lengkap, :password, :alamat, :notlp, :username, :role)");
 			$addNewUser->bindParam(':id', $id);
 			$addNewUser->bindParam(':kd_admin', $data['kd_admin']);
 			$addNewUser->bindParam(':nm_lengkap', $data['nm_lengkap']);
+			$addNewUser->bindParam(':password', $data['password']);
 			$addNewUser->bindParam(':alamat', $data['alamat']);
 			$addNewUser->bindParam(':notlp', $data['notlp']);
 			$addNewUser->bindParam(':username', $data['username']);

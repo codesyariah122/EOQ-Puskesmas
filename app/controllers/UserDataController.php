@@ -193,7 +193,8 @@ class UserDataController {
                     'alamat' => trim(htmlspecialchars((@$_POST['alamat']))),
                     'notlp' => $notlp,
                     'username' => $username,
-                    'role' => @$_POST['role']
+                    'role' => @$_POST['role'],
+                    'password' => password_hash(@$_POST['password'], PASSWORD_DEFAULT)
                 ];
 
                 if($this->data_model->store($prepareData, $match_kdAdmin) > 0) {
