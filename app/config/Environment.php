@@ -1,4 +1,9 @@
 <?php
+/**
+* @author : Puji Ermanto <pujiermanto@gmail.com>
+* @return : environment.file
+* @desc : File ini difungsikan untuk konfigurasi environment constanta dalam hal ini adalah guna di peruntukan bagi setup database awal.
+**/
 
 namespace app\config;
 

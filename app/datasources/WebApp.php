@@ -2,6 +2,7 @@
 /**
  * @author Puji Ermanto <pujiermanto@gmail.com>
  * @return WebApp Data Source
+ * @desc : File ini difungsikan untuk mendaftarkan detail contents dari setiap rute yang di akses di url, yang antara lain adalah view/contents kemudian assets: Javascript, css , images dan lainnya.
 **/
 
 namespace app\datasources;

@@ -1,4 +1,10 @@
 <?php
+/**
+* @author : Puji Ermanto <pujiermanto@gmail.com>
+* @return : __constructor
+* @desc : File ini difungsikan untuk konfigurasi awal database untuk aplikasi ini
+**/
+
 namespace app\config;
 
 use app\config\Environment;

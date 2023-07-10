@@ -106,7 +106,7 @@ class Pembelian {
 			$dbh = $this->conn;
 
 
-			$query = "SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, beli.* FROM obat JOIN beli ON obat.kd_obat = beli.kd_obat WHERE beli.kd_obat LIKE :keyword OR obat.nm_obat LIKE :keyword OR obat.jenis_obat LIKE :keyword OR beli.tgl_beli LIKE :keyword OR beli.kd_beli LIKE :keyword ORDER BY beli.id DESC";
+			$query = "SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, obat.harga, beli.* FROM obat JOIN beli ON obat.kd_obat = beli.kd_obat WHERE beli.kd_obat LIKE :keyword OR obat.nm_obat LIKE :keyword OR obat.jenis_obat LIKE :keyword OR beli.tgl_beli LIKE :keyword OR beli.kd_beli LIKE :keyword ORDER BY beli.id DESC";
 
 			if ($limitStart !== null && $limit !== null) {
 				$query .= " LIMIT $limitStart, $limit";

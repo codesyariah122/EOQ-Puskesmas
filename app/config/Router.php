@@ -2,7 +2,7 @@
 
 /**
 * @author : Puji Ermanto <pujiermanto@gmail.com>
-* @return __construct
+* @return :void
 * @desc : File ini difungsikan untuk menangani request url dari client dan setiap method menentukan rute mana yang akan di gunakan dari request url di sisi client
 **/
 
