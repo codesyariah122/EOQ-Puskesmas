@@ -77,11 +77,9 @@ class Router {
                 $controller = new $controllerNamespace();
 
                 array_shift($matches); // Hapus elemen pertama (seluruh kecocokan URI)
-                $dataParam = end($matches); // Ambil data user dari route parameter
+                $dataParam = end($matches); // Ambil data dari route parameter
 
-                // var_dump($controllerName); die;
-
-                // Panggil method pada controller dengan parameter data user
+                // Panggil method pada controller dengan parameter data yang sesuai
                 call_user_func([$controller, $methodName], $dataParam);
 
                 return;
