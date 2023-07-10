@@ -923,6 +923,8 @@ const updateData = (param, type) => {
 						showConfirmButton: false,
 						timer: 1500
 					})
+
+					history.go(-1)
 				}, 1000)
 			}
 		}

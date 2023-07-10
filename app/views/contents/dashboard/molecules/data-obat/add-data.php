@@ -45,7 +45,7 @@
          <div class="relative z-0 w-full mb-10 group">
             <label for="jenis_obat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis Obat</label>
             <select id="jenis_obat" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option selected>Pilih Jenis Obat</option>
+              <option selected value="">Pilih Jenis Obat</option>
               <option value="TABLET">Tablet</option>
               <option value="CAIR">Cair</option>
               <option value="CAPSULE">Capsule</option>

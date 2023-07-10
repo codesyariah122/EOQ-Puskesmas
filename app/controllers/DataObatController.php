@@ -154,6 +154,7 @@ class DataObatController {
             $get_obat_max = $this->obat_model->maxKdObat();
             $last_id = $get_obat_max ? $get_obat_max+=1 : 1;
             $last_kdObat = "KO".$last_id;
+
             if (empty(@$_POST['nm_obat']) || empty( @$_POST['jenis_obat']) || empty(@$_POST['harga']) || empty(@$_POST['stok'])) {
                 $data = [
                     'error' => true,
@@ -171,7 +172,6 @@ class DataObatController {
                     'stok' => @$_POST['stok']
                 ];
 
-
                 if($this->obat_model->store($prepareData, $get_obat_max) > 0) {
                     $newObat = $this->obat_model->obatById($last_kdObat);
                     // var_dump($newObat); die;
@@ -180,6 +180,13 @@ class DataObatController {
                         'message' => "{$newObat['nm_obat']}, berhasil ditambahkan!",
                         'data' => $newObat
                     ];
+                    echo json_encode($data);
+                } else {
+                    $data = [
+                        'error' => true,
+                        'message' => "Data masih belum lengkap, periksa kembali !"
+                    ];
+
                     echo json_encode($data);
                 }
             }
