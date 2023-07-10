@@ -76,8 +76,6 @@ class Router {
                 $controllerNamespace = 'app\controllers\\' . $controllerName;
                 $controller = new $controllerNamespace();
 
-                // var_dump($methodName); die;
-
                 array_shift($matches); // Hapus elemen pertama (seluruh kecocokan URI)
                 $dataParam = end($matches); // Ambil data user dari route parameter
 

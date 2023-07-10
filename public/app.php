@@ -1,6 +1,6 @@
 <?php
 // Load app
-require_once 'vendor/autoload.php';
+require_once 'app/config/Autoload.php';
 
 // Inisialisasi Router
 use app\config\Router;
