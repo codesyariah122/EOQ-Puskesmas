@@ -1,5 +1,20 @@
 ### Bahan Skripsi Pemrogramman Web
 
+
+### Print laporan ke PDF
+https://github.com/codesyariah122/skripsi/assets/13291805/b2bd6a3e-e8c2-45d1-96c5-dcfe87dd9c3b
+
+### User password updating
+https://github.com/codesyariah122/skripsi/assets/13291805/4122da09-07db-4f8e-add1-d1d3da659927
+
+### Tambah pembelian && Mengurangi jumlah stok
+https://github.com/codesyariah122/skripsi/assets/13291805/80fed98b-1bea-4985-9945-e063f1d0d7db
+
+https://github.com/codesyariah122/skripsi/assets/13291805/809848ba-43e7-43ac-b202-4857fa4c09dc
+
+https://github.com/codesyariah122/skripsi/assets/13291805/16b52bf8-0ab5-409f-b80a-e00810d719b3
+
+
 > Dibuat dengan bahasa pemrogramman PHP versi 8.2, dengan mengusung konsep MVC sebagai alur utama programm ini.
 
 ### Tech Stack  
