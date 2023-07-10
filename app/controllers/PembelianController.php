@@ -163,7 +163,6 @@ class PembelianController {
             } else {
                 $last_id = $this->pembelian_model->lastIdBeli();
                 $date = new \DateTime();
-                $dataObat = $this->obat_model->obatById(@$_POST['kd_obat']);
                 $kode_beli = Helpers::generateRandomString(8);
 
                 $prepareData = [
@@ -174,15 +173,29 @@ class PembelianController {
                 ];
 
 
-                if($this->pembelian_model->store($prepareData, $last_id !== NULL ? $last_id+=1 : 1) > 0){
-                    $pembelian = $this->pembelian_model->pembelianById($prepareData['kd_beli']);
+                if($this->pembelian_model->store($prepareData, $last_id !== NULL ? $last_id+=1 : 1) % 2 == 1){
 
-                    $data = [
-                        'success' => true,
-                        'message' => "Pembelian baru dengan kode : {$pembelian['kd_beli']}, berhasil ditambahkan!",
-                        'data' => $pembelian
+                    $dataObat = $this->obat_model->obatById(@$_POST['kd_obat']);
+                    $update_stok = $dataObat['stok'] + @$_POST['jumlah'];
+
+                    $prepareUpdateStok = [
+                        'kd_obat' => @$_POST['kd_obat'],
+                        'nm_obat' => $dataObat['nm_obat'],
+                        'jenis_obat' => $dataObat['jenis_obat'],
+                        'harga' => $dataObat['harga'],
+                        'stok' => $update_stok
                     ];
-                    echo json_encode($data);
+
+                    if($this->obat_model->update($prepareUpdateStok, $prepareUpdateStok['kd_obat']) > 0):
+                        $pembelian = $this->pembelian_model->pembelianById($prepareData['kd_beli']);
+
+                        $data = [
+                            'success' => true,
+                            'message' => "Pembelian baru dengan kode : {$pembelian['kd_beli']}, berhasil ditambahkan, data stok obat {$dataObat['nm_obat']} ditambahkan!",
+                            'data' => $pembelian
+                        ];
+                        echo json_encode($data);
+                    endif;
                 }
             }
 
@@ -209,15 +222,35 @@ class PembelianController {
                 'jumlah' => @$_POST['jumlah']
             ];
 
-            $pembelianHasUpdate = $this->pembelian_model->pembelianById($dataParam);
+            $dataObat = $this->obat_model->obatById(@$_POST['kd_obat']);
             
-            if($this->pembelian_model->update($prepareData, $dataParam) === 1) {
-                $data = [
-                    'success' => true,
-                    'message' => "Pembelian : {$dataParam}, berhasil di update!",
-                    'data' => $pembelianHasUpdate
-                ];
-                echo json_encode($data);
+            $pembelianHasUpdate = $this->pembelian_model->pembelianById($dataParam);
+
+            if(@$_POST['jumlah'] > $pembelianHasUpdate['jumlah']) {
+                $update_stok = $dataObat['stok'] + @$_POST['jumlah'];
+            } else {
+                $update_stok = $dataObat['stok'] - @$_POST['jumlah'];
+            }
+
+            $prepareUpdateStok = [
+                'kd_obat' => @$_POST['kd_obat'],
+                'nm_obat' => $dataObat['nm_obat'],
+                'jenis_obat' => $dataObat['jenis_obat'],
+                'harga' => $dataObat['harga'],
+                'stok' => $update_stok
+            ];
+
+
+            
+            if($this->pembelian_model->update($prepareData, $dataParam) % 2 == 1) {
+                if($this->obat_model->update($prepareUpdateStok, $prepareUpdateStok['kd_obat']) > 0) { 
+                    $data = [
+                        'success' => true,
+                        'message' => "Pembelian : {$dataParam}, berhasil di update!",
+                        'data' => $pembelianHasUpdate
+                    ];
+                    echo json_encode($data);
+                }
             } else {
                 $data = [
                     'success' => true,
@@ -242,15 +275,38 @@ class PembelianController {
         try {
             header("Content-Type: application/json");
 
-            if($this->pembelian_model->delete($dataParam) === 1) {
-                $pembelianHasUpdate = $this->pembelian_model->pembelianById($dataParam);
+            $pembelianHasUpdate = $this->pembelian_model->pembelianById($dataParam);
+            
+            $dataObat = $this->obat_model->obatById($pembelianHasUpdate['kd_obat']);
+
+
+            $update_stok = $dataObat['stok'] - $pembelianHasUpdate['jumlah'];
+
+            $prepareUpdateStok = [
+                'kd_obat' => $pembelianHasUpdate['kd_obat'],
+                'nm_obat' => $dataObat['nm_obat'],
+                'jenis_obat' => $dataObat['jenis_obat'],
+                'harga' => $dataObat['harga'],
+                'stok' => $update_stok
+            ];
+
+            if($this->obat_model->update($prepareUpdateStok, $prepareUpdateStok['kd_obat']) > 0) {
+                if($this->pembelian_model->delete($dataParam) % 2 == 1) {
+                    $data = [
+                        'success' => true,
+                        'message' => "Data beli: {$dataParam}, berhasil di delete!",
+                        'data' => $pembelianHasUpdate
+                    ];
+                    echo json_encode($data);
+                }
+            } else {
                 $data = [
-                    'success' => true,
-                    'message' => "Data beli: {$dataParam}, berhasil di delete!",
-                    'data' => $pembelianHasUpdate
+                    'error' => true,
+                    'message' => "Terjadi kesalahan, error update stok obat!"
                 ];
                 echo json_encode($data);
             }
+
         } catch (\PDOException $e){
             $data = [
                 'error' => true,

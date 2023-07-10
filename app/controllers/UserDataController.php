@@ -223,44 +223,64 @@ class UserDataController {
     {
         try {
             header("Content-Type: application/json");
-            $check_notlp = $this->helpers->validatePhoneNumber(@$_POST['notlp']);
 
-            if(!$check_notlp) {
+            $check_user_password = $this->data_model->userById($dataParam);
+
+
+            if (!password_verify(@$_POST['password'], $check_user_password['password'])){
+
                 $data = [
                     'error' => true,
-                    'message' => "Nomor telphone tidak valid!!"
+                    'message' => "Password salah !"
                 ];
 
-                echo json_encode($data);
-                exit();
-            } else {
-                $notlp = $this->helpers->formatPhoneNumber(@$_POST['notlp']);
-            }
-
-            $prepareData = [
-                'kd_admin' => @$_POST['kd_admin'],
-                'nm_lengkap' => @$_POST['nm_lengkap'],
-                'alamat' => trim(htmlspecialchars(@$_POST['alamat'])),
-                'notlp' => $notlp,
-                'username' => @$_POST['username']
-            ];
-
-            $userHasUpdate = $this->data_model->userById($dataParam);
-            if($this->data_model->update($prepareData, $dataParam) === 1) {
-                $data = [
-                    'success' => true,
-                    'message' => "User with kode : {$dataParam}, berhasil di update!",
-                    'data' => $userHasUpdate
-                ];
                 echo json_encode($data);
             } else {
-                $data = [
-                    'success' => true,
-                    'message' => "User with kode : {$dataParam}, tidak ada perubahan data!",
-                    'data' => $userHasUpdate
+
+                $check_notlp = $this->helpers->validatePhoneNumber(@$_POST['notlp']);
+
+                if(!$check_notlp) {
+                    $data = [
+                        'error' => true,
+                        'message' => "Nomor telphone tidak valid!!"
+                    ];
+
+                    echo json_encode($data);
+                    exit();
+                } else {
+                    $notlp = $this->helpers->formatPhoneNumber(@$_POST['notlp']);
+                }
+
+
+
+                $prepareData = [
+                    'kd_admin' => @$_POST['kd_admin'],
+                    'nm_lengkap' => @$_POST['nm_lengkap'],
+                    'alamat' => trim(htmlspecialchars(@$_POST['alamat'])),
+                    'notlp' => $notlp,
+                    'username' => @$_POST['username'],
+                    'password' => password_hash(@$_POST['new_password'], PASSWORD_DEFAULT)
                 ];
-                echo json_encode($data);
+
+                $userHasUpdate = $this->data_model->userById($dataParam);
+
+                if($this->data_model->update($prepareData, $dataParam) === 1) {
+                    $data = [
+                        'success' => true,
+                        'message' => "User with kode : {$dataParam}, berhasil di update!",
+                        'data' => $userHasUpdate
+                    ];
+                    echo json_encode($data);
+                } else {
+                    $data = [
+                        'success' => true,
+                        'message' => "User with kode : {$dataParam}, tidak ada perubahan data!",
+                        'data' => $userHasUpdate
+                    ];
+                    echo json_encode($data);
+                }
             }
+ 
 
         } catch (\PDOException $e){
             $data = [

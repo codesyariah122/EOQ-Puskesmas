@@ -774,6 +774,7 @@ const addData = (param, type) => {
 						$('input[name="k_tahun"]').val('')
 						$('input[name="b_simpan"]').val('')
 						$('input[name="b_pesan"]').val('')
+						$('#selectOption').val(null).trigger('change');
 						setTimeout(() => {
 							alertSuccess.show();
 							messageSuccess.html(`
@@ -805,7 +806,8 @@ const addData = (param, type) => {
 								&nbsp;<a href="/dashboard/laporan-pembelian" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
 								Lihat laporan pembelian
 								</a>`)
-
+							kd_obatOption = null
+							$('#selectOption').val(null).trigger('change');
 							loadingBtn.addClass('hidden')
 							textBtn.removeClass('hidden')
 							Swal.fire({
@@ -840,7 +842,9 @@ const updateData = (param, type) => {
 				nm_lengkap: param.data.nm_lengkap,
 				alamat: param.data.alamat,
 				notlp: param.data.notlp,
-				username: param.data.username
+				username: param.data.username,
+				password: param.data.password,
+				new_password: param.data.new_password
 			}
 		break;
 
@@ -895,6 +899,8 @@ const updateData = (param, type) => {
 					title: 'Oops...',
 					text: responseData.message
 				})
+				loading.classList.remove('block')
+				loading.classList.add('hidden')
 			}
 
 			if(responseData.success) {

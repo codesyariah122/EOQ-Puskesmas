@@ -181,11 +181,11 @@ class User {
 	{
 		try{
 			$dbh = $this->conn;
-			$sql = "UPDATE admin SET kd_admin=?, nm_lengkap=?, alamat=?, notlp=?, username=?  WHERE `kd_admin` = ?";
+			$sql = "UPDATE admin SET kd_admin=?, nm_lengkap=?, alamat=?, notlp=?, username=?, password=? WHERE `kd_admin` = ?";
 			
 			$update = $dbh->prepare($sql);
 			
-			$update->execute([$data['kd_admin'], $data['nm_lengkap'], $data['alamat'], $data['notlp'], $data['username'], $kd_admin]);
+			$update->execute([$data['kd_admin'], $data['nm_lengkap'], $data['alamat'], $data['notlp'], $data['username'], $data['password'], $kd_admin]);
 
 			return $update->rowCount();
 

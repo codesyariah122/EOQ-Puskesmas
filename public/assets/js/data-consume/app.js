@@ -1,6 +1,39 @@
 
 $(document).ready(function() {
 
+	$('#displaying').on('click', '#togglePassword', function(e) {
+		e.preventDefault()
+		const passwordInput = $('#passwordInput').attr('type')
+		const icon = $('.icon-password')
+
+		if(passwordInput === 'password') {
+			$('#passwordInput').attr('type', 'text')
+			icon.removeClass('fa-eye')
+			icon.addClass('fa-eye-slash')
+		} else {
+			$('#passwordInput').attr('type', 'password')
+			icon.removeClass('fa-eye-slash')
+			icon.addClass('fa-eye')
+		}
+	})
+
+	$('#displaying').on('click', '#toggleNewPassword', function(e) {
+		e.preventDefault()
+		const passwordInput = $('#newPasswordInput').attr('type')
+		const icon = $('.icon-new-password')
+
+		if(passwordInput === 'password') {
+			$('#newPasswordInput').attr('type', 'text')
+			icon.removeClass('fa-eye')
+			icon.addClass('fa-eye-slash')
+		} else {
+			$('#newPasswordInput').attr('type', 'password')
+			icon.removeClass('fa-eye-slash')
+			icon.addClass('fa-eye')
+		}
+	})
+
+	// Toast copy kd_beli
 	$('#displaying').on('click', '.close-toast', function() {
 		$('#toast-success').addClass('hidden')
 		$('#toast-success').hide('slow').fadeOut(1000)
@@ -24,6 +57,35 @@ $(document).ready(function() {
 		}
 
 		window.getSelection().removeAllRanges();
+	});
+
+	// Check checkbox displaying data laporan
+	$('#displaying').on('change', '.checkAll', function(e) {
+		e.preventDefault();
+		container.show().fadeIn(1000)
+		let isChecked = $(this).prop("checked");
+		$(".dataCheckbox").prop("checked", isChecked);
+
+	    // Perbarui status checkbox individu
+		$(".dataCheckbox").each(function() {
+			$(this).prop("checked", isChecked);
+		});
+
+	    // Panggil fungsi getDataFromTable untuk mengambil data dari tabel
+	    getDataFromTable('checkAll'); // Panggil dengan selectType 'checkAll'
+	});
+
+	$('#displaying').on('change', '.dataCheckbox', function() {
+		
+		container.show().fadeIn(1000)
+
+		if ($(".dataCheckbox:checked").length === $(".dataCheckbox").length) {
+			$("#checkAll").prop("checked", true);
+		} else {
+			$("#checkAll").prop("checked", false);
+		}
+	    // Panggil fungsi getDataFromTable untuk mengambil data dari tabel
+	    getDataFromTable('checkIndividual'); // Panggil dengan selectType 'checkIndividual'
 	});
 
 	// Pagination displaying data consume
@@ -136,36 +198,6 @@ $(document).ready(function() {
 		addData(param, pagePath)
 	})
 
-	// Check checkbox displaying data laporan
-	$('#displaying').on('change', '.checkAll', function(e) {
-		e.preventDefault();
-		container.show().fadeIn(1000)
-		let isChecked = $(this).prop("checked");
-		$(".dataCheckbox").prop("checked", isChecked);
-
-	    // Perbarui status checkbox individu
-		$(".dataCheckbox").each(function() {
-			$(this).prop("checked", isChecked);
-		});
-
-	    // Panggil fungsi getDataFromTable untuk mengambil data dari tabel
-	    getDataFromTable('checkAll'); // Panggil dengan selectType 'checkAll'
-	});
-
-	$('#displaying').on('change', '.dataCheckbox', function() {
-		
-		container.show().fadeIn(1000)
-
-		if ($(".dataCheckbox:checked").length === $(".dataCheckbox").length) {
-			$("#checkAll").prop("checked", true);
-		} else {
-			$("#checkAll").prop("checked", false);
-		}
-	    // Panggil fungsi getDataFromTable untuk mengambil data dari tabel
-	    getDataFromTable('checkIndividual'); // Panggil dengan selectType 'checkIndividual'
-	});
-
-
 	// edit data-user
 	$('#displaying').on('click', '.edit', function() {
 		const kd_data = $(this).attr('data-id')
@@ -189,7 +221,9 @@ $(document).ready(function() {
 					nm_lengkap: $('input[name="nm_lengkap"]').val(),
 					alamat: $('textarea[name="alamat"]').val(),
 					notlp: $('input[name="notlp"]').val(),
-					username: $('input[name="username"]').val()
+					username: $('input[name="username"]').val(),
+					password: $('input[name="password"]').val(),
+					new_password: $('input[name="new_password"]').val()
 				}
 				id = prepareData.kd_admin
 			break;
@@ -283,6 +317,8 @@ $(document).ready(function() {
 		$('textarea[name="alamat"]').val('')
 		$('input[name="notlp"]').val('')
 		$('input[name="username"]').val('')
+		kd_obatOption = null
+		$('#selectOption').val(null).trigger('change');
 		alertError.hide()
 		messageError.html('')
 		loadingBtn.addClass('hidden')
@@ -310,11 +346,6 @@ $(document).ready(function() {
 	    let selectedValue = e.params.data.id; // Mendapatkan nilai (value) opsi terpilih
 	    kd_obatOption = selectedValue;
 	});
-
-	$('#selectOption').on('select2:open', function() {
-		$(this).data('select2').dropdown.$search.attr('autofocus', 'autofocus');
-	});
-
 
 })
 
