@@ -18,7 +18,7 @@ https://github.com/codesyariah122/skripsi/assets/13291805/16b52bf8-0ab5-409f-b80
 
 ### Tech Stack  
 1. PHP Native with mvc concept (PHP 8.2)
-2. PHP::PDO Reusable object oriented for database communication
+2. PHP::PDO Extention for database cumunication
 3. MariaDB database server
 4. Javascript, JQuery, Select2 , JQuery.Ajax, Sweetalert
 5. Tailwindcss with plugins flowbite
