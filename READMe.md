@@ -13,6 +13,13 @@ https://github.com/codesyariah122/skripsi/assets/13291805/809848ba-43e7-43ac-b20
 
 https://github.com/codesyariah122/skripsi/assets/13291805/16b52bf8-0ab5-409f-b80a-e00810d719b3
 
+#### For windows user
+run the command here :
+```
+powershell.exe -ExecutionPolicy Bypass -File server.ps1
+
+```
+
 
 > Dibuat dengan bahasa pemrogramman PHP versi 8.2, dengan mengusung konsep MVC sebagai alur utama programm ini.
 
