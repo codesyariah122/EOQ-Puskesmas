@@ -75,7 +75,7 @@ class PengajuanObat {
 	}
 
 
-	function searchData($keyword, $limitStart, $limit)
+	public function searchData($keyword, $limitStart, $limit)
 	{
 		try {
 			$dbh = $this->conn;
