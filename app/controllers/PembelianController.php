@@ -226,6 +226,10 @@ class PembelianController {
             
             $pembelianHasUpdate = $this->pembelian_model->pembelianById($dataParam);
 
+            if($pembelianHasUpdate['jumlah'] === intval(@$_POST['jumlah'])) {
+                $update_stok = $pembelianHasUpdate['jumlah'];
+            }
+
             if(@$_POST['jumlah'] > $pembelianHasUpdate['jumlah']) {
                 $update_stok = $dataObat['stok'] + @$_POST['jumlah'];
             } else {
