@@ -572,7 +572,7 @@ const searchData = (param, type) => {
 					case "pembelian":
 						const listsBeli = lists.data
 						listsBeli.map(report => {
-							console.log(report)
+
 							domDataHTML += `
 								<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 								<td class="field-id hidden" data-id="${report.id}">

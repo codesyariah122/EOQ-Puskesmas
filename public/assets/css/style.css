@@ -32,6 +32,7 @@
     opacity: 0;
     transform: translateY(100%);
  }   
+ 
  .table-footer {
    float: none;
    text-align: left;

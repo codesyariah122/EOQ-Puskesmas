@@ -140,6 +140,7 @@ class LoginController {
 		unset($_SESSION['username']);
 		unset($_SESSION['user_id']);
 		unset($_SESSION['token']);
+		header('Location: login?logout=success');
 		exit();
 	}
 }
