@@ -16,7 +16,7 @@ $app->post('/create-user', 'HomeController@create_user');
 // Autentikasi rute
 $app->get('/login', 'LoginController@index');
 $app->post('/auth-login', 'LoginController@authenticate');
-$app->post('/logout', 'LoginController@logout');
+$app->post('/auth-logout', 'LoginController@logout');
 
 // Dashboard feature rute
 // Admin

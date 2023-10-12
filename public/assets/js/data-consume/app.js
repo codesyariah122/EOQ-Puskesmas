@@ -152,43 +152,43 @@ $(document).ready(function() {
 		let prepareData = {}
 
 		switch(pagePath) {
-			case 'data-user':
-				prepareData = {
-					nm_lengkap: $('input[name="nm_lengkap"]').val(),
-					password: $('input[name="password"]').val(),
-					alamat: $('textarea[name="alamat"]').val(),
-					notlp: $('input[name="notlp"]').val(),
-					role: $('#role').val()
-				}
+		case 'data-user':
+			prepareData = {
+				nm_lengkap: $('input[name="nm_lengkap"]').val(),
+				password: $('input[name="password"]').val(),
+				alamat: $('textarea[name="alamat"]').val(),
+				notlp: $('input[name="notlp"]').val(),
+				role: $('#role').val()
+			}
 			break;
 
-			case 'data-obat':
-				prepareData = {
-					nm_obat: $('input[name="nm_obat"]').val(),
-					jenis_obat: $('#jenis_obat').val(),
-					harga: $('input[name="harga"]').val(),
-					stok: $('input[name="stok"]').val()
-				}
+		case 'data-obat':
+			prepareData = {
+				nm_obat: $('input[name="nm_obat"]').val(),
+				jenis_obat: $('#jenis_obat').val(),
+				harga: $('input[name="harga"]').val(),
+				stok: $('input[name="stok"]').val()
+			}
 			break;
 
-			case "pengajuan-obat":
-				prepareData = {
-					kd_obat: kd_obatOption,
-					k_tahun: $('input[name="k_tahun"]').val(),
-					b_simpan: $('input[name="b_simpan"]').val(),
-					b_pesan: $('input[name="b_pesan"]').val()
-				}
+		case "pengajuan-obat":
+			prepareData = {
+				kd_obat: kd_obatOption,
+				k_tahun: $('input[name="k_tahun"]').val(),
+				b_simpan: $('input[name="b_simpan"]').val(),
+				b_pesan: $('input[name="b_pesan"]').val()
+			}
 			break;
 
-			case "pembelian":
-				prepareData = {
-					kd_obat: kd_obatOption,
-					jumlah: $('input[name="jumlah"]').val()
-				}
+		case "pembelian":
+			prepareData = {
+				kd_obat: kd_obatOption,
+				jumlah: $('input[name="jumlah"]').val()
+			}
 			break;
 
-			default: 
-				console.log("No type")
+		default: 
+			console.log("No type")
 		}
 
 		const param = {
@@ -215,39 +215,39 @@ $(document).ready(function() {
 		let id = null
 
 		switch(pagePath) {
-			case 'data-user':
-				prepareData = {
-					kd_admin: $('input[name="kd_admin"]').val(),
-					nm_lengkap: $('input[name="nm_lengkap"]').val(),
-					alamat: $('textarea[name="alamat"]').val(),
-					notlp: $('input[name="notlp"]').val(),
-					username: $('input[name="username"]').val(),
-					password: $('input[name="password"]').val(),
-					new_password: $('input[name="new_password"]').val()
-				}
-				id = prepareData.kd_admin
+		case 'data-user':
+			prepareData = {
+				kd_admin: $('input[name="kd_admin"]').val(),
+				nm_lengkap: $('input[name="nm_lengkap"]').val(),
+				alamat: $('textarea[name="alamat"]').val(),
+				notlp: $('input[name="notlp"]').val(),
+				username: $('input[name="username"]').val(),
+				password: $('input[name="password"]').val(),
+				new_password: $('input[name="new_password"]').val()
+			}
+			id = prepareData.kd_admin
 			break;
 
-			case 'data-obat':
-				prepareData = {
-					kd_obat: $('input[name="kd_obat"]').val(),
-					nm_obat: $('input[name="nm_obat"]').val(),
-					jenis_obat: $('#jenis_obat').val(),
-					harga: $('input[name="harga"]').val(),
-					stok: $('input[name="stok"]').val()
-				}
-				id = prepareData.kd_obat
+		case 'data-obat':
+			prepareData = {
+				kd_obat: $('input[name="kd_obat"]').val(),
+				nm_obat: $('input[name="nm_obat"]').val(),
+				jenis_obat: $('#jenis_obat').val(),
+				harga: $('input[name="harga"]').val(),
+				stok: $('input[name="stok"]').val()
+			}
+			id = prepareData.kd_obat
 			break;
 
-			case 'pembelian':
-				prepareData = {
-					kd_beli: $('#kd_beli').val(),
-					kd_obat: $('#selectOption').val(),
-					tgl_beli: $('input[name="tgl_beli"]').val(),
-					jumlah: $('input[name="jumlah"]').val(),
-				}
+		case 'pembelian':
+			prepareData = {
+				kd_beli: $('#kd_beli').val(),
+				kd_obat: $('#selectOption').val(),
+				tgl_beli: $('input[name="tgl_beli"]').val(),
+				jumlah: $('input[name="jumlah"]').val(),
+			}
 
-				id = prepareData.kd_beli
+			id = prepareData.kd_beli
 			break;
 
 		default:
@@ -278,20 +278,20 @@ $(document).ready(function() {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				switch(pagePath) {
-					case 'data-user':
-						let kd_admin = $(this).attr('data-id')
-						prepareData = {
-							id: kd_admin,
-							field: kd_admin
-						}
+				case 'data-user':
+					let kd_admin = $(this).attr('data-id')
+					prepareData = {
+						id: kd_admin,
+						field: kd_admin
+					}
 					break;
 
-					case 'data-obat':
-						let kd_obat = $(this).attr('data-id')
-						prepareData = {
-							id: kd_obat,
-							field: kd_obat
-						}
+				case 'data-obat':
+					let kd_obat = $(this).attr('data-id')
+					prepareData = {
+						id: kd_obat,
+						field: kd_obat
+					}
 					break;
 
 				case 'pembelian':
@@ -328,24 +328,37 @@ $(document).ready(function() {
 
 
 	// option select lists obat from select2
-	$('#selectOption').select2({
-    	placeholder: 'Pilih Obat',
-	    allowClear: true,
-	    minimumInputLength: 3, // Jumlah karakter minimal untuk memulai pencarian
-	    ajax: {
-	        url: $('#selectOption').data('action'), // Mendapatkan URL endpoint dari atribut data-action
-	        dataType: 'json',
-	        delay: 100,
-	        processResults: function(data) {
-	        	return {
-	        		results: data
-	        	};
-	        },
-	        cache: true
-	    }
-	}).on('select2:select', function(e) {
-	    let selectedValue = e.params.data.id; // Mendapatkan nilai (value) opsi terpilih
-	    kd_obatOption = selectedValue;
+	// $('#selectOption').select2({
+    // 	placeholder: 'Pilih Obat',
+	//     allowClear: true,
+	//     minimumInputLength: 3,
+	//     ajax: {
+	//         url: $('#selectOption').data('action'),
+	//         dataType: 'json',
+	//         delay: 100,
+	//         processResults: function(data) {
+	//         	console.log(data)
+	//         	return {
+	//         		results: data
+	//         	};
+	//         },
+	//         cache: true
+	//     }
+	// }).on('select2:select', function(e) {
+	//     let selectedValue = e.params.data.id; // Mendapatkan nilai (value) opsi terpilih
+	//     kd_obatOption = selectedValue;
+	// });
+
+	// Fungsi untuk memuat data dan menginisialisasi Select2
+
+
+// Memanggil fungsi di atas saat dokumen siap
+	loadAndInitializeSelect2();
+
+
+	$('#selectOption').on('select2:select', function(e) {
+		let selectedValue = e.params.data.id;
+		kd_obatOption = selectedValue;
 	});
 
 })

@@ -78,12 +78,14 @@ class PengajuanObatController {
             $page = isset($_GET['page']) ? intval(@$_GET['page']) : 1;
             $offset = ($page - 1) * $limit;
 
-            if ($keyword) {
+        // Logika untuk membatasi ke 10 data pertama jika tidak ada kata pencarian
+            if ($keyword === '') {
+                $countPage = $this->obat_model->countAllData();
+                $obats = $this->obat_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $limit");
+            } else {
+            // Logika pencarian jika ada kata pencarian
                 $countPage = $this->obat_model->countSearchData($keyword);
                 $obats = $this->obat_model->searchData($keyword, $offset, $limit);
-            } else {
-                $countPage = $this->obat_model->countAllData();
-                $obats = $this->obat_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $offset, $limit");
             }
 
             $totalPage = ceil($countPage / $limit);
@@ -109,6 +111,7 @@ class PengajuanObatController {
     }
 
 
+
     public function edit($dataParam)
     {
     }
@@ -131,11 +134,16 @@ class PengajuanObatController {
                 echo json_encode($data);
                 exit();
             } else {
+                $resultIntvalTime = round(sqrt((2 * @$_POST['b_pesan']) / (@$_POST['b_simpan'] * @$_POST['k_tahun'])) * 365);
+                $resultEconomics = round(sqrt(2 * (@$_POST['b_pesan'] * @$_POST['k_tahun']) / @$_POST['b_simpan']));
+
                 $prepareData = [
                     'kd_obat' => @$_POST['kd_obat'],
                     'k_tahun' => @$_POST['k_tahun'],
                     'b_simpan' => @$_POST['b_simpan'],
-                    'b_pesan' => @$_POST['b_pesan']
+                    'b_pesan' => @$_POST['b_pesan'],
+                    'jumlah_eoq' => $resultEconomics,
+                    'intval_time' => $resultIntvalTime
                 ];
 
 

@@ -8,7 +8,8 @@
               <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Laporan Pembelian</h5>
               <p class="mb-0 text-base text-gray-500 sm:text-lg dark:text-gray-400">Table Data Laporan Pembelian</p>
 
-              <?php require_once 'molecules/login-countdown.php' ?>
+               <!-- Aktifkan untuk countdown timer -->
+               <?php require_once 'molecules/login-countdown.php' ?>
            </div>
 
            <div id="alert-error" class="w-full mb-2 py-2 hidden">

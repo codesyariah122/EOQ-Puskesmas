@@ -1,3 +1,4 @@
+"use strict";
 /**
  * @author: Puji Ermanto <pujiermanto@gmail.com>
  * Desc: File ini merupakan serangkaian instruksi untuk melakukan manipulasi data dan element pada struktur html. Melakukan ajax request secara asynchronous, sehingga memungkinkan untuk menambahkan nilai visual pada user experience.
@@ -60,31 +61,43 @@ const Login = (data) => {
 const Logout = () => {
 	loading.classList.add('block')
 	$.ajax({
-		url: '/logout',
+		url: '/auth-logout',
 		type: 'POST',
 		dataType: 'json',
-		data: {},
 		success: function(response) {
-			const userData = response
-			if(userData.success) {
+			if (response.success) {
 				setTimeout(() => {
-					loading.classList.remove('block')
-					loading.classList.add('hidden')
-					
-					removeLogin('token')
+					loading.classList.remove('block');
+					loading.classList.add('hidden');
+					removeLogin('token');
 
 					Swal.fire({
 						position: 'top-end',
 						icon: 'success',
-						title: userData.message,
+						title: response.message,
 						showConfirmButton: false,
 						timer: 1500
-					})
-					window.location.replace(`/?logut=user_logout`)
-				}, 1000)
+					});
+
+                // Redirect ke halaman login setelah logout
+					window.location.replace('/login?logout=success');
+				}, 2000)
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: 'Logout failed',
+					text: 'Something went wrong!'
+				});
 			}
+		},
+		error: function() {
+			Swal.fire({
+				icon: 'error',
+				title: 'Logout failed',
+				text: 'Something went wrong!'
+			});
 		}
-	})
+	});
 }
 
 

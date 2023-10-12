@@ -124,11 +124,13 @@ class PengajuanObat {
 		try{
 			$dbh = $this->conn;
 
-			$pengajuanObat = $dbh->prepare("INSERT INTO eoq (kd_obat, k_tahun, b_simpan, b_pesan) VALUES (:kd_obat, :k_tahun, :b_simpan, :b_pesan)");
+			$pengajuanObat = $dbh->prepare("INSERT INTO eoq (kd_obat, k_tahun, b_simpan, b_pesan, jumlah_eoq, intval_time) VALUES (:kd_obat, :k_tahun, :b_simpan, :b_pesan, :jumlah_eoq, :intval_time)");
 			$pengajuanObat->bindParam(':kd_obat', $data['kd_obat']);
 			$pengajuanObat->bindParam(':k_tahun', $data['k_tahun']);
 			$pengajuanObat->bindParam(':b_simpan', $data['b_simpan']);
 			$pengajuanObat->bindParam(':b_pesan', $data['b_pesan']);
+			$pengajuanObat->bindParam(':jumlah_eoq', $data['jumlah_eoq']);
+			$pengajuanObat->bindParam(':intval_time', $data['intval_time']);
 
 			$pengajuanObat->execute();
 

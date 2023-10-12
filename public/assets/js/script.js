@@ -9,6 +9,7 @@ path = url.pathname,
 pagePath = path.split('/')[2]
 
 // Initialisasi variable
+let loginTime;
 let loading = document.querySelector('#loading')
 let alertSuccess = $('#alert-success')
 let messageSuccess = $('#message-success')
