@@ -152,7 +152,7 @@ class PembelianController {
         try {
             header("Content-Type: application/json");
 
-            if (empty(@$_POST['kd_obat']) || empty( @$_POST['jumlah'])) {
+            if (empty(@$_POST['kd_obat']) || empty(@$_POST['jumlah'])) {
                 $data = [
                     'error' => true,
                     'message' => "Data tidak boleh kosong"
@@ -161,32 +161,49 @@ class PembelianController {
                 echo json_encode($data);
                 exit();
             } else {
-                $last_id = $this->pembelian_model->lastIdBeli();
-                $date = new \DateTime();
-                $kode_beli = Helpers::generateRandomString(8);
+                $kd_obat = @$_POST['kd_obat'];
+                $jumlah = @$_POST['jumlah'];
 
-                $prepareData = [
-                    'kd_beli' => $kode_beli,
-                    'tgl_beli' => $date->format('Y-m-d, H:i:s'),
-                    'kd_obat' => @$_POST['kd_obat'],
-                    'jumlah' => @$_POST['jumlah']
-                ];
-
-
-                if($this->pembelian_model->store($prepareData, $last_id !== NULL ? $last_id+=1 : 1) % 2 == 1){
-
-                    $dataObat = $this->obat_model->obatById(@$_POST['kd_obat']);
-                    $update_stok = $dataObat['stok'] + @$_POST['jumlah'];
+                // Cek apakah kd_obat sudah ada di database
+                $dataObat = $this->pembelian_model->checkReadyStock($kd_obat);
+                // var_dump($dataObat); die;
+                if ($dataObat) {
+                // Jika kd_obat sudah ada, lakukan pembaruan jumlah
+                    $update_stok = $dataObat['jumlah'] + $jumlah;
 
                     $prepareUpdateStok = [
-                        'kd_obat' => @$_POST['kd_obat'],
-                        'nm_obat' => $dataObat['nm_obat'],
-                        'jenis_obat' => $dataObat['jenis_obat'],
-                        'harga' => $dataObat['harga'],
-                        'stok' => $update_stok
+                        'kd_beli' => $dataObat['kd_beli'],
+                        'tgl_beli' => $dataObat['tgl_beli'],
+                        'kd_obat' => $dataObat['kd_obat'],
+                        'jumlah' => $update_stok
                     ];
 
-                    if($this->obat_model->update($prepareUpdateStok, $prepareUpdateStok['kd_obat']) > 0):
+                    if ($this->pembelian_model->update($prepareUpdateStok, $dataObat['kd_beli']) > 0) {
+                        $lastIdBeli = $this->pembelian_model->lastIdBeli();
+                        $pembelian = $this->pembelian_model->pembelianByIdData($lastIdBeli);
+
+                        $data = [
+                            'success' => true,
+                            'message' => "Pembelian baru dengan kode : {$pembelian['kd_beli']}, berhasil ditambahkan!",
+                            'data' => $pembelian
+                        ];
+                        echo json_encode($data);
+                    }
+                } else {
+                // Jika kd_obat belum ada, tambahkan data baru ke database
+                    $last_id = $this->pembelian_model->lastIdBeli();
+                    $date = new \DateTime();
+                    $kode_beli = Helpers::generateRandomString(8);
+
+                    $prepareData = [
+                        'kd_beli' => $kode_beli,
+                        'tgl_beli' => $date->format('Y-m-d, H:i:s'),
+                        'kd_obat' => $kd_obat,
+                        'jumlah' => $jumlah
+                    ];
+
+                    if ($this->pembelian_model->store($prepareData, $last_id !== NULL ? $last_id += 1 : 1) % 2 == 1) {
+                        $dataObat = $this->obat_model->obatById($kd_obat);
                         $pembelian = $this->pembelian_model->pembelianById($prepareData['kd_beli']);
 
                         $data = [
@@ -195,20 +212,19 @@ class PembelianController {
                             'data' => $pembelian
                         ];
                         echo json_encode($data);
-                    endif;
+                    }
                 }
             }
-
-
-        } catch (\PDOException $e){
+        } catch (\PDOException $e) {
             $data = [
                 'error' => true,
-                'message' => "Terjadi kesalahan : ".$e->getMessage()
+                'message' => "Terjadi kesalahan : " . $e->getMessage()
             ];
 
             echo json_encode($data);
         }
     }
+
 
     public function update($dataParam)
     {

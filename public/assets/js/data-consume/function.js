@@ -3,7 +3,6 @@
  * Desc: File ini merupakan serangkaian instruksi untuk melakukan manipulasi data dan element pada struktur html. Melakukan ajax request secara asynchronous, sehingga memungkinkan untuk menambahkan nilai visual pada user experience.
  * */
 
-
 const formatIdr = (angka) => {
 	const formatRupiah = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(angka);
 
@@ -686,6 +685,7 @@ const addData = (param, type) => {
 
 	default:
 	}
+	console.log(endPoint)
 
 	$.ajax({
 		url: endPoint,
@@ -779,7 +779,7 @@ const addData = (param, type) => {
 						alertSuccess.show();
 						messageSuccess.html(`
 							<span class="font-medium"> Berhasil menambah data pengajuan obat baru!</span> ${responseData.message}
-							&nbsp;<a href="/dashboard/laporan-eoq" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+							&nbsp;<br/><br/><a href="/dashboard/laporan-eoq" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
 							Lihat data pengajuan
 							</a>`)
 
@@ -803,7 +803,7 @@ const addData = (param, type) => {
 						alertSuccess.show();
 						messageSuccess.html(`
 							<span class="font-medium"> Pembelian baru berhasil!</span> ${responseData.message}
-							&nbsp;<a href="/dashboard/laporan-pembelian" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+							&nbsp;<br/><br/><br/><a href="/dashboard/laporan-pembelian" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
 							Lihat laporan pembelian
 							</a>`)
 						kd_obatOption = null
@@ -817,8 +817,9 @@ const addData = (param, type) => {
 							showConfirmButton: false,
 							timer: 1500
 						})
-
 					}, 1000)
+					const chartUpdateEvent = new Event('chart-updated');
+					document.dispatchEvent(chartUpdateEvent);
 					break;
 
 					// type lainnya
@@ -1021,33 +1022,39 @@ function showToast(message) {
 // }
 
 function loadAndInitializeSelect2() {
-    $('#selectOption').select2({
-        placeholder: 'Pilih Obat',
-        allowClear: true,
-        ajax: {
-            url: $('#selectOption').data('action'),
-            dataType: 'json',
-            delay: 100,
-            processResults: function(data) {
-                return {
-                    results: data
-                };
-            },
-            cache: true
-        },
-        dropdownPosition: 'below' 
-    });
+	$('#selectOption').select2({
+		placeholder: 'Pilih Obat',
+		allowClear: true,
+		ajax: {
+			url: $('#selectOption').data('action'),
+			dataType: 'json',
+			delay: 100,
+			processResults: function(data) {
+				return {
+					results: data
+				};
+			},
+			cache: true
+		},
+		dropdownPosition: 'below' 
+	});
 
-    $.ajax({
-        url: $('#selectOption').data('action'),
-        dataType: 'json',
-        success: function(data) {
-            $('#selectOption').empty();
-            $.each(data, function(index, item) {
-                $('#selectOption').append(new Option(item.text, item.id, true, true));
-            });
+	$.ajax({
+		url: $('#selectOption').data('action'),
+		dataType: 'json',
+		success: function(data) {
+            // Buat opsi default
+			let defaultOption = new Option('Pilih Obat', '', true, true);
+			$('#selectOption').append(defaultOption);
 
-            $('#selectOption').trigger('change');
-        }
-    });
+            // Tambahkan data dari response
+			$.each(data, function(index, item) {
+				var option = new Option(item.text, item.id, false, false);
+				$('#selectOption').append(option);
+			});
+
+            // Inisialisasi ulang Select2
+			$('#selectOption').trigger('change');
+		}
+	});
 }

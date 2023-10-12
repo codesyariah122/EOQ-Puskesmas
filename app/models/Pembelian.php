@@ -128,6 +128,23 @@ class Pembelian {
 		}
 	}
 
+	public function pembelianByIdData($id)
+	{
+		try{
+			$dbh = $this->conn;
+
+			$sql = "SELECT * FROM beli WHERE id = :id";
+			$stmt = $dbh->prepare($sql);
+			$stmt->bindParam(':id', $id);
+			$stmt->execute();
+
+			$beli = $stmt->fetch(\PDO::FETCH_ASSOC);
+			return $beli;
+		}catch(\PDOException $e){
+			echo $e->getMessage();
+		}
+	}
+
 	public function pembelianById($kd_beli)
 	{
 		try{
@@ -136,6 +153,23 @@ class Pembelian {
 			$sql = "SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, obat.harga, obat.stok, beli.* FROM obat JOIN beli ON obat.kd_obat = beli.kd_obat WHERE kd_beli = :kd_beli";
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(':kd_beli', $kd_beli);
+			$stmt->execute();
+
+			$beli = $stmt->fetch(\PDO::FETCH_ASSOC);
+			return $beli;
+		}catch(\PDOException $e){
+			echo $e->getMessage();
+		}
+	}
+
+	public function checkReadyStock($kd_obat)
+	{
+		try{
+			$dbh = $this->conn;
+
+			$sql = "SELECT * FROM beli WHERE kd_obat = :kd_obat";
+			$stmt = $dbh->prepare($sql);
+			$stmt->bindParam(':kd_obat', $kd_obat);
 			$stmt->execute();
 
 			$beli = $stmt->fetch(\PDO::FETCH_ASSOC);
