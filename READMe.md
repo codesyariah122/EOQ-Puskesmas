@@ -1,6 +1,10 @@
 ### Bahan Skripsi Pemrogramman Web
 
 ### Print laporan ke PDF
+
+https://github.com/codesyariah122/EOQ-Puskesmas/assets/13291805/7d15d1a3-aba1-40dc-aadc-edc5bea501dc
+
+
 https://github.com/codesyariah122/skripsi/assets/13291805/a4d19210-f917-4445-a1aa-2a971b3ec90a
 
 ### User password updating
