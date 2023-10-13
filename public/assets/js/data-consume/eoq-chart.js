@@ -1,7 +1,7 @@
 let ctx = document.getElementById('myChart').getContext('2d');
 let labels = []; // Label sumbu X
 let data = [];   // Data sumbu Y
-let chart;
+let chart, label;
 
 function initializeChart() {
     chart = new Chart(ctx, {
@@ -9,7 +9,7 @@ function initializeChart() {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Jumlah Pembelian',
+                label: label,
                 data: data,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -31,13 +31,12 @@ function runChart() {
     $.ajax({
         url: '/dashboard/chart/laporan-pembelian',
         method: 'GET',
-        success: function(response) {
-            console.log(response)
-            
+        success: function(response) {            
             response.data.forEach(item => {
                 const dataPoint = `${item.jumlah} - ${item.nm_obat}`;
                 data.push(item.jumlah);
                 labels.push(item.nm_obat);
+                label = `Jumlah Pembelian - ${item.tgl_beli}`
             });
 
             monthlyData = response.monthlyData; 
@@ -55,10 +54,11 @@ function runChart() {
     });
 }
 
-// Inisialisasi grafik saat halaman dimuat
-initializeChart();
-runChart()
+if(pagePath === "admin") {    
+    initializeChart();
+    runChart()
+}
 
-// Atur interval untuk mengupdate grafik (misalnya, setiap 5 detik)
-// setInterval(updateChart, 5000);
+// Atur interval untuk mengupdate grafik
+// setInterval(runChart, 5000);
 

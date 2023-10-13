@@ -162,29 +162,30 @@ class Pembelian {
 		}
 	}
 
-	public function checkReadyStock($kd_obat)
+	public function checkReadyStock($kd_obat, $tgl_beli)
 	{
-		try{
+		try {
 			$dbh = $this->conn;
 
-			$sql = "SELECT * FROM beli WHERE kd_obat = :kd_obat";
+			$sql = "SELECT * FROM beli WHERE kd_obat = :kd_obat 
+			AND DATE(tgl_beli) = :tgl_beli";
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(':kd_obat', $kd_obat);
+			$stmt->bindParam(':tgl_beli', $tgl_beli);
 			$stmt->execute();
 
 			$beli = $stmt->fetch(\PDO::FETCH_ASSOC);
 			return $beli;
-		}catch(\PDOException $e){
+		} catch (\PDOException $e) {
 			echo $e->getMessage();
 		}
 	}
 
 	public function store($data, $id)
 	{
-		try{
+		try {
 			$dbh = $this->conn;
 
-        	// Memulai transaksi
 			$dbh->beginTransaction();
 
 			$pembelian = $dbh->prepare("INSERT INTO beli (id, kd_beli, tgl_beli, kd_obat, jumlah) VALUES (:id, :kd_beli, :tgl_beli, :kd_obat, :jumlah)");
@@ -206,7 +207,7 @@ class Pembelian {
 				return $pembelian->rowCount();
 			}
 
-		} catch (\PDOException $e){
+		} catch (\PDOException $e) {
 			$dbh->rollBack();
 			echo "Error PDO: " . $e->getMessage();
 		} catch (\Exception $e) {

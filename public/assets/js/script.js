@@ -18,6 +18,7 @@ let messageError = $('#message-error')
 let loadingBtn = $('#loading-button')
 let textBtn = $('#text-button')
 let domDataLists = $(`#${pagePath}`)
+let domLogBeli = $('#log-beli')
 let addUserModal = $('#addUserModal')
 let pagination = $('#pagination')
 let paging = {}

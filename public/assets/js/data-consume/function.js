@@ -77,6 +77,36 @@ const setUpPagination = (data) => {
 
 }
 
+const logPembelian = () => {
+	const endPoint = "/dashboard/log-pembelian"
+
+	$.ajax({
+		url: endPoint,
+		type: 'GET',
+		dataType: 'json',
+	})
+	.done(function(response){
+		if(response.success) {
+			let domDataHTML = ''
+			response.data.map(log => {
+				domDataHTML += `
+				<li class="mb-6 ml-6">            
+				<span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+				<img class="rounded-full shadow-lg" src="${log.username === 'staf01' ? 'https://flowbite.com/docs/images/people/profile-picture-4.jpg' : 'https://flowbite.com/docs/images/people/profile-picture-2.jpg'}" alt="${log.nm_lengkap} image"/>
+				</span>
+				<div class="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
+				<time class="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">
+				${formatDateIndonesia(log.tgl_beli)}</time>
+				<div class="text-sm font-normal text-gray-500 dark:text-gray-300">${log.username} menambahkan pembelian obat ${log.nm_obat} <a href="#" class="font-semibold text-blue-600 dark:text-blue-500 hover:underline"></a> dengan kode beli <span class="bg-gray-100 text-gray-800 text-xs font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-gray-600 dark:text-gray-300">${log.kd_beli}</span></div>
+				</div>
+				</li>  
+				`
+			})
+			domLogBeli.html(domDataHTML)
+		}
+	})
+}
+
 const getAllData = (type, page=1, keyword='') => {
 	const endPoint = `/lists/${type}?page=${page}${keyword ? '&keyword='+keyword : ''}`
 
@@ -190,14 +220,11 @@ const getAllData = (type, page=1, keyword='') => {
 						<td>
 						<div class="flex justify-center space-x-4">
 						<div>
-						<input class="default-checkbox dataCheckbox" type="checkbox" value="${report.kd_obat}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                                
+						<input id="default-checkbox" type="checkbox" value="${report.kd_obat}" class="dataCheckbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">                                
 						</div>
 						</div>
 						</td>
-						<td class="field-id hidden" data-id="${report.id}">
-						${report.id}
-						</td>
-						<th scope="row" class="px-6 py-4 text-xs font-medium text-gray-900 whitespace-nowrap dark:text-white">
+						<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
 						${report.kd_obat}
 						</th>
 						<td class="px-6 py-4">
@@ -212,26 +239,17 @@ const getAllData = (type, page=1, keyword='') => {
 						</td>
 						<td class="px-6 py-4">
 						<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-						${hitungEconomics({
-							b_pesan: report.b_pesan,
-							k_tahun: report.k_tahun,
-							b_simpan: report.b_simpan
-						})
-					} ${report.jenis_obat}
-					</span>
-					</td>
-					<td class="px-6 py-4">
-					<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
-					${hitungIntervalWaktu({
-						b_pesan: report.b_pesan,
-						k_tahun: report.k_tahun,
-						b_simpan: report.b_simpan
+						${report.jumlah_eoq} ${report.jenis_obat === "CAIR" ? "Botol" : report.jenis_obat === "TABLET" ? "Strip" : report.jenis_obat}
+						</span>
+						</td>
+						<td class="px-6 py-4">
+						<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+						${report.intval_time} Hari
+						</span>
+						</td>
+						</tr>
+						`;
 					})
-				} Hari
-				</span>
-				</td>
-				</tr>
-				`;})
 					break;
 
 				case "laporan-pembelian":
@@ -505,27 +523,17 @@ const searchData = (param, type) => {
 						</td>
 						<td class="px-6 py-4">
 						<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-						${hitungEconomics({
-							b_pesan: report.b_pesan,
-							k_tahun: report.k_tahun,
-							b_simpan: report.b_simpan
-						})
-					} ${report.jenis_obat}
-					</span>
-					</td>
-					<td class="px-6 py-4">
-					<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
-					${hitungIntervalWaktu({
-						b_pesan: report.b_pesan,
-						k_tahun: report.k_tahun,
-						b_simpan: report.b_simpan
+						${report.jumlah_eoq} ${report.jenis_obat === "CAIR" ? "Botol" : report.jenis_obat === "TABLET" ? "Strip" : report.jenis_obat}
+						</span>
+						</td>
+						<td class="px-6 py-4">
+						<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+						${report.intval_time} Hari
+						</span>
+						</td>
+						</tr>
+						`;
 					})
-				} Hari
-				</span>
-				</td>
-				</tr>
-				`;
-			})
 					break;
 
 				case "laporan-pembelian":
@@ -820,6 +828,7 @@ const addData = (param, type) => {
 					}, 1000)
 					const chartUpdateEvent = new Event('chart-updated');
 					document.dispatchEvent(chartUpdateEvent);
+					logPembelian()
 					break;
 
 					// type lainnya

@@ -1,15 +1,15 @@
 <?php
 namespace app\controllers;
 
-use app\models\{DataObat, Pembelian};
+use app\models\{DataObat, Pembelian, LogPembelian, User};
 use app\helpers\{Helpers};
 use app\datasources\WebApp;
 
 class PembelianController {
 
 
-    public $helpers, $conn, $obat_model;
-    private $pembelian_model;
+    public $helpers, $conn;
+    private $pembelian_model, $obat_model, $log_pembelian, $user_model;
 
     public function __construct()
     {
@@ -22,6 +22,8 @@ class PembelianController {
         $this->helpers = new Helpers;
         $this->obat_model = new DataObat;
         $this->pembelian_model = new Pembelian;
+        $this->log_pembelian = new LogPembelian;
+        $this->user_model = new User;
     }
 
     public function views($views, $param)
@@ -163,9 +165,9 @@ class PembelianController {
             } else {
                 $kd_obat = @$_POST['kd_obat'];
                 $jumlah = @$_POST['jumlah'];
-
+                $todayDate = date("Y-m-d");
                 // Cek apakah kd_obat sudah ada di database
-                $dataObat = $this->pembelian_model->checkReadyStock($kd_obat);
+                $dataObat = $this->pembelian_model->checkReadyStock($kd_obat, $todayDate);
                 // var_dump($dataObat); die;
                 if ($dataObat) {
                 // Jika kd_obat sudah ada, lakukan pembaruan jumlah
@@ -203,13 +205,26 @@ class PembelianController {
                     ];
 
                     if ($this->pembelian_model->store($prepareData, $last_id !== NULL ? $last_id += 1 : 1) % 2 == 1) {
+                        $user_login = $this->user_model->getUserByUsername($_SESSION['username']);
+
+                        $prepareLogBeli = [
+                            'kd_admin' => $user_login['kd_admin'],
+                            'kd_beli' => $kode_beli,
+                            'tgl_beli' => $date->format('Y-m-d, H:i:s'),
+                            'kd_obat' => $kd_obat,
+                            'jumlah' => $jumlah
+                        ];
+                        $this->log_pembelian->store($prepareLogBeli, $last_id); 
+
                         $dataObat = $this->obat_model->obatById($kd_obat);
                         $pembelian = $this->pembelian_model->pembelianById($prepareData['kd_beli']);
+                        $data_log = $this->log_pembelian->logPembelianByIdData($pembelian['kd_beli']);
 
                         $data = [
                             'success' => true,
                             'message' => "Pembelian baru dengan kode : {$pembelian['kd_beli']}, berhasil ditambahkan, data stok obat {$dataObat['nm_obat']} ditambahkan!",
-                            'data' => $pembelian
+                            'data' => $pembelian,
+                            'log_beli' => $data_log
                         ];
                         echo json_encode($data);
                     }
