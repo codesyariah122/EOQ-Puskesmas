@@ -366,3 +366,7 @@ $(document).ready(function() {
 if(pagePath !== 'pengajuan-obat') {
 	getAllData(pagePath, 1)
 }
+
+if(pagePath === "pembelian") {
+	logPembelian()
+}

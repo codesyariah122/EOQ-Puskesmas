@@ -85,5 +85,12 @@
          </div>
 
       </div>
+      <?php if($_SESSION['role'] === "admin"):?>
+         <div class="col-span-full w-[80vw] px-36">
+           <time class="text-lg font-semibold text-gray-900 dark:text-white py-2">Log Pembelian</time>
+            <ol id="log-beli" class="relative border-l border-gray-200 dark:border-gray-700 mt-12">   
+            </ol>
+         </div>
+      <?php endif;?>
    </div>
 </div>

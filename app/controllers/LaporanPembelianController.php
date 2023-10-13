@@ -1,15 +1,15 @@
 <?php
 namespace app\controllers;
 
-use app\models\{DataObat, Pembelian};
+use app\models\{DataObat, Pembelian, LogPembelian};
 use app\helpers\{Helpers};
 use app\datasources\WebApp;
 
 class LaporanPembelianController {
 
 
-    public $helpers, $conn, $obat_model;
-    private $pembelian_model;
+    public $helpers, $conn;
+    private $pembelian_model, $obat_model, $log_pembelian;
 
     public function __construct()
     {
@@ -22,6 +22,7 @@ class LaporanPembelianController {
         $this->helpers = new Helpers;
         $this->obat_model = new DataObat;
         $this->pembelian_model = new Pembelian;
+        $this->log_pembelian = new LogPembelian;
     }
 
     public function views($views, $param)
@@ -168,6 +169,45 @@ class LaporanPembelianController {
             ];
 
             echo json_encode($data);
+        } catch (\PDOException $e) {
+            $data = [
+                'error' => true,
+                'message' => "Terjadi kesalahan : " . $e->getMessage()
+            ];
+
+            echo json_encode($data);
+        }
+    }
+
+    public function logPembelian()
+    {
+        try {
+            header("Content-Type: application/json");
+
+            $query = "SELECT admin.*, obat.*, log_pembelian.* 
+            FROM log_pembelian 
+            LEFT JOIN admin ON log_pembelian.kd_admin = admin.kd_admin 
+            LEFT JOIN obat ON log_pembelian.kd_obat = obat.kd_obat ORDER by log_pembelian.id DESC";
+
+            $reports = $this->log_pembelian->all($query);
+
+            if (!empty($reports)) {
+                $data = [
+                    'success' => true,
+                    'message' => "Lists of beli reports!",
+                    'session_user' => $_SESSION['username'],
+                    'data' => $reports
+                ];
+
+                echo json_encode($data);
+            } else {
+                $data = [
+                    'empty' => true,
+                    'message' => "Data not found !!",
+                ];
+
+                echo json_encode($data);
+            }
         } catch (\PDOException $e) {
             $data = [
                 'error' => true,

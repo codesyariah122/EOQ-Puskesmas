@@ -74,5 +74,8 @@ $app->post('/print/laporan-pembelian', 'LaporanPembelianController@print');
 // Chart laporan pembelian
 $app->get('/dashboard/chart/laporan-pembelian', 'ChartLaporanBeliController@all');
 
+// Log pembelian
+$app->get('/dashboard/log-pembelian', 'LaporanPembelianController@logPembelian');
+
 // Jalankan router
 $app->run();
