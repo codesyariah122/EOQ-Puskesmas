@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.5deb2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Oct 13, 2023 at 12:34 AM
--- Server version: 8.0.33-0ubuntu0.20.04.2
--- PHP Version: 8.2.8
+-- Host: 127.0.0.1
+-- Generation Time: Dec 07, 2023 at 02:52 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -29,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `kd_admin` char(255) NOT NULL,
   `nm_lengkap` varchar(25) NOT NULL,
   `alamat` varchar(255) NOT NULL,
@@ -37,7 +36,7 @@ CREATE TABLE `admin` (
   `username` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `role` varchar(191) NOT NULL,
   `password` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `admin`
@@ -59,19 +58,72 @@ INSERT INTO `admin` (`id`, `kd_admin`, `nm_lengkap`, `alamat`, `notlp`, `usernam
 --
 
 CREATE TABLE `beli` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `kd_beli` char(10) NOT NULL,
   `tgl_beli` date NOT NULL,
   `kd_obat` char(10) NOT NULL,
-  `jumlah` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `jumlah` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `beli`
 --
 
 INSERT INTO `beli` (`id`, `kd_beli`, `tgl_beli`, `kd_obat`, `jumlah`) VALUES
-(1, 'VHALXNLN', '2023-10-12', 'KO66', 250);
+(1, 'VHALXNLN', '2023-10-12', 'KO66', 250),
+(2, 'VR0TXMIC', '2023-12-07', 'KO65', 100);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table annual_needs
+-- 
+
+CREATE TABLE `annual_needs` (
+  `id` int(11) AUTO_INCREMENT PRIMARY KEY,
+  `kd_obat` char(10) NOT NULL,
+  `k_tahun` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+CREATE TABLE `stock_opname` (
+  `id` int(11) AUTO_INCREMENT PRIMARY KEY,
+  `sisa_stok` int(11) NOT NULL,
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+CREATE TABLE `b_simpan` (
+  `id` int(11) AUTO_INCREMENT  PRIMARY KEY,
+  `b_total` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+CREATE TABLE `b_pemesanan` (
+  `id` int(11) AUTO_INCREMENT  PRIMARY KEY,
+  `b_total` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+
+CREATE TABLE `biaya` (
+  `id` int(11) NOT NULL,
+  `nama` char(10) NOT NULL,
+  `biaya_bln` int(11) DEFAULT NULL,
+  `jumlah` int(11) DEFAULT NULL,
+  `total` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table annual_needs
+-- 
+
+CREATE TABLE `b_penyimpanan` (
+  `id` int(11) NOT NULL,
+  `nm_obat` char(10) NOT NULL,
+  `isi` int(11) NOT NULL,
+  `k_tahun` int(11) NOT NULL,
+  `k_each` int(11) NOT NULL,
+  `total` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -80,14 +132,14 @@ INSERT INTO `beli` (`id`, `kd_beli`, `tgl_beli`, `kd_obat`, `jumlah`) VALUES
 --
 
 CREATE TABLE `eoq` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `kd_obat` char(10) NOT NULL,
-  `k_tahun` int NOT NULL,
-  `b_simpan` int NOT NULL,
-  `b_pesan` int NOT NULL,
-  `jumlah_eoq` int DEFAULT NULL,
-  `intval_time` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `k_tahun` int(11) NOT NULL,
+  `b_simpan` int(11) NOT NULL,
+  `b_pesan` int(11) NOT NULL,
+  `jumlah_eoq` int(11) DEFAULT NULL,
+  `intval_time` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `eoq`
@@ -104,20 +156,21 @@ INSERT INTO `eoq` (`id`, `kd_obat`, `k_tahun`, `b_simpan`, `b_pesan`, `jumlah_eo
 --
 
 CREATE TABLE `log_pembelian` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   `kd_admin` char(255) NOT NULL,
   `kd_beli` char(10) NOT NULL,
   `kd_obat` char(10) NOT NULL,
   `tgl_beli` date NOT NULL,
-  `jumlah` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `jumlah` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `log_pembelian`
 --
 
 INSERT INTO `log_pembelian` (`id`, `kd_admin`, `kd_beli`, `kd_obat`, `tgl_beli`, `jumlah`) VALUES
-(1, 'KU02', 'VHALXNLN', 'KO66', '2023-10-12', 250);
+(1, 'KU02', 'VHALXNLN', 'KO66', '2023-10-12', 250),
+(2, 'KU01', 'VR0TXMIC', 'KO65', '2023-12-07', 100);
 
 -- --------------------------------------------------------
 
@@ -126,86 +179,86 @@ INSERT INTO `log_pembelian` (`id`, `kd_admin`, `kd_beli`, `kd_obat`, `tgl_beli`,
 --
 
 CREATE TABLE `obat` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `kd_obat` char(10) NOT NULL,
   `nm_obat` varchar(25) NOT NULL,
   `jenis_obat` enum('TABLET','CAIR','CAPSULE') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `harga` int NOT NULL,
-  `stok` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `harga` int(11) NOT NULL,
+  `stok` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `obat`
 --
 
-INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `jenis_obat`, `harga`, `stok`) VALUES
-(1, 'KO1', 'Alpara', 'TABLET', 1200, 2190),
-(2, 'KO2', 'Acyclovir 400mg', 'TABLET', 1100, 100),
-(3, 'KO3', 'Biolysin tab', 'TABLET', 450, 1380),
-(4, 'KO4', 'Becom C', 'TABLET', 2050, 300),
-(5, 'KO5', 'Bufantacid', 'CAPSULE', 300, 1020),
-(6, 'KO6', 'Caviplex', 'CAPSULE', 420, 1900),
-(7, 'KO7', 'Cavicur', 'TABLET', 610, 390),
-(8, 'KO8', 'Cetirizine', 'TABLET', 230, 1710),
-(9, 'KO9', 'Cimetidine', 'TABLET', 400, 500),
-(10, 'KO10', 'Cefadroxil 500mg', 'TABLET', 700, 610),
-(11, 'KO11', 'Diaform', 'TABLET', 234, 1500),
-(12, 'KO12', 'Allupurinol 100mg', 'TABLET', 220, 850),
-(13, 'KO13', 'Dexteem Plus', 'TABLET', 300, 2499),
-(14, 'KO14', 'Dextral', 'TABLET', 870, 1920),
-(15, 'KO15', 'Diatabs', 'TABLET', 900, 930),
-(16, 'KO16', 'Dapyrin', 'TABLET', 1700, 200),
-(17, 'KO17', 'OBH Surya Itrasal 100', 'CAIR', 10000, 200),
-(18, 'KO18', 'Dionicol', 'TABLET', 1050, 190),
-(19, 'KO19', 'Domperidone', 'TABLET', 600, 330),
-(20, 'KO20', 'Etafenin', 'TABLET', 320, 800),
-(21, 'KO21', 'Etabion', 'TABLET', 250, 1260),
-(22, 'KO22', 'Farmabex C', 'TABLET', 900, 200),
-(23, 'KO23', 'Farizol', 'TABLET', 400, 200),
-(24, 'KO24', 'Antasida', 'TABLET', 130, 1000),
-(25, 'KO25', 'Flucadex', 'TABLET', 525, 540),
-(26, 'KO26', 'Grantusif', 'TABLET', 600, 1000),
-(27, 'KO27', 'Grathazon', 'TABLET', 250, 300),
-(28, 'KO28', 'Gasela', 'TABLET', 250, 300),
-(29, 'KO29', 'Glibenclamide 5mg', 'TABLET', 250, 300),
-(30, 'KO30', 'Gludefatic', 'TABLET', 300, 200),
-(31, 'KO31', 'Grafalin 4mg', 'TABLET', 100, 250),
-(32, 'KO32', 'Hufamag tab', 'TABLET', 380, 2000),
-(33, 'KO33', 'Hufabion', 'CAPSULE', 250, 650),
-(34, 'KO34', 'Hufaneuron', 'TABLET', 650, 1000),
-(35, 'KO35', 'Ambroxol tab', 'TABLET', 210, 1060),
-(36, 'KO36', 'Ibuprofen', 'TABLET', 820, 920),
-(37, 'KO37', 'Incidal', 'TABLET', 3200, 300),
-(38, 'KO38', 'Imodium', 'TABLET', 1220, 100),
-(39, 'KO39', 'Lopamid', 'TABLET', 450, 840),
-(40, 'KO40', 'Loratadine 10mg', 'CAPSULE', 150, 550),
-(41, 'KO41', 'Mirasic', 'TABLET', 510, 4100),
-(42, 'KO42', 'Mefinal', 'TABLET', 410, 2100),
-(43, 'KO43', 'Mefenamit acid', 'TABLET', 410, 2100),
-(44, 'KO44', 'Metformin', 'TABLET', 280, 800),
-(45, 'KO45', 'Molexflu', 'TABLET', 600, 800),
-(46, 'KO46', 'Acyclovir 200mg', 'CAPSULE', 400, 300),
-(47, 'KO47', 'Metrolet', 'TABLET', 550, 120),
-(48, 'KO48', 'Opistan', 'TABLET', 700, 900),
-(49, 'KO49', 'Orphen', 'TABLET', 200, 1700),
-(50, 'KO50', 'Omedom tab', 'TABLET', 400, 340),
-(51, 'KO51', 'Omefulvin', 'TABLET', 1850, 100),
-(52, 'KO52', 'Paraflu', 'TABLET', 370, 300),
-(53, 'KO53', 'Piroxicam 10mg', 'TABLET', 300, 430),
-(54, 'KO54', 'Ramaflu', 'TABLET', 450, 290),
-(55, 'KO55', 'Sanmol tab', 'TABLET', 350, 1900),
-(56, 'KO56', 'Spasminal', 'TABLET', 1100, 380),
-(57, 'KO57', 'Arkavit c', 'CAPSULE', 450, 500),
-(58, 'KO58', 'Selcom C', 'TABLET', 450, 500),
-(59, 'KO59', 'Trisela', 'TABLET', 500, 510),
-(60, 'KO60', 'Vitazym', 'TABLET', 975, 200),
-(61, 'KO61', 'Voltadex', 'CAPSULE', 1000, 300),
-(62, 'KO62', 'Winatin', 'TABLET', 350, 320),
-(63, 'KO63', 'Zink', 'CAPSULE', 850, 130),
-(64, 'KO64', 'Amplodipin 5mg', 'TABLET', 220, 1000),
-(65, 'KO65', 'Amplodipin 10mg', 'TABLET', 300, 300),
-(66, 'KO66', 'Amoxillin', 'TABLET', 600, 560),
-(67, 'KO67', 'Tester ABC', 'TABLET', 5000, 100);
+INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `isi`, `satuan`, `jenis_obat`, `harga`, `stok`) VALUES
+(1, 'KO1', 'Alpara', 100, 'box', 'TABLET', 1200, 2190),
+(2, 'KO2', 'Acyclovir 400mg', 100, 'box', 'TABLET', 1100, 100),
+(3, 'KO3', 'Biolysin tab', 100, 'box', 'TABLET', 450, 1380),
+(4, 'KO4', 'Becom C', 100, 'box', 'TABLET', 2050, 300),
+(5, 'KO5', 'Bufantacid', 100, 'box', 'CAPSULE', 300, 1020),
+(6, 'KO6', 'Caviplex', 100, 'box', 'CAPSULE', 420, 1900),
+(7, 'KO7', 'Cavicur', 100, 'box', 'TABLET', 610, 390),
+(8, 'KO8', 'Cetirizine', 100, 'box', 'TABLET', 230, 1710),
+(9, 'KO9', 'Cimetidine', 100, 'box', 'TABLET', 400, 500),
+(10, 'KO10', 'Cefadroxil 500mg', 100, 'box', 'TABLET', 700, 610),
+(11, 'KO11', 'Diaform', 100, 'box', 'TABLET', 234, 1500),
+(12, 'KO12', 'Allupurinol 100mg', 100, 'box', 'TABLET', 220, 850),
+(13, 'KO13', 'Dexteem Plus', 100, 'box', 'TABLET', 300, 2499),
+(14, 'KO14', 'Dextral', 100, 'box', 'TABLET', 870, 1920),
+(15, 'KO15', 'Diatabs', 100, 'box', 'TABLET', 900, 930),
+(16, 'KO16', 'Dapyrin', 100, 'box', 'TABLET', 1700, 200),
+(17, 'KO17', 'OBH Surya Itrasal 100', 100, 'box', 'CAIR', 10000, 200),
+(18, 'KO18', 'Dionicol', 100, 'box', 'TABLET', 1050, 190),
+(19, 'KO19', 'Domperidone', 100, 'box', 'TABLET', 600, 330),
+(20, 'KO20', 'Etafenin', 100, 'box', 'TABLET', 320, 800),
+(21, 'KO21', 'Etabion', 100, 'box', 'TABLET', 250, 1260),
+(22, 'KO22', 'Farmabex C', 100, 'box', 'TABLET', 900, 200),
+(23, 'KO23', 'Farizol', 100, 'box', 'TABLET', 400, 200),
+(24, 'KO24', 'Antasida', 100, 'box', 'TABLET', 130, 1000),
+(25, 'KO25', 'Flucadex', 100, 'box', 'TABLET', 525, 540),
+(26, 'KO26', 'Grantusif', 100, 'box', 'TABLET', 600, 1000),
+(27, 'KO27', 'Grathazon', 100, 'box', 'TABLET', 250, 300),
+(28, 'KO28', 'Gasela', 100, 'box', 'TABLET', 250, 300),
+(29, 'KO29', 'Glibenclamide 5mg', 100, 'box', 'TABLET', 250, 300),
+(30, 'KO30', 'Gludefatic', 100, 'box', 'TABLET', 300, 200),
+(31, 'KO31', 'Grafalin 4mg', 100, 'box', 'TABLET', 100, 250),
+(32, 'KO32', 'Hufamag tab', 100, 'box', 'TABLET', 380, 2000),
+(33, 'KO33', 'Hufabion', 100, 'box', 'CAPSULE', 250, 650),
+(34, 'KO34', 'Hufaneuron', 100, 'box', 'TABLET', 650, 1000),
+(35, 'KO35', 'Ambroxol tab', 100, 'box', 'TABLET', 210, 1060),
+(36, 'KO36', 'Ibuprofen', 100, 'box', 'TABLET', 820, 920),
+(37, 'KO37', 'Incidal', 100, 'box', 'TABLET', 3200, 300),
+(38, 'KO38', 'Imodium', 100, 'box', 'TABLET', 1220, 100),
+(39, 'KO39', 'Lopamid', 100, 'box', 'TABLET', 450, 840),
+(40, 'KO40', 'Loratadine 10mg', 100, 'box', 'CAPSULE', 150, 550),
+(41, 'KO41', 'Mirasic', 100, 'box', 'TABLET', 510, 4100),
+(42, 'KO42', 'Mefinal', 100, 'box', 'TABLET', 410, 2100),
+(43, 'KO43', 'Mefenamit acid', 100, 'box', 'TABLET', 410, 2100),
+(44, 'KO44', 'Metformin', 100, 'box', 'TABLET', 280, 800),
+(45, 'KO45', 'Molexflu', 100, 'box', 'TABLET', 600, 800),
+(46, 'KO46', 'Acyclovir 200mg', 100, 'box', 'CAPSULE', 400, 300),
+(47, 'KO47', 'Metrolet', 100, 'box', 'TABLET', 550, 120),
+(48, 'KO48', 'Opistan', 100, 'box', 'TABLET', 700, 900),
+(49, 'KO49', 'Orphen', 100, 'box', 'TABLET', 200, 1700),
+(50, 'KO50', 'Omedom tab', 100, 'box', 'TABLET', 400, 340),
+(51, 'KO51', 'Omefulvin', 100, 'box', 'TABLET', 1850, 100),
+(52, 'KO52', 'Paraflu', 100, 'box', 'TABLET', 370, 300),
+(53, 'KO53', 'Piroxicam 10mg', 100, 'box', 'TABLET', 300, 430),
+(54, 'KO54', 'Ramaflu', 100, 'box', 'TABLET', 450, 290),
+(55, 'KO55', 'Sanmol tab', 100, 'box', 'TABLET', 350, 1900),
+(56, 'KO56', 'Spasminal', 100, 'box', 'TABLET', 1100, 380),
+(57, 'KO57', 'Arkavit c', 100, 'box', 'CAPSULE', 450, 500),
+(58, 'KO58', 'Selcom C', 100, 'box', 'TABLET', 450, 500),
+(59, 'KO59', 'Trisela', 100, 'box', 'TABLET', 500, 510),
+(60, 'KO60', 'Vitazym', 100, 'box', 'TABLET', 975, 200),
+(61, 'KO61', 'Voltadex', 100, 'box', 'CAPSULE', 1000, 300),
+(62, 'KO62', 'Winatin', 100, 'box', 'TABLET', 350, 320),
+(63, 'KO63', 'Zink', 100, 'box', 'CAPSULE', 850, 130),
+(64, 'KO64', 'Amplodipin 5mg', 100, 'box', 'TABLET', 220, 1000),
+(65, 'KO65', 'Amplodipin 10mg', 100, 'box', 'TABLET', 300, 300),
+(66, 'KO66', 'Amoxillin', 100, 'box', 'TABLET', 600, 560),
+(67, 'KO67', 'Tester ABC', 100, 'box', 'TABLET', 5000, 100);
 
 --
 -- Indexes for dumped tables
@@ -232,10 +285,20 @@ ALTER TABLE `eoq`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table 
+--
+-- ALTER TABLE `annual_needs`
+--   ADD PRIMARY KEY (`id`);
+
+-- ALTER TABLE `stock_opname`
+--   ADD PRIMARY KEY (`id`);
+
+-- ALTER TABLE `total_b_pemesanan`
+--   ADD PRIMARY KEY (`id`);
+--
 -- Indexes for table `log_pembelian`
 --
 ALTER TABLE `log_pembelian`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `kd_admin` (`kd_admin`),
   ADD KEY `kd_beli` (`kd_beli`),
   ADD KEY `kd_obat` (`kd_obat`);
@@ -255,25 +318,33 @@ ALTER TABLE `obat`
 -- AUTO_INCREMENT for table `eoq`
 --
 ALTER TABLE `eoq`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `log_pembelian`
 --
-ALTER TABLE `log_pembelian`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+-- ALTER TABLE `log_pembelian`
+--   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
 --
+ALTER TABLE `annual_needs`
+ADD CONSTRAINT `fk_annual_needs_obat` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`);
 
+
+-- ALTER TABLE `stock_opname`
+-- ADD CONSTRAINT `fk_stock_opname_obat` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`);
+
+-- ALTER TABLE `b_simpan`
+-- ADD CONSTRAINT `fk_b_simpan_obat` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`);
 --
 -- Constraints for table `log_pembelian`
 --
 ALTER TABLE `log_pembelian`
   ADD CONSTRAINT `log_pembelian_ibfk_1` FOREIGN KEY (`kd_admin`) REFERENCES `admin` (`kd_admin`),
   ADD CONSTRAINT `log_pembelian_ibfk_2` FOREIGN KEY (`kd_beli`) REFERENCES `beli` (`kd_beli`),
-  ADD CONSTRAINT `log_pembelian_ibfk_3` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`);
+  ADD CONSTRAINT `log_pembelian_ibfk_3` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`) ON DELETE CASCADE
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

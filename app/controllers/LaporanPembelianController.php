@@ -1,11 +1,13 @@
 <?php
+
 namespace app\controllers;
 
 use app\models\{DataObat, Pembelian, LogPembelian};
 use app\helpers\{Helpers};
 use app\datasources\WebApp;
 
-class LaporanPembelianController {
+class LaporanPembelianController
+{
 
 
     public $helpers, $conn;
@@ -15,7 +17,7 @@ class LaporanPembelianController {
     {
         session_start();
 
-        if(!isset($_SESSION['token'])) {
+        if (!isset($_SESSION['token'])) {
             header("Location: /?error=forbaiden", 1);
         }
 
@@ -33,7 +35,7 @@ class LaporanPembelianController {
         $meta = $webApp->getMetaTag($param['title']);
         $welcome_text = "Welcome , {$param['data']['username']}";
         $description = "Sistem Informasi Pengelolaan Pengadaan Obat Balai Kesehatan";
-        
+
         $page = $param['page'];
 
         $dataParam = $param['data']['dataParam'];
@@ -42,12 +44,12 @@ class LaporanPembelianController {
 
         $partials = $webApp->getPartials($param['page']);
 
-        foreach($views as $view):
+        foreach ($views as $view) :
             require_once $view;
         endforeach;
     }
 
-    public function index($param) 
+    public function index($param)
     {
         $views = 'app/views/dashboard/index.php';
 

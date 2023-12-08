@@ -2,16 +2,16 @@
 
 namespace app\controllers;
 
-use app\models\{DataObat, PengajuanObat, KebutuhanPertahun, Biaya};
+use app\models\{DataObat, KebutuhanPertahun, PengajuanObat};
 use app\helpers\{Helpers};
 use app\datasources\WebApp;
 
-class PengajuanObatController
+class KebutuhanPertahunController
 {
 
 
     public $helpers, $conn, $obat_model;
-    private $pengajuan_model, $ktahun_model, $biaya_model;
+    private $pengajuan_model, $ktahun_model;
 
     public function __construct()
     {
@@ -23,9 +23,7 @@ class PengajuanObatController
 
         $this->helpers = new Helpers;
         $this->obat_model = new DataObat;
-        $this->pengajuan_model = new PengajuanObat;
         $this->ktahun_model = new KebutuhanPertahun;
-        $this->biaya_model = new Biaya;
     }
 
     public function views($views, $param)
@@ -63,8 +61,8 @@ class PengajuanObatController
         // var_dump($param); die;
 
         $data = [
-            'title' => "Aplikasi EOQ - Pengajuan Obat",
-            'page' => 'pengajuan-obat',
+            'title' => "Aplikasi EOQ - Kebutuhan Pertahun",
+            'page' => 'kebutuhan-pertahun',
             'data' => [
                 'username' => ucfirst($_SESSION['username']),
                 'dataParam' => ''
@@ -74,44 +72,8 @@ class PengajuanObatController
         $this->views($prepare_views, $data);
     }
 
-    public function lists_obat()
+    public function lists_data()
     {
-        try {
-            $limit = 10;
-            $keyword = isset($_GET['term']) ? @$_GET['term'] : '';
-            $page = isset($_GET['page']) ? intval(@$_GET['page']) : 1;
-            $offset = ($page - 1) * $limit;
-
-            // Logika untuk membatasi ke 10 data pertama jika tidak ada kata pencarian
-            if ($keyword === '') {
-                $countPage = $this->obat_model->countAllData();
-                $obats = $this->obat_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $limit");
-            } else {
-                // Logika pencarian jika ada kata pencarian
-                $countPage = $this->obat_model->countSearchData($keyword);
-                $obats = $this->obat_model->searchData($keyword, $offset, $limit);
-            }
-
-            $totalPage = ceil($countPage / $limit);
-
-            $results = [];
-
-            foreach ($obats as $obat) {
-                $results[] = [
-                    'id' => $obat['kd_obat'],
-                    'text' => $obat['kd_obat'] . ' - ' . $obat['nm_obat']
-                ];
-            }
-
-            echo json_encode($results);
-        } catch (\PDOException $e) {
-            $data = [
-                'error' => true,
-                'message' => "Terjadi kesalahan : " . $e->getMessage()
-            ];
-
-            echo json_encode($data);
-        }
     }
 
 
@@ -122,31 +84,70 @@ class PengajuanObatController
 
     public function all()
     {
+        try {
+            header("Content-Type: application/json");
+            $limit = 10;
+            $keyword = isset($_GET['keyword']) ? @$_GET['keyword'] : '';
+            $page = isset($_GET['page']) ? intval(@$_GET['page']) : 1;
+            $offset = ($page - 1) * $limit;
+
+            if (!empty($keyword)) {
+                $countPage = $this->ktahun_model->countSearchData($keyword);
+                $totalPage = ceil($countPage / $limit);
+                $annual = $this->ktahun_model->searchData($keyword, $offset, $limit);
+            } else {
+                $countPage = $this->ktahun_model->countAllData();
+                $totalPage = ceil($countPage / $limit);
+                $annual = $this->ktahun_model->all("SELECT obat.id AS obat_id, obat.kd_obat, obat.nm_obat, obat.jenis_obat, obat.harga, obat.stok,
+                annual_needs.id AS needs_id, annual_needs.kd_obat AS needs_kd_obat, annual_needs.k_tahun, annual_needs.satuan, annual_needs.jumlah
+                FROM obat
+                INNER JOIN annual_needs ON obat.kd_obat = annual_needs.kd_obat
+                ORDER BY obat.id
+                LIMIT $limit OFFSET $offset");
+            }
+
+            if (!empty($annual)) {
+                $data = [
+                    'success' => true,
+                    'message' => "Lists of kebutuhan pertahun!",
+                    'session_user' => $_SESSION['username'],
+                    'data' => $annual,
+                    'totalData' => count($annual),
+                    'countPage' => $countPage,
+                    'totalPage' => $totalPage,
+                    'aktifPage' => $page
+                ];
+
+                echo json_encode($data);
+            } else {
+                $data = [
+                    'empty' => true,
+                    'message' => "Data not found !!",
+                ];
+
+                echo json_encode($data);
+            }
+        } catch (\PDOException $e) {
+            $data = [
+                'error' => true,
+                'message' => "Terjadi kesalahan : " . $e->getMessage()
+            ];
+
+            echo json_encode($data);
+        }
     }
 
-    public function pengajuanInputFormula()
+    public function checkJumlahKebutuhan()
     {
         try {
             $kd_obat = @$_GET['kd_obat'];
-            $biayaListrik = ucfirst('listrik');
-            $biayaOngkir = ucfirst('ongkos kirim');
-            $ktahun = $this->ktahun_model->kebutuhanByKdObay($kd_obat);
-
-            $allStock = $this->obat_model->getAllStock() / 12;
-            $totalBiayaListrik = $this->biaya_model->getBiayaByNama($biayaListrik)['total'];
-            $totalBiayaOngkir = $this->biaya_model->getBiayaByNama($biayaOngkir)['total'];
-            $biayaSimpan = round($totalBiayaListrik / $allStock, 2);
-            $totalKtahun = $this->ktahun_model->totalJumlahKebutuhanPerTahun();
-            $biayaPemesanan = round(($totalBiayaOngkir / $totalKtahun) * $ktahun['jumlah'], 2);
-
+            $k_tahun = @$_GET['k_tahun'];
+            $data_obat = $this->obat_model->obatById($kd_obat);
+            $jumlah = $k_tahun * $data_obat['isi'];
             $data = [
                 'success' => true,
                 'message' => "Jumlah kebutuhan pertahun!",
-                'data' => [
-                    'k_tahun' => $ktahun['k_tahun'],
-                    'b_simpan' => $biayaSimpan,
-                    'b_pesan' => $biayaPemesanan
-                ]
+                'data' => $jumlah
             ];
             echo json_encode($data);
         } catch (\PDOException $e) {
@@ -164,7 +165,7 @@ class PengajuanObatController
         try {
             header("Content-Type: application/json");
 
-            if (empty(@$_POST['kd_obat']) || empty(@$_POST['k_tahun']) || empty(@$_POST['b_simpan']) || empty(@$_POST['b_pesan'])) {
+            if (empty(@$_POST['kd_obat']) || empty(@$_POST['k_tahun'])) {
                 $data = [
                     'error' => true,
                     'message' => "Data tidak boleh kosong"
@@ -173,28 +174,23 @@ class PengajuanObatController
                 echo json_encode($data);
                 exit();
             } else {
-                $resultIntvalTime = round(sqrt((2 * @$_POST['b_pesan']) / (@$_POST['b_simpan'] * @$_POST['k_tahun'])) * 365);
-                $resultEconomics = round(sqrt(2 * (@$_POST['b_pesan'] * @$_POST['k_tahun']) / @$_POST['b_simpan']));
+                $data_obat = $this->obat_model->obatById($_POST['kd_obat']);
+                $satuan_obat = $data_obat['satuan'];
+                $jumlah = @$_POST['k_tahun'] * $data_obat['isi'];
 
                 $prepareData = [
                     'kd_obat' => @$_POST['kd_obat'],
                     'k_tahun' => @$_POST['k_tahun'],
-                    'b_simpan' => @$_POST['b_simpan'],
-                    'b_pesan' => @$_POST['b_pesan'],
-                    'jumlah_eoq' => $resultEconomics,
-                    'intval_time' => $resultIntvalTime
+                    'satuan' => $satuan_obat,
+                    'jumlah' => $jumlah
                 ];
 
-
-                if ($this->pengajuan_model->store($prepareData) > 0) {
-                    $pengajuanObat = $this->pengajuan_model->pengajuanById(@$_POST['kd_obat']);
-
-                    // var_dump($pengajuanObat);die;
-
+                if ($this->ktahun_model->store($prepareData) > 0) {
+                    $k_obat_tahun = $this->ktahun_model->kebutuhanObatById(@$_POST['kd_obat']);
                     $data = [
                         'success' => true,
-                        'message' => "Pengajuan baru dengan kode : {$pengajuanObat['kd_obat']}, berhasil ditambahkan!",
-                        'data' => $pengajuanObat
+                        'message' => "Setup kebutuhan untuk data obat dengan kode : {$k_obat_tahun['kd_obat']}, berhasil ditambahkan!",
+                        'data' => $k_obat_tahun
                     ];
                     echo json_encode($data);
                 }

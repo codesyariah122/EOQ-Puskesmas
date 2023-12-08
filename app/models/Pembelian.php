@@ -1,9 +1,11 @@
 <?php
+
 namespace app\models;
 
 use app\config\Database;
 
-class Pembelian {
+class Pembelian
+{
 
 	public $db, $conn;
 
@@ -23,12 +25,12 @@ class Pembelian {
 			$result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
 			// var_dump($result); die;
-			if($result) {
+			if ($result) {
 				return $result['id'];
 			} else {
-				return ;
+				return;
 			}
-		} catch(\PDOException $e){
+		} catch (\PDOException $e) {
 			echo $e->getMessage();
 		}
 	}
@@ -62,18 +64,18 @@ class Pembelian {
 
 	public function all($query)
 	{
-		try{
+		try {
 			$dbh = $this->conn;
 			$dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 			$sql = $dbh->query($query);
-			$rows=[];
+			$rows = [];
 
-			while($row = $sql->fetch(\PDO::FETCH_ASSOC)):
+			while ($row = $sql->fetch(\PDO::FETCH_ASSOC)) :
 				$rows[] = $row;
 			endwhile;
 
 			return $rows;
-		} catch(\PDOException $e){
+		} catch (\PDOException $e) {
 			echo $e->getMessage();
 		}
 	}
@@ -108,7 +110,6 @@ class Pembelian {
 		try {
 			$dbh = $this->conn;
 
-
 			$query = "SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, obat.harga, beli.* FROM obat JOIN beli ON obat.kd_obat = beli.kd_obat WHERE beli.kd_obat LIKE :keyword OR obat.nm_obat LIKE :keyword OR obat.jenis_obat LIKE :keyword OR beli.tgl_beli LIKE :keyword OR beli.kd_beli LIKE :keyword ORDER BY beli.id DESC";
 
 			if ($limitStart !== null && $limit !== null) {
@@ -122,15 +123,14 @@ class Pembelian {
 			$results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
 			return $results;
-
 		} catch (\PDOException $e) {
-			echo "Ooops error : ".$e->getMessage();
+			echo "Ooops error : " . $e->getMessage();
 		}
 	}
 
 	public function pembelianByIdData($id)
 	{
-		try{
+		try {
 			$dbh = $this->conn;
 
 			$sql = "SELECT * FROM beli WHERE id = :id";
@@ -140,14 +140,14 @@ class Pembelian {
 
 			$beli = $stmt->fetch(\PDO::FETCH_ASSOC);
 			return $beli;
-		}catch(\PDOException $e){
+		} catch (\PDOException $e) {
 			echo $e->getMessage();
 		}
 	}
 
 	public function pembelianById($kd_beli)
 	{
-		try{
+		try {
 			$dbh = $this->conn;
 
 			$sql = "SELECT obat.kd_obat, obat.nm_obat, obat.jenis_obat, obat.harga, obat.stok, beli.* FROM obat JOIN beli ON obat.kd_obat = beli.kd_obat WHERE kd_beli = :kd_beli";
@@ -157,7 +157,7 @@ class Pembelian {
 
 			$beli = $stmt->fetch(\PDO::FETCH_ASSOC);
 			return $beli;
-		}catch(\PDOException $e){
+		} catch (\PDOException $e) {
 			echo $e->getMessage();
 		}
 	}
@@ -206,7 +206,6 @@ class Pembelian {
 
 				return $pembelian->rowCount();
 			}
-
 		} catch (\PDOException $e) {
 			$dbh->rollBack();
 			echo "Error PDO: " . $e->getMessage();
@@ -236,7 +235,6 @@ class Pembelian {
 
 				return $update->rowCount();
 			}
-
 		} catch (\PDOException $e) {
 			$dbh->rollBack();
 			echo $e->getMessage();
@@ -265,11 +263,9 @@ class Pembelian {
 
 				return $delete->rowCount();
 			}
-
 		} catch (\PDOException $e) {
 			$dbh->rollBack();
 			echo $e->getMessage();
 		}
 	}
-
 }

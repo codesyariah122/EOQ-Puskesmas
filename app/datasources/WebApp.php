@@ -1,267 +1,320 @@
 <?php
+
 /**
  * @author Puji Ermanto <pujiermanto@gmail.com>
  * @return WebApp Data Source
  * @desc : File ini difungsikan untuk mendaftarkan detail contents dari setiap rute yang di akses di url, yang antara lain adalah view/contents kemudian assets: Javascript, css , images dan lainnya.
-**/
+ **/
 
 namespace app\datasources;
 
 
-class WebApp {
+class WebApp
+{
 
 	public function getPartials($page)
 	{
-		switch($page) {
+		switch ($page) {
 			case "home":
-			$navbar = 'app/views/layout/partials/navbar.php';
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				'home_content' => 'app/views/contents/home/home_content.php',
-				'timeline' => 'app/views/contents/home/timeline.php'
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js'
-			];
-			break;
+				$navbar = 'app/views/layout/partials/navbar.php';
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					'home_content' => 'app/views/contents/home/home_content.php',
+					'timeline' => 'app/views/contents/home/timeline.php'
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js'
+				];
+				break;
 
 			case "about":
-			$navbar = 'app/views/layout/partials/navbar.php';
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				'home_content' => 'app/views/contents/about/about_content.php' 
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js'
-			];
-			break;
+				$navbar = 'app/views/layout/partials/navbar.php';
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					'home_content' => 'app/views/contents/about/about_content.php'
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js'
+				];
+				break;
 
 			case "create-user":
-			$navbar = 'app/views/layout/partials/navbar.php';
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				'home_content' => 'app/views/contents/home/create_user.php' 
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js'
-			];
-			break;
+				$navbar = 'app/views/layout/partials/navbar.php';
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					'home_content' => 'app/views/contents/home/create_user.php'
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js'
+				];
+				break;
 
 
 			case "login":
-			$navbar = 'app/views/layout/partials/auth/navbar.php';
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				'login_form' => 'app/views/contents/auth/login_form.php'
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js'
-			];
-			break;
+				$navbar = 'app/views/layout/partials/auth/navbar.php';
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					'login_form' => 'app/views/contents/auth/login_form.php'
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js'
+				];
+				break;
 
 			case "404":
-			$navbar = 'app/views/layout/partials/errors/navbar.php';
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				'error_404_content' => 'app/views/contents/errors/content_404.php'
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js'
-			];
-			break;
+				$navbar = 'app/views/layout/partials/errors/navbar.php';
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					'error_404_content' => 'app/views/contents/errors/content_404.php'
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js'
+				];
+				break;
 
 			case "admin":
-			$navbar = "app/views/layout/partials/dashboard/navbar.php";
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
-				"admin" => "app/views/contents/dashboard/admin.php"
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js',
-				'/public/assets/js/data-consume/eoq-chart.js'
-			];
-			break;
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"admin" => "app/views/contents/dashboard/admin.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/eoq-chart.js'
+				];
+				break;
 
 			case "data-user":
-			$navbar = "app/views/layout/partials/dashboard/navbar.php";
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
-				"admin" => "app/views/contents/dashboard/data-user.php"
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js',
-				'/public/assets/js/data-consume/function.js', 
-				'/public/assets/js/data-consume/app.js'
-			];
-			break;
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"admin" => "app/views/contents/dashboard/data-user.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/function.js',
+					'/public/assets/js/data-consume/app.js'
+				];
+				break;
 
 			case "data-user-edit":
-			$navbar = "app/views/layout/partials/dashboard/navbar.php";
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
-				"edit_user" => "app/views/contents/dashboard/edit/data-user.php"
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js',
-				'/public/assets/js/data-consume/function.js', 
-				'/public/assets/js/data-consume/app.js'
-			];
-			break;
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"edit_user" => "app/views/contents/dashboard/edit/data-user.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/function.js',
+					'/public/assets/js/data-consume/app.js'
+				];
+				break;
 
 			case "user":
-			$navbar = "app/views/layout/partials/dashboard/navbar.php";
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
-				"admin" => "app/views/contents/dashboard/user.php"
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js'
-			];
-			break;
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"admin" => "app/views/contents/dashboard/user.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js'
+				];
+				break;
 
 			case "data-obat":
-			$navbar = "app/views/layout/partials/dashboard/navbar.php";
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
-				"admin" => "app/views/contents/dashboard/data-obat.php"
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js',
-				'/public/assets/js/data-consume/function.js', 
-				'/public/assets/js/data-consume/app.js'
-			];
-			break;
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"admin" => "app/views/contents/dashboard/data-obat.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/function.js',
+					'/public/assets/js/data-consume/app.js'
+				];
+				break;
 
 			case "data-obat-edit":
-			$navbar = "app/views/layout/partials/dashboard/navbar.php";
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
-				"edit_user" => "app/views/contents/dashboard/edit/data-obat.php"
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js',
-				'/public/assets/js/data-consume/function.js', 
-				'/public/assets/js/data-consume/app.js'
-			];
-			break;
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"edit_user" => "app/views/contents/dashboard/edit/data-obat.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/function.js',
+					'/public/assets/js/data-consume/app.js'
+				];
+				break;
 
 			case "pengajuan-obat":
-			$navbar = "app/views/layout/partials/dashboard/navbar.php";
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
-				"pengajuan_obat" => "app/views/contents/dashboard/pengajuan-obat.php"
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js',
-				'/public/assets/js/data-consume/function.js', 
-				'/public/assets/js/data-consume/app.js'
-			];
-			break;
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"pengajuan_obat" => "app/views/contents/dashboard/pengajuan-obat.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/function.js',
+					'/public/assets/js/data-consume/app.js'
+				];
+				break;
 
 			case "laporan-eoq":
-			$navbar = "app/views/layout/partials/dashboard/navbar.php";
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
-				"pengajuan_obat" => "app/views/contents/dashboard/laporan-eoq.php"
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js',
-				'/public/assets/js/data-consume/function.js', 
-				'/public/assets/js/data-consume/app.js',
-				'/public/assets/js/data-consume/pdf.load.js'
-			];
-			break;
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"pengajuan_obat" => "app/views/contents/dashboard/laporan-eoq.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/function.js',
+					'/public/assets/js/data-consume/app.js',
+					'/public/assets/js/data-consume/pdf.load.js'
+				];
+				break;
 
 			case "pembelian":
-			$navbar = "app/views/layout/partials/dashboard/navbar.php";
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
-				"pengajuan_obat" => "app/views/contents/dashboard/pembelian.php"
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js',
-				'/public/assets/js/data-consume/eoq-chart.js',
-				'/public/assets/js/data-consume/function.js', 
-				'/public/assets/js/data-consume/app.js',
-				'/public/assets/js/data-consume/pdf.load.js'
-			];
-			break;
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"pengajuan_obat" => "app/views/contents/dashboard/pembelian.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/eoq-chart.js',
+					'/public/assets/js/data-consume/function.js',
+					'/public/assets/js/data-consume/app.js',
+					'/public/assets/js/data-consume/pdf.load.js'
+				];
+				break;
 
 			case "data-pembelian-edit":
-			$navbar = "app/views/layout/partials/dashboard/navbar.php";
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
-				"edit_user" => "app/views/contents/dashboard/edit/data-pembelian.php"
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js',
-				'/public/assets/js/data-consume/function.js', 
-				'/public/assets/js/data-consume/app.js'
-			];
-			break;
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"edit_user" => "app/views/contents/dashboard/edit/data-pembelian.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/function.js',
+					'/public/assets/js/data-consume/app.js'
+				];
+				break;
 
 			case "laporan-pembelian";
-			$navbar = "app/views/layout/partials/dashboard/navbar.php";
-			$partials = [
-				'loading' => 'app/views/layout/partials/loading.php',
-				"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
-				"pengajuan_obat" => "app/views/contents/dashboard/laporan-pembelian.php"
-			];
-			$scripts = [
-				'/public/assets/js/script.js', 
-				'/public/assets/js/auth/function.js', 
-				'/public/assets/js/auth/app.js',
-				'/public/assets/js/data-consume/function.js', 
-				'/public/assets/js/data-consume/app.js',
-				'/public/assets/js/data-consume/pdf.load.js'
-			];
-			break;
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"pengajuan_obat" => "app/views/contents/dashboard/laporan-pembelian.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/function.js',
+					'/public/assets/js/data-consume/app.js',
+					'/public/assets/js/data-consume/pdf.load.js'
+				];
+				break;
+
+			case "kebutuhan-pertahun";
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"pengajuan_obat" => "app/views/contents/dashboard/kebutuhan-pertahun.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/function.js',
+					'/public/assets/js/data-consume/app.js',
+					'/public/assets/js/data-consume/pdf.load.js'
+				];
+				break;
+
+			case "biaya";
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"pengajuan_obat" => "app/views/contents/dashboard/biaya.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/function.js',
+					'/public/assets/js/data-consume/app.js',
+					'/public/assets/js/data-consume/pdf.load.js'
+				];
+				break;
+
+			case "biaya-edit";
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"pengajuan_obat" => "app/views/contents/dashboard/edit/biaya.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/function.js',
+					'/public/assets/js/data-consume/app.js',
+					'/public/assets/js/data-consume/pdf.load.js'
+				];
+				break;
 
 			default:
-			$partials = [];
-			$scripts = [];
+				$partials = [];
+				$scripts = [];
 		}
-	
+
 
 		return [
 			'navbar' => $navbar,
@@ -271,13 +324,13 @@ class WebApp {
 		];
 	}
 
-	public function getMetaTag($title) 
-	{	
+	public function getMetaTag($title)
+	{
 		return ['head_title' => $title];
 	}
 
-	public function getData() 
-	{		
+	public function getData()
+	{
 		return [
 			'logo' => '/public/assets/icon.png',
 			'favicon' => '/public/assets/favicon.ico',

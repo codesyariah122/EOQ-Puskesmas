@@ -2,15 +2,14 @@
 
 namespace app\controllers;
 
-use app\models\{DataObat};
+use app\models\{Biaya};
 use app\helpers\{Helpers};
 use app\datasources\WebApp;
 
-class DataObatController
+class BiayaController
 {
-
-
-    public $helpers, $conn, $obat_model;
+    public $helpers, $conn;
+    private $biaya_model;
 
     public function __construct()
     {
@@ -21,7 +20,7 @@ class DataObatController
         }
 
         $this->helpers = new Helpers;
-        $this->obat_model = new DataObat;
+        $this->biaya_model = new Biaya;
     }
 
     public function views($views, $param)
@@ -41,9 +40,9 @@ class DataObatController
 
         $partials = $webApp->getPartials($param['page']);
 
-        // Query data from database variable ini akan di gunakan untuk input field jenis_obat
-        $jenis_obat = ['TABLET', 'CAPSULE', 'SYRUP'];
-        $dataEdit = $this->obat_model->obatById($dataParam);
+        $dataEdit = $this->biaya_model->biayaById($dataParam);
+        // var_dump($dataEdit);
+        // die;
 
         foreach ($views as $view) :
             require_once $view;
@@ -60,9 +59,11 @@ class DataObatController
             'footer' => 'app/views/layout/dashboard/footer.php',
         ];
 
+        // var_dump($param); die;
+
         $data = [
-            'title' => "Aplikasi EOQ - Data Obat",
-            'page' => 'data-obat',
+            'title' => "Aplikasi EOQ - biaya",
+            'page' => 'biaya',
             'data' => [
                 'username' => ucfirst($_SESSION['username']),
                 'dataParam' => ''
@@ -71,6 +72,11 @@ class DataObatController
 
         $this->views($prepare_views, $data);
     }
+
+    public function lists_data()
+    {
+    }
+
 
 
     public function edit($dataParam)
@@ -86,7 +92,7 @@ class DataObatController
 
         $data = [
             'title' => "Aplikasi EOQ - {$dataParam}",
-            'page' => 'data-obat-edit',
+            'page' => 'biaya-edit',
             'data' => [
                 'username' => ucfirst($_SESSION['username']),
                 'dataParam' => $dataParam
@@ -100,29 +106,28 @@ class DataObatController
     {
         try {
             header("Content-Type: application/json");
-
             $limit = 10;
             $keyword = isset($_GET['keyword']) ? @$_GET['keyword'] : '';
             $page = isset($_GET['page']) ? intval(@$_GET['page']) : 1;
             $offset = ($page - 1) * $limit;
 
             if (!empty($keyword)) {
-                $countPage = $this->obat_model->countSearchData($keyword);
+                $countPage = $this->biaya_model->countSearchData($keyword);
                 $totalPage = ceil($countPage / $limit);
-                $obats = $this->obat_model->searchData($keyword, $offset, $limit);
+                $biaya = $this->biaya_model->searchData($keyword, $offset, $limit);
             } else {
-                $countPage = $this->obat_model->countAllData();
+                $countPage = $this->biaya_model->countAllData();
                 $totalPage = ceil($countPage / $limit);
-                $obats = $this->obat_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $offset, $limit");
+                $biaya = $this->biaya_model->all("SELECT * FROM `biaya` ORDER BY `id` DESC LIMIT $offset, $limit");
             }
 
-            if (!empty($obats)) {
+            if (!empty($biaya)) {
                 $data = [
                     'success' => true,
                     'message' => "Lists of obat!",
                     'session_user' => $_SESSION['username'],
-                    'data' => $obats,
-                    'totalData' => count($obats),
+                    'data' => $biaya,
+                    'totalData' => count($biaya),
                     'countPage' => $countPage,
                     'totalPage' => $totalPage,
                     'aktifPage' => $page
@@ -147,16 +152,35 @@ class DataObatController
         }
     }
 
+    public function checkTotalBiaya()
+    {
+        try {
+            $nama = @$_GET['nama'];
+            $biaya_bln = @$_GET['biaya_bln'];
+            $jumlah = @$_GET['jumlah'];
+            $jumlah = $biaya_bln * $jumlah;
+            $data = [
+                'success' => true,
+                'message' => "Total biaya {$nama}!",
+                'data' => $jumlah
+            ];
+            echo json_encode($data);
+        } catch (\PDOException $e) {
+            $data = [
+                'error' => true,
+                'message' => "Terjadi kesalahan : " . $e->getMessage()
+            ];
+
+            echo json_encode($data);
+        }
+    }
+
     public function store()
     {
         try {
             header("Content-Type: application/json");
 
-            $get_obat_max = $this->obat_model->maxKdObat();
-            $last_id = $get_obat_max ? $get_obat_max += 1 : 1;
-            $last_kdObat = "KO" . $last_id;
-
-            if (empty(@$_POST['nm_obat']) ||  empty(@$_POST['isi']) ||  empty(@$_POST['satuan']) || empty(@$_POST['jenis_obat']) || empty(@$_POST['harga']) || empty(@$_POST['stok'])) {
+            if (empty(@$_POST['nama']) ||  empty(@$_POST['biaya_bln']) ||  empty(@$_POST['jumlah'])) {
                 $data = [
                     'error' => true,
                     'message' => "Data tidak boleh kosong"
@@ -166,22 +190,20 @@ class DataObatController
                 exit();
             } else {
                 $prepareData = [
-                    'kd_obat' => $last_kdObat,
-                    'nm_obat' => ucfirst(@$_POST['nm_obat']),
-                    'isi' => @$_POST['isi'],
-                    'satuan' => @$_POST['satuan'],
-                    'jenis_obat' => trim(htmlspecialchars((@$_POST['jenis_obat']))),
-                    'harga' => @$_POST['harga'],
-                    'stok' => @$_POST['stok']
+                    'nama' => ucfirst(@$_POST['nama']),
+                    'biaya_bln' => @$_POST['biaya_bln'],
+                    'jumlah' => @$_POST['jumlah'],
+                    'total' => @$_POST['total']
                 ];
 
-                if ($this->obat_model->store($prepareData, $get_obat_max) > 0) {
-                    $newObat = $this->obat_model->obatById($last_kdObat);
+                if ($this->biaya_model->store($prepareData) > 0) {
+                    $lastId = $this->biaya_model->lastIdBiaya();
+                    $newBiaya = $this->biaya_model->biayaById($lastId);
                     // var_dump($newObat); die;
                     $data = [
                         'success' => true,
-                        'message' => "{$newObat['nm_obat']}, berhasil ditambahkan!",
-                        'data' => $newObat
+                        'message' => "{$newBiaya['nama']}, berhasil ditambahkan!",
+                        'data' => $newBiaya
                     ];
                     echo json_encode($data);
                 } else {
@@ -209,26 +231,25 @@ class DataObatController
             header("Content-Type: application/json");
 
             $prepareData = [
-                'kd_obat' => @$_POST['kd_obat'],
-                'nm_obat' => @$_POST['nm_obat'],
-                'jenis_obat' => @$_POST['jenis_obat'],
-                'harga' => @$_POST['harga'],
-                'stok' => @$_POST['stok']
+                'nama' => @$_POST['nama'],
+                'biaya_bln' => @$_POST['biaya_bln'],
+                'jumlah' => @$_POST['jumlah'],
+                'total' => @$_POST['total']
             ];
 
-            $obatHasUpdate = $this->obat_model->obatById($dataParam);
-            if ($this->obat_model->update($prepareData, $dataParam) === 1) {
+            $biayaHasUpdate = $this->biaya_model->biayaById($dataParam);
+            if ($this->biaya_model->update($prepareData, $dataParam) === 1) {
                 $data = [
                     'success' => true,
-                    'message' => "Obat with kode : {$dataParam}, berhasil di update!",
-                    'data' => $obatHasUpdate
+                    'message' => "Biaya with id : {$dataParam}, berhasil di update!",
+                    'data' => $biayaHasUpdate
                 ];
                 echo json_encode($data);
             } else {
                 $data = [
                     'success' => true,
-                    'message' => "Obat with kode : {$dataParam}, tidak ada perubahan data!",
-                    'data' => $obatHasUpdate
+                    'message' => "Biaya with id : {$dataParam}, tidak ada perubahan data!",
+                    'data' => $biayaHasUpdate
                 ];
                 echo json_encode($data);
             }
@@ -247,12 +268,12 @@ class DataObatController
         try {
             header("Content-Type: application/json");
 
-            if ($this->obat_model->delete($dataParam) === 1) {
-                $obatHasUpdate = $this->obat_model->obatById($dataParam);
+            if ($this->biaya_model->delete($dataParam) === 1) {
+                $biayaHasUpdate = $this->biaya_model->biayaById($dataParam);
                 $data = [
                     'success' => true,
-                    'message' => "Obat with kode : {$dataParam}, berhasil di delete!",
-                    'data' => $obatHasUpdate
+                    'message' => "Biaya with id : {$dataParam}, berhasil di delete!",
+                    'data' => $biayaHasUpdate
                 ];
                 echo json_encode($data);
             }

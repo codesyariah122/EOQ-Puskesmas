@@ -6,7 +6,8 @@ use app\models\{User};
 use app\helpers\{Helpers};
 use app\datasources\WebApp;
 
-class LoginController {
+class LoginController
+{
 
 	private $helpers;
 
@@ -25,19 +26,19 @@ class LoginController {
 
 		$page = $param['page'];
 
-		foreach($views as $view):
+		foreach ($views as $view) :
 			require_once $view;
 		endforeach;
 	}
 
-	public function index() 
+	public function index()
 	{
 		session_start();
 
-		if(isset($_SESSION['token'])) {
+		if (isset($_SESSION['token'])) {
 			header("Location: /dashboard/{$_SESSION['role']}", 1);
 		}
-		
+
 		$prepare_views = [
 			'header' => 'app/views/layout/app/header.php',
 			'login' => 'app/views/login.php',
@@ -54,22 +55,23 @@ class LoginController {
 
 	public function authenticate()
 	{
-		$expiryTime = time() + 3600;
-		// Mengatur waktu kedaluwarsa sesi PHP
-		session_set_cookie_params(3600);
-		
+		$expiryTime = time() + (7 * 24 * 60 * 60);
+
+		// Mengatur waktu kedaluwarsa sesi PHP ke 7 hari (7 * 24 jam * 60 menit * 60 detik)
+		session_set_cookie_params(7 * 24 * 60 * 60);
+
 		session_start();
 		$username = $_POST['username'];
 		$password = $_POST['password'];
 
-	    // Validasi input
-		if(empty($username) || empty($password)) {
+		// Validasi input
+		if (empty($username) || empty($password)) {
 			$data = [
 				'error' => true,
 				'message' => 'Form login harus di isi dengan benar!'
 			];
 			echo json_encode($data);
-		} else {	
+		} else {
 			$userModel = new User;
 			$user = $userModel->getUserByUsername($username);
 
@@ -81,7 +83,7 @@ class LoginController {
 				echo json_encode($data);
 			} else {
 
-				if(!password_verify($password, $user['password'])) {
+				if (!password_verify($password, $user['password'])) {
 					$data = [
 						'error' => true,
 						'message' => 'Username / password, salah!'
@@ -113,8 +115,6 @@ class LoginController {
 				}
 			}
 		}
-
-
 	}
 
 	public function logout()

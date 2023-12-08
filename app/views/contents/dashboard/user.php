@@ -8,7 +8,7 @@
               <p class="mb-0 text-base text-gray-500 sm:text-lg dark:text-gray-400"><?=$description?>.</p>
 
                <!-- Aktifkan untuk countdown timer -->
-               <?php require_once 'molecules/login-countdown.php' ?>
+               <?php //require_once 'molecules/login-countdown.php' ?>
            </div>
         </div>
      </div>

@@ -4,6 +4,7 @@ require_once 'app/config/Autoload.php';
 
 // Inisialisasi Router
 use app\config\Router;
+
 $app = new Router;
 
 // Menambahkan rute ke router
@@ -35,6 +36,21 @@ $app->put('/update/data-user/{dataParam}', 'UserDataController@update');
 // delete user
 $app->delete('/delete/data-user/{dataParam}', 'UserDataController@delete');
 
+// perhitungan kebutuhan
+$app->get('/dashboard/kebutuhan-pertahun', 'KebutuhanPertahunController@index');
+$app->get('/lists/kebutuhan-pertahun', 'KebutuhanPertahunController@all');
+$app->post('/add/kebutuhan-pertahun', 'KebutuhanPertahunController@store');
+$app->get('/check/jumlah-k-tahun', 'KebutuhanPertahunController@checkJumlahKebutuhan');
+
+// Biaya
+$app->get('/dashboard/biaya', 'BiayaController@index');
+$app->get('/dashboard/biaya/{param}', 'BiayaController@edit');
+$app->put('/update/biaya/{dataParam}', 'BiayaController@update');
+$app->delete('/delete/biaya/{dataParam}', 'BiayaController@delete');
+$app->get('/lists/biaya', 'BiayaController@all');
+$app->post('/add/biaya', 'BiayaController@store');
+$app->get('/check/total-biaya', 'BiayaController@checkTotalBiaya');
+
 // Data obat
 $app->get('/dashboard/data-obat', 'DataObatController@index');
 $app->get('/lists/data-obat', 'DataObatController@all');
@@ -50,6 +66,7 @@ $app->delete('/delete/data-obat/{dataParam}', 'DataObatController@delete');
 $app->get('/dashboard/pengajuan-obat', 'PengajuanObatController@index');
 $app->get('/options/lists-obat', 'PengajuanObatController@lists_obat');
 $app->post('/add/pengajuan-obat', 'PengajuanObatController@store');
+$app->get('/check/input-formula', 'PengajuanObatController@pengajuanInputFormula');
 
 // Laporan analisa EOQ
 $app->get('/dashboard/laporan-eoq', 'LaporanEoqController@index');

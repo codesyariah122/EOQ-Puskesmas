@@ -1,9 +1,11 @@
 <?php
+
 namespace app\models;
 
 use app\config\Database;
 
-class PengajuanObat {
+class PengajuanObat
+{
 
 	public $db, $conn;
 
@@ -15,46 +17,46 @@ class PengajuanObat {
 
 
 	public function countAllData()
-    {
-    	try {
-            $query = "SELECT COUNT(*) AS total FROM eoq";
-            $stmt = $this->conn->prepare($query);
-            $stmt->execute();
-            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-            return $result['total'];
-        } catch (\PDOException $e) {
-            throw new Exception("Error: " . $e->getMessage());
-        }
-    }
+	{
+		try {
+			$query = "SELECT COUNT(*) AS total FROM eoq";
+			$stmt = $this->conn->prepare($query);
+			$stmt->execute();
+			$result = $stmt->fetch(\PDO::FETCH_ASSOC);
+			return $result['total'];
+		} catch (\PDOException $e) {
+			throw new Exception("Error: " . $e->getMessage());
+		}
+	}
 
-    public function countSearchData($keyword)
-    {
-    	try {
-            $query = "SELECT COUNT(*) AS total FROM eoq WHERE kd_obat LIKE :keyword";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindValue(':keyword', "%$keyword%", \PDO::PARAM_STR);
-            $stmt->execute();
-            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-            return $result['total'];
-        } catch (\PDOException $e) {
-            throw new Exception("Error: " . $e->getMessage());
-        }
-    }
+	public function countSearchData($keyword)
+	{
+		try {
+			$query = "SELECT COUNT(*) AS total FROM eoq WHERE kd_obat LIKE :keyword";
+			$stmt = $this->conn->prepare($query);
+			$stmt->bindValue(':keyword', "%$keyword%", \PDO::PARAM_STR);
+			$stmt->execute();
+			$result = $stmt->fetch(\PDO::FETCH_ASSOC);
+			return $result['total'];
+		} catch (\PDOException $e) {
+			throw new Exception("Error: " . $e->getMessage());
+		}
+	}
 
 	public function all($query)
 	{
-		try{
+		try {
 			$dbh = $this->conn;
 			$dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 			$sql = $dbh->query($query);
-			$rows=[];
+			$rows = [];
 
-			while($row = $sql->fetch(\PDO::FETCH_ASSOC)):
+			while ($row = $sql->fetch(\PDO::FETCH_ASSOC)) :
 				$rows[] = $row;
 			endwhile;
 
 			return $rows;
-		} catch(\PDOException $e){
+		} catch (\PDOException $e) {
 			echo $e->getMessage();
 		}
 	}
@@ -97,15 +99,14 @@ class PengajuanObat {
 			$results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
 			return $results;
-
 		} catch (\PDOException $e) {
-			echo "Ooops error : ".$e->getMessage();
+			echo "Ooops error : " . $e->getMessage();
 		}
 	}
 
 	public function pengajuanById($kd_obat)
 	{
-		try{
+		try {
 			$dbh = $this->conn;
 			$sql = "SELECT * FROM eoq WHERE kd_obat = :kd_obat";
 			$stmt = $dbh->prepare($sql);
@@ -114,14 +115,14 @@ class PengajuanObat {
 
 			$obat = $stmt->fetch(\PDO::FETCH_ASSOC);
 			return $obat;
-		}catch(\PDOException $e){
+		} catch (\PDOException $e) {
 			echo $e->getMessage();
 		}
 	}
 
 	public function store($data)
 	{
-		try{
+		try {
 			$dbh = $this->conn;
 
 			$pengajuanObat = $dbh->prepare("INSERT INTO eoq (kd_obat, k_tahun, b_simpan, b_pesan, jumlah_eoq, intval_time) VALUES (:kd_obat, :k_tahun, :b_simpan, :b_pesan, :jumlah_eoq, :intval_time)");
@@ -135,8 +136,7 @@ class PengajuanObat {
 			$pengajuanObat->execute();
 
 			return $pengajuanObat->rowCount();
-			
-		} catch (\PDOException $e){
+		} catch (\PDOException $e) {
 			echo "Error PDO: " . $e->getMessage();
 		} catch (\Exception $e) {
 			echo "Error: " . $e->getMessage();
