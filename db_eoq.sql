@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2023 at 02:52 PM
+-- Generation Time: Dec 08, 2023 at 07:24 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -54,6 +54,30 @@ INSERT INTO `admin` (`id`, `kd_admin`, `nm_lengkap`, `alamat`, `notlp`, `usernam
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `annual_needs`
+--
+
+CREATE TABLE `annual_needs` (
+  `id` int(11) NOT NULL,
+  `kd_obat` char(10) NOT NULL,
+  `k_tahun` int(11) NOT NULL,
+  `satuan` varchar(25) DEFAULT NULL,
+  `jumlah` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `annual_needs`
+--
+
+INSERT INTO `annual_needs` (`id`, `kd_obat`, `k_tahun`, `satuan`, `jumlah`) VALUES
+(1, 'KO66', 19, 'box', 1900),
+(2, 'KO65', 19, 'box', 1900),
+(3, 'KO61', 19, 'box', 1900),
+(4, 'KO15', 9, 'box', 900);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `beli`
 --
 
@@ -70,59 +94,50 @@ CREATE TABLE `beli` (
 --
 
 INSERT INTO `beli` (`id`, `kd_beli`, `tgl_beli`, `kd_obat`, `jumlah`) VALUES
-(1, 'VHALXNLN', '2023-10-12', 'KO66', 250),
-(2, 'VR0TXMIC', '2023-12-07', 'KO65', 100);
+(2, 'IC6AB8KD', '2023-12-08', 'KO67', 200);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table annual_needs
--- 
-
-CREATE TABLE `annual_needs` (
-  `id` int(11) AUTO_INCREMENT PRIMARY KEY,
-  `kd_obat` char(10) NOT NULL,
-  `k_tahun` int(11) NOT NULL,
-  `jumlah` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
-CREATE TABLE `stock_opname` (
-  `id` int(11) AUTO_INCREMENT PRIMARY KEY,
-  `sisa_stok` int(11) NOT NULL,
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
-CREATE TABLE `b_simpan` (
-  `id` int(11) AUTO_INCREMENT  PRIMARY KEY,
-  `b_total` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
-CREATE TABLE `b_pemesanan` (
-  `id` int(11) AUTO_INCREMENT  PRIMARY KEY,
-  `b_total` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
+-- Table structure for table `biaya`
+--
 
 CREATE TABLE `biaya` (
   `id` int(11) NOT NULL,
-  `nama` char(10) NOT NULL,
+  `nama` char(99) NOT NULL,
   `biaya_bln` int(11) DEFAULT NULL,
   `jumlah` int(11) DEFAULT NULL,
   `total` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data for table `biaya`
+--
+
+INSERT INTO `biaya` (`id`, `nama`, `biaya_bln`, `jumlah`, `total`) VALUES
+(1, 'Listrik', 400000, 12, 4800000),
+(2, 'Ongkos Kirim', 150000, 5, 750000);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table annual_needs
--- 
+-- Table structure for table `b_pemesanan`
+--
 
-CREATE TABLE `b_penyimpanan` (
+CREATE TABLE `b_pemesanan` (
   `id` int(11) NOT NULL,
-  `nm_obat` char(10) NOT NULL,
-  `isi` int(11) NOT NULL,
-  `k_tahun` int(11) NOT NULL,
-  `k_each` int(11) NOT NULL,
-  `total` int(11) DEFAULT NULL
+  `b_total` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `b_simpan`
+--
+
+CREATE TABLE `b_simpan` (
+  `id` int(11) NOT NULL,
+  `b_total` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
@@ -146,8 +161,9 @@ CREATE TABLE `eoq` (
 --
 
 INSERT INTO `eoq` (`id`, `kd_obat`, `k_tahun`, `b_simpan`, `b_pesan`, `jumlah_eoq`, `intval_time`) VALUES
-(1, 'KO66', 2000, 8000000, 6500000, 57, 10),
-(2, 'KO17', 4000, 70000000, 35000000, 63, 6);
+(3, 'KO68', 100, 40000, 50000, 16, 58),
+(4, 'KO66', 19, 816, 215909, 100, 1926),
+(5, 'KO66', 19, 816, 215909, 100, 1926);
 
 -- --------------------------------------------------------
 
@@ -156,7 +172,7 @@ INSERT INTO `eoq` (`id`, `kd_obat`, `k_tahun`, `b_simpan`, `b_pesan`, `jumlah_eo
 --
 
 CREATE TABLE `log_pembelian` (
-  `id` bigint(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `kd_admin` char(255) NOT NULL,
   `kd_beli` char(10) NOT NULL,
   `kd_obat` char(10) NOT NULL,
@@ -169,8 +185,7 @@ CREATE TABLE `log_pembelian` (
 --
 
 INSERT INTO `log_pembelian` (`id`, `kd_admin`, `kd_beli`, `kd_obat`, `tgl_beli`, `jumlah`) VALUES
-(1, 'KU02', 'VHALXNLN', 'KO66', '2023-10-12', 250),
-(2, 'KU01', 'VR0TXMIC', 'KO65', '2023-12-07', 100);
+(2, 'KU01', 'IC6AB8KD', 'KO67', '2023-12-08', 200);
 
 -- --------------------------------------------------------
 
@@ -182,6 +197,8 @@ CREATE TABLE `obat` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `kd_obat` char(10) NOT NULL,
   `nm_obat` varchar(25) NOT NULL,
+  `isi` int(11) DEFAULT NULL,
+  `satuan` varchar(11) DEFAULT NULL,
   `jenis_obat` enum('TABLET','CAIR','CAPSULE') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `harga` int(11) NOT NULL,
   `stok` int(11) NOT NULL
@@ -258,7 +275,20 @@ INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `isi`, `satuan`, `jenis_obat`, `
 (64, 'KO64', 'Amplodipin 5mg', 100, 'box', 'TABLET', 220, 1000),
 (65, 'KO65', 'Amplodipin 10mg', 100, 'box', 'TABLET', 300, 300),
 (66, 'KO66', 'Amoxillin', 100, 'box', 'TABLET', 600, 560),
-(67, 'KO67', 'Tester ABC', 100, 'box', 'TABLET', 5000, 100);
+(67, 'KO67', 'Tester ABC', 100, 'box', 'TABLET', 5000, 100),
+(68, 'KO68', 'Coba aje', 100, 'box', 'TABLET', 1500, 15000),
+(69, 'KO69', 'Test lagi obat', 200, 'box', 'TABLET', 2500, 2000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_opname`
+--
+
+CREATE TABLE `stock_opname` (
+  `id` int(11) NOT NULL,
+  `sisa_stok` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Indexes for dumped tables
@@ -272,11 +302,36 @@ ALTER TABLE `admin`
   ADD KEY `idx_kd_admin` (`kd_admin`);
 
 --
+-- Indexes for table `annual_needs`
+--
+ALTER TABLE `annual_needs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_annual_needs_obat` (`kd_obat`);
+
+--
 -- Indexes for table `beli`
 --
 ALTER TABLE `beli`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_kd_beli` (`kd_beli`);
+
+--
+-- Indexes for table `biaya`
+--
+ALTER TABLE `biaya`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `b_pemesanan`
+--
+ALTER TABLE `b_pemesanan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `b_simpan`
+--
+ALTER TABLE `b_simpan`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `eoq`
@@ -285,20 +340,10 @@ ALTER TABLE `eoq`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table 
---
--- ALTER TABLE `annual_needs`
---   ADD PRIMARY KEY (`id`);
-
--- ALTER TABLE `stock_opname`
---   ADD PRIMARY KEY (`id`);
-
--- ALTER TABLE `total_b_pemesanan`
---   ADD PRIMARY KEY (`id`);
---
 -- Indexes for table `log_pembelian`
 --
 ALTER TABLE `log_pembelian`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `kd_admin` (`kd_admin`),
   ADD KEY `kd_beli` (`kd_beli`),
   ADD KEY `kd_obat` (`kd_obat`);
@@ -311,40 +356,74 @@ ALTER TABLE `obat`
   ADD KEY `idx_kd_obat` (`kd_obat`);
 
 --
+-- Indexes for table `stock_opname`
+--
+ALTER TABLE `stock_opname`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `annual_needs`
+--
+ALTER TABLE `annual_needs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `biaya`
+--
+ALTER TABLE `biaya`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `b_pemesanan`
+--
+ALTER TABLE `b_pemesanan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `b_simpan`
+--
+ALTER TABLE `b_simpan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `eoq`
 --
 ALTER TABLE `eoq`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `log_pembelian`
 --
--- ALTER TABLE `log_pembelian`
---   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `log_pembelian`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `stock_opname`
+--
+ALTER TABLE `stock_opname`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `annual_needs`
+--
 ALTER TABLE `annual_needs`
-ADD CONSTRAINT `fk_annual_needs_obat` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`);
+  ADD CONSTRAINT `fk_annual_needs_obat` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`);
 
-
--- ALTER TABLE `stock_opname`
--- ADD CONSTRAINT `fk_stock_opname_obat` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`);
-
--- ALTER TABLE `b_simpan`
--- ADD CONSTRAINT `fk_b_simpan_obat` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`);
 --
 -- Constraints for table `log_pembelian`
 --
 ALTER TABLE `log_pembelian`
   ADD CONSTRAINT `log_pembelian_ibfk_1` FOREIGN KEY (`kd_admin`) REFERENCES `admin` (`kd_admin`),
   ADD CONSTRAINT `log_pembelian_ibfk_2` FOREIGN KEY (`kd_beli`) REFERENCES `beli` (`kd_beli`),
-  ADD CONSTRAINT `log_pembelian_ibfk_3` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`) ON DELETE CASCADE
+  ADD CONSTRAINT `log_pembelian_ibfk_3` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
