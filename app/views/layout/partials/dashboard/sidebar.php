@@ -71,15 +71,15 @@
          <li>
             <a href="/dashboard/pembelian" class="flex items-center p-2 <?= $page === 'pembelian' ? 'bg-gray-400 text-white dark:text-white hover:bg-gray-600 dark:hover:bg-gray-700' : 'dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 ' ?> rounded-lg">
                <i class="fa-solid fa-cubes"></i>
-               <span class="flex-1 ml-3 whitespace-nowrap">Kelola Pembelian</span>
+               <span class="flex-1 ml-3 whitespace-nowrap">Pembelian</span>
             </a>
          </li>
-         <li>
+         <!-- <li>
             <a href="/dashboard/laporan-pembelian" class="flex items-center p-2 <?= $page === 'laporan-pembelian' ? 'bg-gray-400 text-white dark:text-white hover:bg-gray-600 dark:hover:bg-gray-700' : 'dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 ' ?> rounded-lg">
                <i class="fa-solid fa-database"></i>
                <span class="flex-1 ml-3 whitespace-nowrap">Laporan Pembelian</span>
             </a>
-         </li>
+         </li> -->
       </ul>
    </div>
 </aside>

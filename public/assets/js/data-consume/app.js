@@ -391,16 +391,26 @@ $(document).ready(function () {
             break;
 
           case "biaya":
-            let id = $(this).attr("data-id");
+            let id_biaya = $(this).attr("data-id");
             prepareData = {
-              id: id,
-              field: id,
+              id: id_biaya,
+              field: id_biaya,
+            };
+            break;
+
+          case "kebutuhan-pertahun":
+            let id_ktahun = $(this).attr("data-id");
+            prepareData = {
+              id: id_ktahun,
+              field: id_ktahun,
             };
             break;
         }
 
         loading.classList.remove("hidden");
         loading.classList.add("block");
+
+        console.log(prepareData)
 
         deleteData(prepareData, pagePath);
       }

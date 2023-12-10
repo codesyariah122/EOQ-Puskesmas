@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\{DataObat, PengajuanObat, KebutuhanPertahun, Biaya};
+use app\models\{DataObat, PengajuanObat, KebutuhanPertahun, Biaya, StockOpname};
 use app\helpers\{Helpers};
 use app\datasources\WebApp;
 
@@ -11,7 +11,7 @@ class PengajuanObatController
 
 
     public $helpers, $conn, $obat_model;
-    private $pengajuan_model, $ktahun_model, $biaya_model;
+    private $pengajuan_model, $ktahun_model, $biaya_model, $stock_opname;
 
     public function __construct()
     {
@@ -26,6 +26,7 @@ class PengajuanObatController
         $this->pengajuan_model = new PengajuanObat;
         $this->ktahun_model = new KebutuhanPertahun;
         $this->biaya_model = new Biaya;
+        $this->stock_opname = new StockOpname;
     }
 
     public function views($views, $param)
@@ -132,12 +133,13 @@ class PengajuanObatController
             $biayaOngkir = ucfirst('ongkos kirim');
             $ktahun = $this->ktahun_model->kebutuhanByKdObay($kd_obat);
 
-            $allStock = $this->obat_model->getAllStock() / 12;
+            $allStock = $this->stock_opname->allStockIn() / 12;
+
             $totalBiayaListrik = $this->biaya_model->getBiayaByNama($biayaListrik)['total'];
             $totalBiayaOngkir = $this->biaya_model->getBiayaByNama($biayaOngkir)['total'];
-            $biayaSimpan = round($totalBiayaListrik / $allStock, 2);
+            $biayaSimpan = round($totalBiayaListrik / $allStock);
             $totalKtahun = $this->ktahun_model->totalJumlahKebutuhanPerTahun();
-            $biayaPemesanan = round(($totalBiayaOngkir / $totalKtahun) * $ktahun['jumlah'], 2);
+            $biayaPemesanan = round(($totalBiayaOngkir / $totalKtahun) * $ktahun['jumlah']);
 
             $data = [
                 'success' => true,

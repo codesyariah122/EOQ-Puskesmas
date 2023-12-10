@@ -190,7 +190,7 @@ class KebutuhanPertahun
 
             $dbh->beginTransaction();
 
-            $delete = $dbh->prepare("DELETE FROM `biaya` WHERE `id` = :id");
+            $delete = $dbh->prepare("DELETE FROM `annual_needs` WHERE `id` = :id");
             $delete->bindParam(":id", $id);
             $delete->execute();
 
@@ -211,11 +211,11 @@ class KebutuhanPertahun
         }
     }
 
-    public function biayaById($id)
+    public function kebutuhanById($id)
     {
         try {
             $dbh = $this->conn;
-            $sql = "SELECT * FROM biaya WHERE id = :id";
+            $sql = "SELECT * FROM annual_needs WHERE id = :id";
             $stmt = $dbh->prepare($sql);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
@@ -224,6 +224,22 @@ class KebutuhanPertahun
             return $biaya;
         } catch (\PDOException $e) {
             echo $e->getMessage();
+        }
+    }
+
+    public function getKebutuhanByKdObat($kd_obat)
+    {
+        try {
+            $query = "SELECT * FROM annual_needs WHERE kd_obat = :kd_obat";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':kd_obat', $kd_obat);
+            $stmt->execute();
+
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            return $result;
+        } catch (\PDOException $e) {
+            echo "Error: " . $e->getMessage();
         }
     }
 

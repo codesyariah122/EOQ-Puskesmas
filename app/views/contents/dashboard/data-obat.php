@@ -55,6 +55,9 @@
                         Nama Obat
                      </th>
                      <th scope="col" class="px-6 py-3">
+                        Stok
+                     </th>
+                     <th scope="col" class="px-6 py-3">
                         Isi
                      </th>
                      <th scope="col" class="px-6 py-3">
@@ -64,7 +67,7 @@
                         Harga
                      </th>
                      <th scope="col" class="px-6 py-3">
-                        Stok
+                       Sisa Stok
                      </th>
                      <th scope="col" class="px-6 py-3">
                         <span class="sr-only">Edit</span>

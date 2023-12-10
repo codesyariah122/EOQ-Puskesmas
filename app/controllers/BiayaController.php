@@ -196,6 +196,18 @@ class BiayaController
                     'total' => @$_POST['total']
                 ];
 
+                $existingBiaya = $this->biaya_model->getBiayaByNama($prepareData['nama']);
+
+                if ($existingBiaya) {
+                    $data = [
+                        'error' => true,
+                        'message' => "Data with the same 'nama' already exists."
+                    ];
+
+                    echo json_encode($data);
+                    return 0;
+                }
+            
                 if ($this->biaya_model->store($prepareData) > 0) {
                     $lastId = $this->biaya_model->lastIdBiaya();
                     $newBiaya = $this->biaya_model->biayaById($lastId);

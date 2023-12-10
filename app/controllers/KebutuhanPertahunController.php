@@ -99,11 +99,11 @@ class KebutuhanPertahunController
                 $countPage = $this->ktahun_model->countAllData();
                 $totalPage = ceil($countPage / $limit);
                 $annual = $this->ktahun_model->all("SELECT obat.id AS obat_id, obat.kd_obat, obat.nm_obat, obat.jenis_obat, obat.harga, obat.stok,
-                annual_needs.id AS needs_id, annual_needs.kd_obat AS needs_kd_obat, annual_needs.k_tahun, annual_needs.satuan, annual_needs.jumlah
-                FROM obat
-                INNER JOIN annual_needs ON obat.kd_obat = annual_needs.kd_obat
-                ORDER BY obat.id
-                LIMIT $limit OFFSET $offset");
+                    annual_needs.id AS needs_id, annual_needs.kd_obat AS needs_kd_obat, annual_needs.k_tahun, annual_needs.satuan, annual_needs.jumlah
+                    FROM obat
+                    INNER JOIN annual_needs ON obat.kd_obat = annual_needs.kd_obat
+                    ORDER BY annual_needs.id DESC
+                    LIMIT $limit OFFSET $offset");
             }
 
             if (!empty($annual)) {
@@ -174,6 +174,18 @@ class KebutuhanPertahunController
                 echo json_encode($data);
                 exit();
             } else {
+                $existingKTahun = $this->ktahun_model->getKebutuhanByKdObat($_POST['kd_obat']);
+
+                if ($existingKTahun) {
+                    $data = [
+                        'error' => true,
+                        'message' => "Data with the same 'kd_obat' already exists."
+                    ];
+
+                    echo json_encode($data);
+                    return 0;
+                }
+
                 $data_obat = $this->obat_model->obatById($_POST['kd_obat']);
                 $satuan_obat = $data_obat['satuan'];
                 $jumlah = @$_POST['k_tahun'] * $data_obat['isi'];
@@ -186,7 +198,7 @@ class KebutuhanPertahunController
                 ];
 
                 if ($this->ktahun_model->store($prepareData) > 0) {
-                    $k_obat_tahun = $this->ktahun_model->kebutuhanObatById(@$_POST['kd_obat']);
+                    $k_obat_tahun = $this->ktahun_model->getKebutuhanByKdObat(@$_POST['kd_obat']);
                     $data = [
                         'success' => true,
                         'message' => "Setup kebutuhan untuk data obat dengan kode : {$k_obat_tahun['kd_obat']}, berhasil ditambahkan!",
@@ -211,5 +223,25 @@ class KebutuhanPertahunController
 
     public function delete($dataParam)
     {
+        try {
+            header("Content-Type: application/json");
+
+            if ($this->ktahun_model->delete($dataParam) === 1) {
+                $kebutuhanById = $this->ktahun_model->kebutuhanById($dataParam);
+                $data = [
+                    'success' => true,
+                    'message' => "Kebutuhan pertahun with kode : {$dataParam}, berhasil di delete!",
+                    'data' => $kebutuhanById
+                ];
+                echo json_encode($data);
+            }
+        } catch (\PDOException $e) {
+            $data = [
+                'error' => true,
+                'message' => "Terjadi kesalahan : " . $e->getMessage()
+            ];
+
+            echo json_encode($data);
+        }
     }
 }

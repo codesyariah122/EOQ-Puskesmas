@@ -83,4 +83,32 @@ class LogPembelian {
 		}
 	}
 
+	public function delete($kd_beli)
+	{
+		try {
+			$dbh = $this->conn;
+
+			$dbh->beginTransaction();
+
+			$delete = $dbh->prepare("DELETE FROM `log_pembelian` WHERE `kd_beli` = :kd_beli");
+			$delete->bindParam(":kd_beli", $kd_beli);
+			$delete->execute();
+
+			$errorInfo = $delete->errorInfo();
+			if ($errorInfo[0] !== '00000') {
+				$dbh->rollBack();
+				echo "Error executing query: " . $errorInfo[2];
+			} else {
+				$dbh->commit();
+
+				$dbh->exec("ALTER TABLE `beli` AUTO_INCREMENT = 1");
+
+				return $delete->rowCount();
+			}
+		} catch (\PDOException $e) {
+			$dbh->rollBack();
+			echo $e->getMessage();
+		}
+	}
+
 }

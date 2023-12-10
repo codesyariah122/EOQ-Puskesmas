@@ -99,10 +99,14 @@ class DataObat
 
 		try {
 			$dbh = $this->conn;
-			$query = "SELECT * FROM `obat` WHERE 
-			`kd_obat` LIKE :keyword OR `nm_obat` LIKE :keyword 
-			OR `jenis_obat` LIKE '%$keyword%'
-			ORDER BY `kd_obat` DESC";
+			 $query = "SELECT obat.*, stock_opname.sisa_stok 
+                  FROM `obat` 
+                  LEFT JOIN stock_opname ON obat.kd_obat = stock_opname.kd_obat 
+                  WHERE obat.`kd_obat` LIKE :keyword 
+                    OR obat.`nm_obat` LIKE :keyword 
+                    OR obat.`jenis_obat` LIKE :keyword
+                  ORDER BY obat.`kd_obat` DESC";
+                  
 			if ($limitStart !== null && $limit !== null) {
 				$query .= " LIMIT $limitStart, $limit";
 			}
@@ -187,6 +191,22 @@ class DataObat
 			$dbh->exec("ALTER TABLE `obat` AUTO_INCREMENT = 1");
 
 			return $delete->rowCount();
+		} catch (\PDOException $e) {
+			echo $e->getMessage();
+		}
+	}
+
+	public function updateByBeli($data)
+	{
+		try {
+			$dbh = $this->conn;
+			$sql = "UPDATE obat SET stok=?  WHERE `kd_obat` = ?";
+
+			$update = $dbh->prepare($sql);
+
+			$update->execute([$data['stok'], $data['kd_obat']]);
+
+			return $update->rowCount();
 		} catch (\PDOException $e) {
 			echo $e->getMessage();
 		}

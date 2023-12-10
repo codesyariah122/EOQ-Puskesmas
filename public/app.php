@@ -41,6 +41,8 @@ $app->get('/dashboard/kebutuhan-pertahun', 'KebutuhanPertahunController@index');
 $app->get('/lists/kebutuhan-pertahun', 'KebutuhanPertahunController@all');
 $app->post('/add/kebutuhan-pertahun', 'KebutuhanPertahunController@store');
 $app->get('/check/jumlah-k-tahun', 'KebutuhanPertahunController@checkJumlahKebutuhan');
+$app->delete('/delete/kebutuhan-pertahun/{dataParam}', 'KebutuhanPertahunController@delete');
+
 
 // Biaya
 $app->get('/dashboard/biaya', 'BiayaController@index');
@@ -77,6 +79,8 @@ $app->post('/print/laporan-eoq', 'LaporanEoqController@print');
 $app->get('/dashboard/pembelian', 'PembelianController@index');
 $app->get('/lists/pembelian', 'PembelianController@all');
 $app->post('/add/pembelian', 'PembelianController@store');
+$app->delete('/delete/pembelian/{dataParam}', 'PembelianController@delete');
+
 // edit data obat
 $app->get('/dashboard/pembelian/{param}', 'PembelianController@edit');
 $app->put('/update/pembelian/{dataParam}', 'PembelianController@update');

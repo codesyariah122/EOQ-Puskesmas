@@ -113,7 +113,11 @@ class DataObatController
             } else {
                 $countPage = $this->obat_model->countAllData();
                 $totalPage = ceil($countPage / $limit);
-                $obats = $this->obat_model->all("SELECT * FROM `obat` ORDER BY `id` DESC LIMIT $offset, $limit");
+                 $obats = $this->obat_model->all("SELECT obat.*, stock_opname.sisa_stok
+                                            FROM obat
+                                            LEFT JOIN stock_opname ON obat.kd_obat = stock_opname.kd_obat
+                                            ORDER BY obat.id DESC
+                                            LIMIT $offset, $limit");
             }
 
             if (!empty($obats)) {

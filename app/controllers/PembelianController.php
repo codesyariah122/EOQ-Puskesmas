@@ -1,7 +1,7 @@
 <?php
 namespace app\controllers;
 
-use app\models\{DataObat, Pembelian, LogPembelian, User};
+use app\models\{DataObat, Pembelian, LogPembelian, User, StockOpname};
 use app\helpers\{Helpers};
 use app\datasources\WebApp;
 
@@ -9,7 +9,7 @@ class PembelianController {
 
 
     public $helpers, $conn;
-    private $pembelian_model, $obat_model, $log_pembelian, $user_model;
+    private $pembelian_model, $obat_model, $log_pembelian, $user_model, $stok_opname;
 
     public function __construct()
     {
@@ -24,6 +24,7 @@ class PembelianController {
         $this->pembelian_model = new Pembelian;
         $this->log_pembelian = new LogPembelian;
         $this->user_model = new User;
+        $this->stok_opname = new StockOpname;
     }
 
     public function views($views, $param)
@@ -184,6 +185,13 @@ class PembelianController {
                         $lastIdBeli = $this->pembelian_model->lastIdBeli();
                         $pembelian = $this->pembelian_model->pembelianByIdData($lastIdBeli);
 
+                        $sisaStok = $update_stok;
+                        $dataStok = [
+                            'kd_obat' => $kd_obat,
+                            'sisa_stok' => $sisaStok
+                        ];
+                        $storeStok = $this->stok_opname->update($dataStok);
+
                         $data = [
                             'success' => true,
                             'message' => "Pembelian baru dengan kode : {$pembelian['kd_beli']}, berhasil ditambahkan!",
@@ -205,6 +213,7 @@ class PembelianController {
                     ];
 
                     if ($this->pembelian_model->store($prepareData, $last_id !== NULL ? $last_id += 1 : 1) % 2 == 1) {
+
                         $user_login = $this->user_model->getUserByUsername($_SESSION['username']);
 
                         $prepareLogBeli = [
@@ -215,8 +224,22 @@ class PembelianController {
                             'jumlah' => $jumlah
                         ];
                         $this->log_pembelian->store($prepareLogBeli, $last_id); 
-
                         $dataObat = $this->obat_model->obatById($kd_obat);
+                        $updateStok =  $dataObat['stok'] + $jumlah;
+
+                        $prepareDataStokObat = [
+                            'kd_obat' => $dataObat['kd_obat'],
+                            'stok' => $updateStok
+                        ];
+
+                        $updateStokObat = $this->obat_model->updateByBeli($prepareDataStokObat);
+
+                        $dataStok = [
+                            'kd_obat' => $kd_obat,
+                            'sisa_stok' => $updateStok
+                        ];
+                        $storeStok = $this->stok_opname->store($dataStok);
+
                         $pembelian = $this->pembelian_model->pembelianById($prepareData['kd_beli']);
                         $data_log = $this->log_pembelian->logPembelianByIdData($pembelian['kd_beli']);
 
@@ -311,9 +334,10 @@ class PembelianController {
             header("Content-Type: application/json");
 
             $pembelianHasUpdate = $this->pembelian_model->pembelianById($dataParam);
-            
+
             $dataObat = $this->obat_model->obatById($pembelianHasUpdate['kd_obat']);
 
+            $logPembelianPrepare = $this->log_pembelian->delete($pembelianHasUpdate['kd_beli']);
 
             $update_stok = $dataObat['stok'] - $pembelianHasUpdate['jumlah'];
 

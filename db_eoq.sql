@@ -286,7 +286,8 @@ INSERT INTO `obat` (`id`, `kd_obat`, `nm_obat`, `isi`, `satuan`, `jenis_obat`, `
 --
 
 CREATE TABLE `stock_opname` (
-  `id` int(11) NOT NULL,
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `kd_obat` char(10) NOT NULL,
   `sisa_stok` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
@@ -355,11 +356,6 @@ ALTER TABLE `obat`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_kd_obat` (`kd_obat`);
 
---
--- Indexes for table `stock_opname`
---
-ALTER TABLE `stock_opname`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -404,8 +400,8 @@ ALTER TABLE `log_pembelian`
 --
 -- AUTO_INCREMENT for table `stock_opname`
 --
-ALTER TABLE `stock_opname`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+-- ALTER TABLE `stock_opname`
+--   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -416,6 +412,9 @@ ALTER TABLE `stock_opname`
 --
 ALTER TABLE `annual_needs`
   ADD CONSTRAINT `fk_annual_needs_obat` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`);
+
+ALTER TABLE `stock_opname`
+  ADD CONSTRAINT `fk_stock_opname` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`);
 
 --
 -- Constraints for table `log_pembelian`
