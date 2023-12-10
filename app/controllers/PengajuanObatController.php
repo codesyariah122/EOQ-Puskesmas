@@ -141,7 +141,7 @@ class PengajuanObatController
             $totalKtahun = $this->ktahun_model->totalJumlahKebutuhanPerTahun();
             $biayaPemesanan = round(($totalBiayaOngkir / $totalKtahun) * $ktahun['jumlah']);
 
-            var_dump($ktahun); die;
+            // var_dump($ktahun); die;
 
             $data = [
                 'success' => true,
