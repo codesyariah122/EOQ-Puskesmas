@@ -18,9 +18,9 @@
       </div>
 
       <?php
-         foreach($partials['views'] as $views):
-            require_once $views;
-         endforeach;
+      foreach($partials['views'] as $views):
+         require_once $views;
+      endforeach;
       ?>
    </main>
 

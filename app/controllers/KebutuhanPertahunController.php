@@ -43,6 +43,10 @@ class KebutuhanPertahunController
 
         $partials = $webApp->getPartials($param['page']);
 
+        $dataEdit = $this->ktahun_model->kebutuhanById($dataParam);
+
+        // var_dump($dataEdit);
+
         foreach ($views as $view) :
             require_once $view;
         endforeach;
@@ -80,6 +84,25 @@ class KebutuhanPertahunController
 
     public function edit($dataParam)
     {
+        $contents = 'app/views/dashboard/edit/index.php';
+
+        $prepare_views = [
+            'header' => 'app/views/layout/dashboard/header.php',
+            'contents' => $contents,
+            'footer' => 'app/views/layout/dashboard/footer.php',
+        ];
+
+
+        $data = [
+            'title' => "Aplikasi EOQ - {$dataParam}",
+            'page' => 'kebutuhan-pertahun-edit',
+            'data' => [
+                'username' => ucfirst($_SESSION['username']),
+                'dataParam' => $dataParam
+            ],
+        ];
+
+        $this->views($prepare_views, $data);
     }
 
     public function all()
@@ -219,6 +242,40 @@ class KebutuhanPertahunController
 
     public function update($dataParam)
     {
+        try {
+            header("Content-Type: application/json");
+
+            $prepareData = [
+                'kd_obat' => @$_POST['kd_obat'],
+                'k_tahun' => @$_POST['k_tahun'],
+                'satuan' => @$_POST['satuan'],
+                'jumlah' => @$_POST['jumlah']
+            ];
+
+            $kTahunHasUpdate = $this->ktahun_model->kebutuhanById($dataParam);
+            if ($this->ktahun_model->update($prepareData, $dataParam) === 1) {
+                $data = [
+                    'success' => true,
+                    'message' => "Data with id : {$dataParam}, berhasil di update!",
+                    'data' => $kTahunHasUpdate
+                ];
+                echo json_encode($data);
+            } else {
+                $data = [
+                    'success' => true,
+                    'message' => "Data with id : {$dataParam}, tidak ada perubahan data!",
+                    'data' => $kTahunHasUpdate
+                ];
+                echo json_encode($data);
+            }
+        } catch (\PDOException $e) {
+            $data = [
+                'error' => true,
+                'message' => "Terjadi kesalahan : " . $e->getMessage()
+            ];
+
+            echo json_encode($data);
+        }
     }
 
     public function delete($dataParam)

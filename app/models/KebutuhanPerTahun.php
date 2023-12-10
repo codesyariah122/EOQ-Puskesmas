@@ -164,9 +164,9 @@ class KebutuhanPertahun
 
             $dbh->beginTransaction();
 
-            $sql = "UPDATE biaya SET nama=?, biaya_bln=?, jumlah=?, total=? WHERE `id` = ?";
+            $sql = "UPDATE annual_needs SET kd_obat=?, k_tahun=?, jumlah=? WHERE `id` = ?";
             $update = $dbh->prepare($sql);
-            $update->execute([$data['nama'], $data['biaya_bln'], $data['jumlah'], $data['total'], $id]);
+            $update->execute([$data['kd_obat'], $data['k_tahun'], $data['jumlah'], $id]);
 
             $errorInfo = $update->errorInfo();
             if ($errorInfo[0] !== '00000') {
@@ -215,7 +215,13 @@ class KebutuhanPertahun
     {
         try {
             $dbh = $this->conn;
-            $sql = "SELECT * FROM annual_needs WHERE id = :id";
+            $sql = "SELECT annual_needs.id AS annual_needs_id, annual_needs.kd_obat AS annual_needs_kd_obat, 
+            annual_needs.k_tahun, annual_needs.satuan, annual_needs.jumlah,
+            obat.id AS obat_id, obat.nm_obat, obat.kd_obat 
+            FROM annual_needs 
+            JOIN obat ON annual_needs.kd_obat = obat.kd_obat
+            WHERE annual_needs.id = :id";
+
             $stmt = $dbh->prepare($sql);
             $stmt->bindParam(':id', $id);
             $stmt->execute();

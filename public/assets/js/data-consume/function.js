@@ -368,7 +368,7 @@ const formatDateIndonesia = (dateString) => {
                 report.jenis_obat === "CAIR"
                 ? "Botol"
                 : report.jenis_obat === "TABLET"
-                ? "Strip"
+                ? "Tablet"
                 : report.jenis_obat
               }
               </span>
@@ -1287,6 +1287,16 @@ const updateData = (param, type) => {
       total: param.data.total,
     };
     break;
+
+    case "kebutuhan-pertahun":
+    endPoint = `/update/${type}/${param.id}`
+    prepareData = {
+      id: param.data.id,
+      kd_obat: param.data.kd_obat,
+      k_tahun: param.data.k_tahun,
+      jumlah: param.data.jumlah
+    }
+    break;
     // type lainnya ....
 
     default:
@@ -1436,6 +1446,49 @@ function showToast(message) {
 // 		}
 // 	});
 // }
+
+function loadInitializeSelect2Edit() {
+  const id_obat = $('#selectEdit').data("id");
+  const kd_obat = $('#selectEdit').data("kode");
+  const nm_obat = $('#selectEdit').data("nama");
+
+  $('#selectEdit').select2({
+    placeholder: kd_obat,
+    allowClear: true,
+    ajax: {
+      url: $("#selectEdit").data("action"),
+      dataType: "json",
+      delay: 100,
+      processResults: function (data) {
+        return {
+          results: data,
+        };
+      },
+      cache: true,
+    },
+    dropdownPosition: "below",
+  })
+
+
+  $.ajax({
+    url: $("#selectEdit").data("action"),
+    dataType: "json",
+    success: function (data) {
+      let defaultOption = new Option(nm_obat, id_obat, "", true, true);
+      $("#selectEdit").append(defaultOption);
+
+
+      // Tambahkan data dari response
+      $.each(data, function (index, item) {
+        var option = new Option(item.text, item.id, false, false);
+        $("#selectEdit").append(option);
+      });
+
+      // Inisialisasi ulang Select2
+      $("#selectEdit").trigger("change");
+    },
+  });
+}
 
 function loadAndInitializeSelect2() {
   $("#selectOption").select2({

@@ -38,11 +38,12 @@ $app->delete('/delete/data-user/{dataParam}', 'UserDataController@delete');
 
 // perhitungan kebutuhan
 $app->get('/dashboard/kebutuhan-pertahun', 'KebutuhanPertahunController@index');
+$app->get('/dashboard/kebutuhan-pertahun/{param}', 'KebutuhanPertahunController@edit');
 $app->get('/lists/kebutuhan-pertahun', 'KebutuhanPertahunController@all');
 $app->post('/add/kebutuhan-pertahun', 'KebutuhanPertahunController@store');
 $app->get('/check/jumlah-k-tahun', 'KebutuhanPertahunController@checkJumlahKebutuhan');
 $app->delete('/delete/kebutuhan-pertahun/{dataParam}', 'KebutuhanPertahunController@delete');
-
+$app->put('/update/kebutuhan-pertahun/{dataParam}', 'KebutuhanPertahunController@update');
 
 // Biaya
 $app->get('/dashboard/biaya', 'BiayaController@index');

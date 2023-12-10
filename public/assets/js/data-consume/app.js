@@ -17,11 +17,13 @@ $(document).ready(function () {
 
   $("#displaying").on("input", "#k_tahun", function (e) {
     e.preventDefault();
+    const kd_obatEdit = $('#selectEdit').data("kode");
     const k_tahun = Number($('input[name="k_tahun"]').val());
-    const kd_obat = kd_obatOption;
+    const kd_obat = kd_obatOption !== null ? kd_obatOption : kd_obatEdit;
+
     const param = {
       k_tahun: k_tahun,
-      kd_obat: kd_obat,
+      kd_obat: kd_obat ,
     };
 
     if (kd_obat === null) {
@@ -339,6 +341,17 @@ $(document).ready(function () {
         id = prepareData.id;
         break;
 
+      case "kebutuhan-pertahun":
+        prepareData = {
+          id: $("#id").val(),
+          kd_obat: kd_obatOption !== null ? kd_obatOption : $('#selectEdit').data("kode"),
+          k_tahun: $('input[name="k_tahun"]').val(),
+          jumlah: $('input[name="jumlah"]').val()
+        };
+
+        id = prepareData.id;
+        break;
+
       default:
         console.log("No type");
     }
@@ -458,7 +471,12 @@ $(document).ready(function () {
   // Fungsi untuk memuat data dan menginisialisasi Select2
 
   // Memanggil fungsi di atas saat dokumen siap
+
   loadAndInitializeSelect2();
+
+  if(pagePath === "kebutuhan-pertahun") {
+    loadInitializeSelect2Edit()
+  }
 
   $("#selectOption").on("select2:select", function (e) {
     let selectedValue = e.params.data.id;

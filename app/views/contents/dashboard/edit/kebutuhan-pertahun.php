@@ -11,8 +11,8 @@
       <div class="grid grid-cols-1 mb-6">
          <div class="col-span-full">
             <div class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-            <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Edit Data Obat</h5>
-            <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Data Beli <?=$dataEdit['kd_beli']?></p>
+            <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Edit Data Kebutuhan Pertahun</h5>
+            <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Data Kebutuhan Pertahun <?=ucfirst($dataEdit['nm_obat'])?></p>
          </div>
 
          <div id="alert-error" class="w-full mb-2 py-2 hidden">
@@ -38,26 +38,23 @@
          <div class="col-span-full">
             <blockquote class="text-md font-normal italic">*Edit melalui form data obat berikut ini...</blockquote>
             <form class="py-10">
-               <input type="hidden" name="kd_beli" id="kd_beli" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$dataEdit['kd_beli']?>"/>
+              <input type="text" name="id" id="id" class="hidden block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?= $dataEdit['annual_needs_id'] ?>" />
 
                <div class="relative z-0 w-full mb-6 group">
-                  <select id="selectOption" data-action="/options/lists-obat" class="block appearance-none w-[350px] lg:w-[600px] h-[100px] lg:h-[300px] bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                     <!-- Dom list data dari select2 dengan ajax request -->
-                     <option value="<?=$dataEdit['kd_obat']?>"><?=$dataEdit['kd_obat']?> - <?=$dataEdit['nm_obat']?></option>
-                  </select>
-               </div>
-
-               <div class="relative z-0 w-full mb-12 mt-10 group">
-                  <div class="relative">
-                     <label for="tgl_beli" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Tgl Beli</label>
-                     <input type="date" name="tgl_beli" id="tgl_beli" value="<?=$dataEdit['tgl_beli']?>" class="mt-2 w-[350px] lg:w-[600px]">
-                  </div>
+                <select id="selectEdit" data-action="/options/lists-obat" class="block appearance-none w-[350px] lg:w-[600px] h-[100px] lg:h-[300px] bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:bg-white focus:border-gray-500" data-kode="<?=$dataEdit['kd_obat']?>" data-nama="<?=$dataEdit['nm_obat']?>" data-id="<?=$dataEdit['obat_id']?>">
+                 <!-- Dom list data dari select2 dengan ajax request -->
+               </select>
                </div>
 
                <div class="relative z-0 w-full mb-6 group">
-                  <input type="number" name="jumlah" id="jumlah" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$dataEdit['jumlah']?>"/>
-                  <label for="jumlah" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Jumlah</label>
+                 <input type="number" inputmode="numeric" pattern="\d*" name="k_tahun" id="k_tahun" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$dataEdit['k_tahun']?>"/>
+                 <label for="k_tahun" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Kebutuhan Pertahun</label>
                </div>
+               
+               <div class="relative z-0 w-full mb-10 group">
+                  <input type="number" name="jumlah" id="jumlah" disabled class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" value="<?=$dataEdit['jumlah']?>"/>
+                  <label for="jumlah" class="d peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Jumlah</label>
+             </div>
 
                <button type="submit" class="update text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                   <div id="loading-button" class="hidden">

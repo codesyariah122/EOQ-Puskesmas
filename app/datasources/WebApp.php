@@ -276,6 +276,23 @@ class WebApp
 				];
 				break;
 
+			case "kebutuhan-pertahun-edit":
+				$navbar = "app/views/layout/partials/dashboard/navbar.php";
+				$partials = [
+					'loading' => 'app/views/layout/partials/loading.php',
+					"sidebar" => "app/views/layout/partials/dashboard/sidebar.php",
+					"pengajuan_obat" => "app/views/contents/dashboard/edit/kebutuhan-pertahun.php"
+				];
+				$scripts = [
+					'/public/assets/js/script.js',
+					'/public/assets/js/auth/function.js',
+					'/public/assets/js/auth/app.js',
+					'/public/assets/js/data-consume/function.js',
+					'/public/assets/js/data-consume/app.js',
+					'/public/assets/js/data-consume/pdf.load.js'
+				];
+			break;
+
 			case "biaya";
 				$navbar = "app/views/layout/partials/dashboard/navbar.php";
 				$partials = [

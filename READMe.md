@@ -1,5 +1,16 @@
 ### Bahan Skripsi Pemrogramman Web
 
+### Run Program
+Buka git bash terminal :
+akses direktori project , di root direktori project ada file nama nya : server.sh, jalankan server.sh seperti berikut , copy paste di git bash  
+```
+./server.sh
+```  
+**Notes:** jika ada error permission, jalankan perintah berikut :  
+```
+chmod +x server.sh
+``` 
+
 ### Auto Input Pengajuan Obat
 
 [online-screen-recorder-2023-12-08--18-22-40.webm](https://github.com/codesyariah122/EOQ-Puskesmas/assets/13291805/6e66ad12-aeda-4071-8981-73f629e10cc9)
