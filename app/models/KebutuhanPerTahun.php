@@ -80,7 +80,7 @@ class KebutuhanPertahun
         }
     }
 
-    public function kebutuhanByKdObay($kd_obat)
+    public function kebutuhanByKdObat($kd_obat)
     {
         try {
             $dbh = $this->conn;

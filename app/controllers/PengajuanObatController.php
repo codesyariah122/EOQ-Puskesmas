@@ -131,17 +131,15 @@ class PengajuanObatController
             $kd_obat = @$_GET['kd_obat'];
             $biayaListrik = ucfirst('listrik');
             $biayaOngkir = ucfirst('ongkos kirim');
-            $ktahun = $this->ktahun_model->kebutuhanByKdObay($kd_obat);
+            $ktahun = $this->ktahun_model->kebutuhanByKdObat($kd_obat);
 
-            $allStock = $this->stock_opname->allStockIn() / 12;
+            $allStock = round($this->stock_opname->allStockIn() / 12);
 
             $totalBiayaListrik = $this->biaya_model->getBiayaByNama($biayaListrik)['total'];
             $totalBiayaOngkir = $this->biaya_model->getBiayaByNama($biayaOngkir)['total'];
             $biayaSimpan = round($totalBiayaListrik / $allStock);
             $totalKtahun = $this->ktahun_model->totalJumlahKebutuhanPerTahun();
             $biayaPemesanan = round(($totalBiayaOngkir / $totalKtahun) * $ktahun['jumlah']);
-
-            // var_dump($ktahun); die;
 
             $data = [
                 'success' => true,
