@@ -99,14 +99,15 @@ class DataObat
 
 		try {
 			$dbh = $this->conn;
-			 $query = "SELECT obat.*, stock_opname.sisa_stok 
+			$query = "SELECT DISTINCT obat.*, stock_opname.sisa_stok, annual_needs.satuan, annual_needs.jumlah
                   FROM `obat` 
                   LEFT JOIN stock_opname ON obat.kd_obat = stock_opname.kd_obat 
+                  LEFT JOIN annual_needs ON obat.kd_obat = annual_needs.kd_obat
                   WHERE obat.`kd_obat` LIKE :keyword 
                     OR obat.`nm_obat` LIKE :keyword 
                     OR obat.`jenis_obat` LIKE :keyword
                   ORDER BY obat.`kd_obat` DESC";
-                  
+
 			if ($limitStart !== null && $limit !== null) {
 				$query .= " LIMIT $limitStart, $limit";
 			}

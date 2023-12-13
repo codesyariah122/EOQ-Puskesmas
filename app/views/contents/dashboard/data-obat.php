@@ -67,7 +67,10 @@
                         Harga
                      </th>
                      <th scope="col" class="px-6 py-3">
-                       Sisa Stok
+                        Sisa Stok
+                     </th>
+                     <th scope="col" class="px-6 py-3">
+                        Kebutuhan / Tahun
                      </th>
                      <th scope="col" class="px-6 py-3">
                         <span class="sr-only">Edit</span>

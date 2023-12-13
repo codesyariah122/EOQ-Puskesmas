@@ -178,7 +178,6 @@ const getData = (type, data = null) => {
       endPoint = `/check/${type}?kd_obat=${data.kd_obat}`;
       break;
   }
-  console.log(endPoint);
   $.ajax({
     url: endPoint,
     type: "GET",
@@ -283,7 +282,7 @@ const getAllData = (type, page = 1, keyword = "") => {
 
           case "data-obat":
             const obats = lists.data;
-
+            console.log(obats);
             obats.map((obat) => {
               domDataHTML += `
               <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -309,6 +308,9 @@ const getAllData = (type, page = 1, keyword = "") => {
               </td>
               <td class="px-6 py-4">
               ${obat.sisa_stok == null ? 0 : obat.sisa_stok}
+              </td>
+              <td class="px-6 py-4">
+              ${obat.k_tahun ? obat.k_tahun : "-"}
               </td>
               <td>
               <div class="flex justify-center space-x-4">
